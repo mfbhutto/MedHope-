@@ -1,0 +1,4058 @@
+[
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Lower",
+    "AreasName": "A Area Malir Colony"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Lower",
+    "AreasName": "A Area Liaquatabad"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Abbasi Nagar"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Abid Town"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Ablaag-e-Aama Cooperative Housing Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Middle",
+    "AreasName": "Abuzar Ghafari Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Lower",
+    "AreasName": "Adam Higora Goth"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Adamji Nagar"
+  },
+  {
+    "City": "Karachi",
+    "District": "Keamari",
+    "Class": "Lower",
+    "AreasName": "Afridi Colony"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Lower",
+    "AreasName": "Afridi Goth"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Ahmadabad"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Al Ameen City"
+  },
+  {
+    "City": "Karachi",
+    "District": "Korangi",
+    "Class": "Middle",
+    "AreasName": "Al Badar Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Middle",
+    "AreasName": "Al Falah Housing Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "Korangi",
+    "Class": "Middle",
+    "AreasName": "Al Falah Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Al Habib Cooperative Housing Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Al Hira Bungalows"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Al Manzar City"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Al Mashraqui Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Al Noor Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Al Sadaf Cooperative Housing Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Alamgir Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Lower",
+    "AreasName": "Ali Garh Colony"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Ali Garh Cooperative Housing Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Lower",
+    "AreasName": "Ali Muhammad Goth"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Aligarh Cooperative Housing Society SCHEME 33"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "All Pakistan Newspaper Cooperative Housing Society scheme 33"
+  },
+  {
+    "City": "Karachi",
+    "District": "Keamari",
+    "Class": "Lower",
+    "AreasName": "Allah Buksh Goth"
+  },
+  {
+    "City": "Karachi",
+    "District": "Korangi",
+    "Class": "Lower",
+    "AreasName": "Allah Wala Town"
+  },
+  {
+    "City": "Karachi",
+    "District": "Keamari",
+    "Class": "Lower",
+    "AreasName": "Allahabad Colony"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Lower",
+    "AreasName": "Allama Iqbal Colony"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Al-Muslim Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Al-Noor Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Lower",
+    "AreasName": "Altaf Town"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Middle",
+    "AreasName": "Ameenabad Marble"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Middle",
+    "AreasName": "Ammar e Yasir Phase 2"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Ammar Garden"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Anwar e Ibrahim"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Aramish Bungalows"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Architects Engineers Employees Cooperative Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Areesha Cooperative Housing Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Arsalan Homes"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Lower",
+    "AreasName": "Ashraf Nagar"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Lower",
+    "AreasName": "Asif Colony"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Elite",
+    "AreasName": "Askari 4"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Elite",
+    "AreasName": "Askari 5"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Elite",
+    "AreasName": "Askari 5 Sector G"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Lower",
+    "AreasName": "Asu Goth"
+  },
+  {
+    "City": "Karachi",
+    "District": "Korangi",
+    "Class": "Lower",
+    "AreasName": "Awami Colony"
+  },
+  {
+    "City": "Karachi",
+    "District": "Korangi",
+    "Class": "Lower",
+    "AreasName": "Awami Colony 1"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Middle",
+    "AreasName": "AWC Residential Area"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Middle",
+    "AreasName": "Ayesha Manzil"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Lower",
+    "AreasName": "Ayub Goth"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Lower",
+    "AreasName": "Azeem Pura"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Middle",
+    "AreasName": "Azeemabad"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Middle",
+    "AreasName": "Azizabad"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Lower",
+    "AreasName": "B 1 Area Liaquatabad"
+  },
+  {
+    "City": "Karachi",
+    "District": "Keamari",
+    "Class": "Lower",
+    "AreasName": "Baba Town"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Lower",
+    "AreasName": "Baba Wilayat Colony"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Lower",
+    "AreasName": "Bacha Khaskhaily Goth"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Bagh e Ibrahim"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Middle",
+    "AreasName": "Bagh e Malir"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Middle",
+    "AreasName": "Bagh e Malir Block B"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Bagh e Rafi"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Bagh e Yousuf"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Bahadurabad"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Bait-ul-Noor"
+  },
+  {
+    "City": "Karachi",
+    "District": "South",
+    "Class": "Lower",
+    "AreasName": "Bakra Piri"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Baloch Colony"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Baltistani Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "West",
+    "Class": "Lower",
+    "AreasName": "Banaras Town"
+  },
+  {
+    "City": "Karachi",
+    "District": "South",
+    "Class": "Lower",
+    "AreasName": "Bangla Bazaar"
+  },
+  {
+    "City": "Karachi",
+    "District": "South",
+    "Class": "Lower",
+    "AreasName": "Bantwa Gali"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Lower",
+    "AreasName": "Basra Colony"
+  },
+  {
+    "City": "Karachi",
+    "District": "Korangi",
+    "Class": "Lower",
+    "AreasName": "Bengali Para"
+  },
+  {
+    "City": "Karachi",
+    "District": "South",
+    "Class": "Lower",
+    "AreasName": "Bhangi Para"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Lower",
+    "AreasName": "Bhangoria Colony"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Lower",
+    "AreasName": "Bhangoria Goth"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Lower",
+    "AreasName": "Bhangoria Town"
+  },
+  {
+    "City": "Karachi",
+    "District": "Korangi",
+    "Class": "Lower",
+    "AreasName": "Bhittai Abad"
+  },
+  {
+    "City": "Karachi",
+    "District": "Keamari",
+    "Class": "Lower",
+    "AreasName": "Bihar Colony"
+  },
+  {
+    "City": "Karachi",
+    "District": "Korangi",
+    "Class": "Lower",
+    "AreasName": "Bilal Colony"
+  },
+  {
+    "City": "Karachi",
+    "District": "Korangi",
+    "Class": "Middle",
+    "AreasName": "Bilal Town Shah Faisal"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Lower",
+    "AreasName": "Bilawal Shah Nurani Goth"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Billys Homes"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "BIM Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "South",
+    "Class": "Middle",
+    "AreasName": "Bizerta Lines"
+  },
+  {
+    "City": "Karachi",
+    "District": "South",
+    "Class": "Lower",
+    "AreasName": "Bizinjo Chowk"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Block 11 Gulistan-e-Johar"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Block 13 Gulistan-e-Johar"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Block 16 Gulistan-e-Johar"
+  },
+  {
+    "City": "Karachi",
+    "District": "Korangi",
+    "Class": "Middle",
+    "AreasName": "Block A Gulshan e Jamal"
+  },
+  {
+    "City": "Karachi",
+    "District": "Korangi",
+    "Class": "Middle",
+    "AreasName": "Block B Gulshan e Jamal"
+  },
+  {
+    "City": "Karachi",
+    "District": "Korangi",
+    "Class": "Middle",
+    "AreasName": "Block C Gulshan e Jamal"
+  },
+  {
+    "City": "Karachi",
+    "District": "Korangi",
+    "Class": "Middle",
+    "AreasName": "Block D Gulshan e Jamal"
+  },
+  {
+    "City": "Karachi",
+    "District": "Korangi",
+    "Class": "Middle",
+    "AreasName": "Block E Gulshan e Jamal"
+  },
+  {
+    "City": "Karachi",
+    "District": "Korangi",
+    "Class": "Middle",
+    "AreasName": "Block F Gulshan e Jamal"
+  },
+  {
+    "City": "Karachi",
+    "District": "South",
+    "Class": "Lower",
+    "AreasName": "Bohra Pir"
+  },
+  {
+    "City": "Karachi",
+    "District": "South",
+    "Class": "Middle",
+    "AreasName": "Bohri Bazaar"
+  },
+  {
+    "City": "Karachi",
+    "District": "South",
+    "Class": "Lower",
+    "AreasName": "Bolton Market"
+  },
+  {
+    "City": "Karachi",
+    "District": "South",
+    "Class": "Lower",
+    "AreasName": "Brohi Mohalla"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Lower",
+    "AreasName": "Bufferzone Sector 16 A"
+  },
+  {
+    "City": "Karachi",
+    "District": "South",
+    "Class": "Lower",
+    "AreasName": "Bunder Quarter"
+  },
+  {
+    "City": "Karachi",
+    "District": "Korangi",
+    "Class": "Lower",
+    "AreasName": "Burmese Colony"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Business and Professional Cooperative Housing Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Lower",
+    "AreasName": "C Area Khokrapar"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "C P & Berar Cooperative Housing Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Lower",
+    "AreasName": "C1 Area Khokrapar"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Capital Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "South",
+    "Class": "Middle",
+    "AreasName": "Catholic Colony"
+  },
+  {
+    "City": "Karachi",
+    "District": "South",
+    "Class": "Elite",
+    "AreasName": "Central Business District"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Central Goverment Employees Cooperative Housing Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Central Govt Employees Cooperative Housing Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Chappal Sun City"
+  },
+  {
+    "City": "Karachi",
+    "District": "Korangi",
+    "Class": "Lower",
+    "AreasName": "Chittagong Colony"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "City Villas"
+  },
+  {
+    "City": "Karachi",
+    "District": "South",
+    "Class": "Elite",
+    "AreasName": "Corniche Cooperative Housing Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Crystal Cottages"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Crystal Homes"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Custom Preventive Cooperative Housing Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Lower",
+    "AreasName": "D Area"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Lower",
+    "AreasName": "D area Khokrapar"
+  },
+  {
+    "City": "Karachi",
+    "District": "Keamari",
+    "Class": "Lower",
+    "AreasName": "Dani Buksh Goth"
+  },
+  {
+    "City": "Karachi",
+    "District": "South",
+    "Class": "Elite",
+    "AreasName": "Darakhshan Housing Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "South",
+    "Class": "Elite",
+    "AreasName": "Darakshan Cooperative Housing Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Darul Aman"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Middle",
+    "AreasName": "Dastagir"
+  },
+  {
+    "City": "Karachi",
+    "District": "Keamari",
+    "Class": "Lower",
+    "AreasName": "Data Nagar"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Dawood Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Decent Houses"
+  },
+  {
+    "City": "Karachi",
+    "District": "South",
+    "Class": "Elite",
+    "AreasName": "Defence Officers Housing Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Defence View Phase 3"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Dehli Merchantile Cooperative Housing Society SCHEME 33"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Dehli Merchantile Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Lower",
+    "AreasName": "Dehli Saudagar"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Lower",
+    "AreasName": "Dehli Saudagaran Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "South",
+    "Class": "Middle",
+    "AreasName": "Delhi Colony"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Delhi Raiyan Cooperative Housing Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Dentist Colony"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Elite",
+    "AreasName": "DHA CITY"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Elite",
+    "AreasName": "DHA CITY Sector 1"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Elite",
+    "AreasName": "DHA CITY Sector 10"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Elite",
+    "AreasName": "DHA CITY Sector 11"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Elite",
+    "AreasName": "DHA CITY Sector 12 A"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Elite",
+    "AreasName": "DHA CITY Sector 12 B"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Elite",
+    "AreasName": "DHA CITY Sector 15"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Elite",
+    "AreasName": "DHA CITY Sector 2"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Elite",
+    "AreasName": "DHA CITY Sector 3"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Elite",
+    "AreasName": "DHA CITY Sector 4"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Elite",
+    "AreasName": "DHA CITY Sector 6"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Elite",
+    "AreasName": "DHA CITY Sector 7"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Elite",
+    "AreasName": "DHA CITY Sector 8"
+  },
+  {
+    "City": "Karachi",
+    "District": "South",
+    "Class": "Elite",
+    "AreasName": "DHA Phase 1"
+  },
+  {
+    "City": "Karachi",
+    "District": "Keamari",
+    "Class": "Lower",
+    "AreasName": "Dhani Buksh Goth"
+  },
+  {
+    "City": "Karachi",
+    "District": "South",
+    "Class": "Lower",
+    "AreasName": "Dhobi Ghat"
+  },
+  {
+    "City": "Karachi",
+    "District": "South",
+    "Class": "Lower",
+    "AreasName": "Dholi Khata"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Dhoraji Cooperative Housing Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "South",
+    "Class": "Elite",
+    "AreasName": "DOHS"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Dua City"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Lower",
+    "AreasName": "E1 Area Khokrapar"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Lower",
+    "AreasName": "ENCROACHMENT LAASI GOTH"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Erum Bungalows"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Lower",
+    "AreasName": "Etawa Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Evaque Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Lower",
+    "AreasName": "F Area Khokrapar"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Lower",
+    "AreasName": "F South Saudabad"
+  },
+  {
+    "City": "Karachi",
+    "District": "Korangi",
+    "Class": "Elite",
+    "AreasName": "Falcon Complex 2"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Lower",
+    "AreasName": "Faqir Muhammad Goth"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Lower",
+    "AreasName": "Fareed Colony"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Fareed Niazi Cooperative Housing Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Fatima Sunrise City"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Lower",
+    "AreasName": "Fatima Town"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Middle",
+    "AreasName": "FB Area Block 2"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Middle",
+    "AreasName": "Federal B Area Block 2"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Middle",
+    "AreasName": "Federal B Area Block 21"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Firdaus Cooperative Housing"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Firdous Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "West",
+    "Class": "Lower",
+    "AreasName": "Frontier Colony"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Lower",
+    "AreasName": "Fruit Mandi Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Lower",
+    "AreasName": "G Area Khokrapar"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Lower",
+    "AreasName": "Gadap Town"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Gandhara Cooperative Housing Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "South",
+    "Class": "Lower",
+    "AreasName": "Gari Khata"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Lower",
+    "AreasName": "Ghausia Colony"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Lower",
+    "AreasName": "Ghazi Town"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Lower",
+    "AreasName": "Ghazi Town Phase 1"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Lower",
+    "AreasName": "Ghazi Town Phase 2"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Ghazi Villas"
+  },
+  {
+    "City": "Karachi",
+    "District": "Korangi",
+    "Class": "Lower",
+    "AreasName": "Ghosia Colony"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Godhra Gulistan Cooperative Housing Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Lower",
+    "AreasName": "Gohar Khan Gabol Goth"
+  },
+  {
+    "City": "Karachi",
+    "District": "Korangi",
+    "Class": "Middle",
+    "AreasName": "Golden Town Shah Faisal"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Green Park"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Gul Houses"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Lower",
+    "AreasName": "Gul Town"
+  },
+  {
+    "City": "Karachi",
+    "District": "Keamari",
+    "Class": "Lower",
+    "AreasName": "Gulbai"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Gulfishan Housing Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "West",
+    "Class": "Lower",
+    "AreasName": "Gulistan Colony"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Middle",
+    "AreasName": "Gulistan e Malir"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Gulistan Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Gulistan Society Cooperative Housing Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Gulistan-e-Johar Block 16 A"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Gulistan-e-Johar Block 7"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Gulistan-e-Johar Block 9"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Gulistan-e-Zafar"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Gulshan e Dad Rahim"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Gulshan e Ghazali"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Gulshan e Ghazian Cooperative Housing Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Gulshan e Iqbal Block 10A"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Gulshan e Iqbal Block 18"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Middle",
+    "AreasName": "Gulshan e Qadri"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Middle",
+    "AreasName": "Gulshan e Qadri Malir"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Gulshan e Rafi"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Gulshan e Rafi Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Middle",
+    "AreasName": "Gulshan e Siddiq e Akber Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Middle",
+    "AreasName": "Gulshan e Siddiq e Akbar Malir"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Gulshan-e-Areesha"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Gulshan-e-Azeem"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Gulshan-e-Iqbal Block 1"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Gulshan-e-Iqbal Block 11"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Gulshan-e-Iqbal Block 13"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Gulshan-e-Iqbal Block 13 A"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Gulshan-e-Iqbal Block 13 B"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Gulshan-e-Iqbal Block 13 C"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Gulshan-e-Iqbal Block 13 D 1"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Gulshan-e-Iqbal Block 13 D 2"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Gulshan-e-Iqbal Block 13 D 3"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Gulshan-e-Iqbal Block 13 E"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Gulshan-e-Iqbal Block 16"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Gulshan-e-Iqbal Block 17"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Gulshan-e-Iqbal Block 2"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Gulshan-e-Iqbal Block 3"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Gulshan-e-Iqbal Block 5"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Gulshan-e-Iqbal Block 6"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Gulshan-e-Iqbal Block 7"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Gulshan-e-Iqbal Block 9"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Gulshan-e-Noor"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Gulshan-e-Osman"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Gulshan-e-Rahim"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Gulshan-e-Umer"
+  },
+  {
+    "City": "Karachi",
+    "District": "Korangi",
+    "Class": "Lower",
+    "AreasName": "Gulzar Colony"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Gurmandir"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Gwalior Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Lower",
+    "AreasName": "H Area Khokrapar"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Lower",
+    "AreasName": "Haji Lemo Goth"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Lower",
+    "AreasName": "Haji Malik Goth"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Lower",
+    "AreasName": "Haji Miran Goth"
+  },
+  {
+    "City": "Karachi",
+    "District": "South",
+    "Class": "Lower",
+    "AreasName": "Haji Panjoo"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Lower",
+    "AreasName": "Haji Sukhio Village"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Hakeem Villas"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Halari Memon Cooperative Housing Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "Korangi",
+    "Class": "Lower",
+    "AreasName": "Hanif SRE"
+  },
+  {
+    "City": "Karachi",
+    "District": "Korangi",
+    "Class": "Lower",
+    "AreasName": "Hanifabad"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Hansa Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Hansabad Housing Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "Korangi",
+    "Class": "Lower",
+    "AreasName": "Haroon Colony"
+  },
+  {
+    "City": "Karachi",
+    "District": "Korangi",
+    "Class": "Lower",
+    "AreasName": "Haroonabad"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Lower",
+    "AreasName": "Hasan Lashkari"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Lower",
+    "AreasName": "Hasan Panwher Goth"
+  },
+  {
+    "City": "Karachi",
+    "District": "South",
+    "Class": "Lower",
+    "AreasName": "Hashmi Mohallah"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Lower",
+    "AreasName": "Hassan Auliya"
+  },
+  {
+    "City": "Karachi",
+    "District": "West",
+    "Class": "Lower",
+    "AreasName": "Hazara Colony"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Lower",
+    "AreasName": "Hazara Goth"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Lower",
+    "AreasName": "Hazara Town"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Lower",
+    "AreasName": "Hazrat Mohani Colony"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Hina Bungalows"
+  },
+  {
+    "City": "Karachi",
+    "District": "South",
+    "Class": "Lower",
+    "AreasName": "Hingorabad"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Middle",
+    "AreasName": "Huma Town"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Middle",
+    "AreasName": "Hussainabad"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Middle",
+    "AreasName": "Hyderabad Colony"
+  },
+  {
+    "City": "Karachi",
+    "District": "South",
+    "Class": "Lower",
+    "AreasName": "Idu Lane"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Lower",
+    "AreasName": "illegal Encroachments"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Lower",
+    "AreasName": "Ilyas Goth"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Inara Garden"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Income Tax Cooperative Housing Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "Korangi",
+    "Class": "Lower",
+    "AreasName": "Iqbal Colony"
+  },
+  {
+    "City": "Karachi",
+    "District": "Keamari",
+    "Class": "Lower",
+    "AreasName": "Iqbal Goth"
+  },
+  {
+    "City": "Karachi",
+    "District": "South",
+    "Class": "Lower",
+    "AreasName": "Isai Colony"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Lower",
+    "AreasName": "Ishaqabad"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Lower",
+    "AreasName": "Ittafaq Colony Malir Khokharapar"
+  },
+  {
+    "City": "Karachi",
+    "District": "Keamari",
+    "Class": "Lower",
+    "AreasName": "Ittehad Town"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Lower",
+    "AreasName": "Jadeed Colony"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Middle",
+    "AreasName": "Jafar-e-Tayyar Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Middle",
+    "AreasName": "Jaffer e Tayar Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Lower",
+    "AreasName": "Jahangeerabad"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Lower",
+    "AreasName": "Jahangir Road Quarters"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Lower",
+    "AreasName": "Jalbani Malir"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Lower",
+    "AreasName": "Jamali Colony"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Lower",
+    "AreasName": "Jauharabad"
+  },
+  {
+    "City": "Karachi",
+    "District": "Keamari",
+    "Class": "Lower",
+    "AreasName": "Jazeera Baba"
+  },
+  {
+    "City": "Karachi",
+    "District": "Keamari",
+    "Class": "Lower",
+    "AreasName": "Jazeera Bhatt"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Jinnah Cooperative Housing Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Lower",
+    "AreasName": "Jinnahabad"
+  },
+  {
+    "City": "Karachi",
+    "District": "South",
+    "Class": "Lower",
+    "AreasName": "Jockey Para"
+  },
+  {
+    "City": "Karachi",
+    "District": "South",
+    "Class": "Lower",
+    "AreasName": "Jodia Bazar"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Johar Complex"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Joher Block 19"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Lower",
+    "AreasName": "Jumma Khan Goth"
+  },
+  {
+    "City": "Karachi",
+    "District": "South",
+    "Class": "Lower",
+    "AreasName": "Juna Kalri"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "K Electric Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Kaghan Cooperative Housing Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "South",
+    "Class": "Lower",
+    "AreasName": "Kalanagar"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Karachi Bar Cooperative Housing Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Karachi Court Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Karachi Memon Cooperative Housing Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Karachi University Housing Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Middle",
+    "AreasName": "Karimabad"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "KDA Officer Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "KDA Officers Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "KDA Overseas Bungalows"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Elite",
+    "AreasName": "KDA Scheme 1 Extension"
+  },
+  {
+    "City": "Karachi",
+    "District": "Korangi",
+    "Class": "Middle",
+    "AreasName": "Kehkashan Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "KESC Housing Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Lower",
+    "AreasName": "Khalidabad"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Lower",
+    "AreasName": "Khamosh Colony"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Lower",
+    "AreasName": "Khando Goth"
+  },
+  {
+    "City": "Karachi",
+    "District": "South",
+    "Class": "Lower",
+    "AreasName": "Kharadar"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Khathiawar Society Cooperative Housing Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Lower",
+    "AreasName": "Khokhrapar"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Lower",
+    "AreasName": "Khokhrapar Malir"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Lower",
+    "AreasName": "Khokrapar No 1"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Lower",
+    "AreasName": "Khokrapar No 4"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Khorasan Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "West",
+    "Class": "Lower",
+    "AreasName": "Khuda Basti"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Lower",
+    "AreasName": "Khuda Bux Goth"
+  },
+  {
+    "City": "Karachi",
+    "District": "West",
+    "Class": "Lower",
+    "AreasName": "Khuda Ki Basti"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Lower",
+    "AreasName": "Khudadad"
+  },
+  {
+    "City": "Karachi",
+    "District": "West",
+    "Class": "Lower",
+    "AreasName": "Khyber Mohallah"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "King Cottages"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Kings Dreams Villas"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Kokan Muslim Cooperative Housing Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "Korangi",
+    "Class": "Lower",
+    "AreasName": "Korangi Sector 29"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Lower",
+    "AreasName": "Kowari Colony"
+  },
+  {
+    "City": "Karachi",
+    "District": "West",
+    "Class": "Lower",
+    "AreasName": "Kutchi Colony"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Kutchi Memon Cooperative Housing Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "Korangi",
+    "Class": "Lower",
+    "AreasName": "Labour Colony"
+  },
+  {
+    "City": "Karachi",
+    "District": "South",
+    "Class": "Elite",
+    "AreasName": "Lalazar"
+  },
+  {
+    "City": "Karachi",
+    "District": "Korangi",
+    "Class": "Lower",
+    "AreasName": "Landhi 89 Chowk"
+  },
+  {
+    "City": "Karachi",
+    "District": "Korangi",
+    "Class": "Lower",
+    "AreasName": "Landhi Sector 21"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Lower",
+    "AreasName": "Lashkari Goth"
+  },
+  {
+    "City": "Karachi",
+    "District": "South",
+    "Class": "Lower",
+    "AreasName": "Lasi Muhallah"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Lawyer's Colony"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Lower",
+    "AreasName": "Liaquatabad"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Lower",
+    "AreasName": "Liaquatabad Block 5"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Lower",
+    "AreasName": "Liaquatabad Block 6"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Lower",
+    "AreasName": "Liaquatabad Block 7"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Lower",
+    "AreasName": "Liaquatabad Block 9"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Long Life Bangalows"
+  },
+  {
+    "City": "Karachi",
+    "District": "South",
+    "Class": "Lower",
+    "AreasName": "Lyari Town"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Maaz Town"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Lower",
+    "AreasName": "Madhu Goth"
+  },
+  {
+    "City": "Karachi",
+    "District": "West",
+    "Class": "Lower",
+    "AreasName": "Madina Basti"
+  },
+  {
+    "City": "Karachi",
+    "District": "Korangi",
+    "Class": "Lower",
+    "AreasName": "Madina Colony"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Lower",
+    "AreasName": "Mai Hawa Goth"
+  },
+  {
+    "City": "Karachi",
+    "District": "Korangi",
+    "Class": "Lower",
+    "AreasName": "Majeed Colony"
+  },
+  {
+    "City": "Karachi",
+    "District": "Korangi",
+    "Class": "Lower",
+    "AreasName": "Majeed SRE"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Malik Cooperative Housing Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Elite",
+    "AreasName": "Malir Cantonment"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Lower",
+    "AreasName": "Malir Small Industrial Area"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Middle",
+    "AreasName": "Malir Town"
+  },
+  {
+    "City": "Karachi",
+    "District": "South",
+    "Class": "Lower",
+    "AreasName": "Mandra Para"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Lower",
+    "AreasName": "Maniya"
+  },
+  {
+    "City": "Karachi",
+    "District": "Keamari",
+    "Class": "Lower",
+    "AreasName": "Mansehra Colony"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Maqboolabad"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Lower",
+    "AreasName": "Marro Goth"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "MBCH Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Meerut Cooperative Housing Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Mehran Bungalows"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Lower",
+    "AreasName": "Memon Colony"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Lower",
+    "AreasName": "Metroville"
+  },
+  {
+    "City": "Karachi",
+    "District": "Keamari",
+    "Class": "Lower",
+    "AreasName": "Metroville 3"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Middle",
+    "AreasName": "Millat Garden"
+  },
+  {
+    "City": "Karachi",
+    "District": "Korangi",
+    "Class": "Lower",
+    "AreasName": "Millat Town"
+  },
+  {
+    "City": "Karachi",
+    "District": "West",
+    "Class": "Lower",
+    "AreasName": "Miranpir"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Moallamabad"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Middle",
+    "AreasName": "Model Colony"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Lower",
+    "AreasName": "Moeenabad"
+  },
+  {
+    "City": "Karachi",
+    "District": "South",
+    "Class": "Lower",
+    "AreasName": "Molaram Compound"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Lower",
+    "AreasName": "Mominabad"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Lower",
+    "AreasName": "Moosa Colony"
+  },
+  {
+    "City": "Karachi",
+    "District": "West",
+    "Class": "Lower",
+    "AreasName": "Muhajir Camp"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Lower",
+    "AreasName": "Muhammad Khan Colony"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Lower",
+    "AreasName": "Muhammad Khan Goth"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Lower",
+    "AreasName": "Muhammad Nagar"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Lower",
+    "AreasName": "Muhammadi Colony"
+  },
+  {
+    "City": "Karachi",
+    "District": "West",
+    "Class": "Lower",
+    "AreasName": "Mujahidabad"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Munir Foundation"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Munir Garden"
+  },
+  {
+    "City": "Karachi",
+    "District": "Keamari",
+    "Class": "Lower",
+    "AreasName": "Muree Goth"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Musalman-e-Punjab Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Muslim Kutchi Khatri Cooperative Housing Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Middle",
+    "AreasName": "Muslimabad"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Lower",
+    "AreasName": "Mustafabad"
+  },
+  {
+    "City": "Karachi",
+    "District": "West",
+    "Class": "Lower",
+    "AreasName": "Muzaffarabad Colony"
+  },
+  {
+    "City": "Karachi",
+    "District": "South",
+    "Class": "Lower",
+    "AreasName": "Nadra Office - Chakiwara"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Middle",
+    "AreasName": "Nafees Banglows"
+  },
+  {
+    "City": "Karachi",
+    "District": "South",
+    "Class": "Lower",
+    "AreasName": "Narayan Pura"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Middle",
+    "AreasName": "Naseerabad"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Lower",
+    "AreasName": "Nashtar Abad"
+  },
+  {
+    "City": "Karachi",
+    "District": "Korangi",
+    "Class": "Lower",
+    "AreasName": "Natha Khan Goth"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "National Cement Employees Cooperative Housing Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "Korangi",
+    "Class": "Elite",
+    "AreasName": "Naval Housing Scheme"
+  },
+  {
+    "City": "Karachi",
+    "District": "South",
+    "Class": "Elite",
+    "AreasName": "Naval Officers Bungalows"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Naveed Bungalows"
+  },
+  {
+    "City": "Karachi",
+    "District": "South",
+    "Class": "Lower",
+    "AreasName": "Nawalane"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Middle",
+    "AreasName": "Nazar Ali Town"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Middle",
+    "AreasName": "Nazimabad Block 2"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Middle",
+    "AreasName": "New Ancholi"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Lower",
+    "AreasName": "New Karachi Sector 5 E"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Lower",
+    "AreasName": "New Karachi Sector 5 J"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Lower",
+    "AreasName": "New Karachi Sector 5 L"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Lower",
+    "AreasName": "New Karachi Sector 5 M"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Lower",
+    "AreasName": "New Karachi Town"
+  },
+  {
+    "City": "Karachi",
+    "District": "South",
+    "Class": "Lower",
+    "AreasName": "New Kumbhar Wara"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "New Lyari Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Middle",
+    "AreasName": "New Malir Housing Scheme 1 Sector 1"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Middle",
+    "AreasName": "New Malir Housing Scheme 1 Sector 12"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Middle",
+    "AreasName": "New Malir Housing Scheme 1 Sector 12 A"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Middle",
+    "AreasName": "New Malir Housing Scheme 1 Sector 13"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Middle",
+    "AreasName": "New Malir Housing Scheme 1 Sector 14"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Middle",
+    "AreasName": "New Malir Housing Scheme 1 Sector 16"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Middle",
+    "AreasName": "New Malir Housing Scheme 1 Sector 17"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Middle",
+    "AreasName": "New Malir Housing Scheme 1 Sector 18"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Middle",
+    "AreasName": "New Malir Housing Scheme 1 Sector 19"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Middle",
+    "AreasName": "New Malir Housing Scheme 1 Sector 2"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Middle",
+    "AreasName": "New Malir Housing Scheme 1 Sector 20"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Middle",
+    "AreasName": "New Malir Housing Scheme 1 Sector 21"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Middle",
+    "AreasName": "New Malir Housing Scheme 1 Sector 22"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Middle",
+    "AreasName": "New Malir Housing Scheme 1 Sector 23"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Middle",
+    "AreasName": "New Malir Housing Scheme 1 Sector 24"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Middle",
+    "AreasName": "New Malir Housing Scheme 1 Sector 25"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Middle",
+    "AreasName": "New Malir Housing Scheme 1 Sector 3"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Middle",
+    "AreasName": "New Malir Housing Scheme 1 Sector 4"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Middle",
+    "AreasName": "New Malir Housing Scheme 1 Sector 7"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Middle",
+    "AreasName": "New Malir Housing Scheme 1 Sector 9"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "New Tipu Sultan Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Lower",
+    "AreasName": "New Town Quarters"
+  },
+  {
+    "City": "Karachi",
+    "District": "Korangi",
+    "Class": "Lower",
+    "AreasName": "Noorani Colony"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Lower",
+    "AreasName": "North Karachi Sector 11 D"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Lower",
+    "AreasName": "North Karachi Sector 11 F"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Lower",
+    "AreasName": "North Karachi Sector 14 A"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Lower",
+    "AreasName": "North Karachi Sector 5 D"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Lower",
+    "AreasName": "North Karachi Sector 5 F"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Lower",
+    "AreasName": "North Karachi Sector 5 L"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Lower",
+    "AreasName": "North Karachi Sector 7 C"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Lower",
+    "AreasName": "North Karachi Sector 7 D 2"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Lower",
+    "AreasName": "North Karachi Sector 7 D 3"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Lower",
+    "AreasName": "North Karachi Sector 7 D-1"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Lower",
+    "AreasName": "North Karachi Sector 7 D-2"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Lower",
+    "AreasName": "North Karachi Sector 7D-3"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Lower",
+    "AreasName": "North Karachi TWP"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Middle",
+    "AreasName": "North Nazimabad Block P"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Middle",
+    "AreasName": "North Nazimabad Block S"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Middle",
+    "AreasName": "North Nazimabad Block U"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Nucles Houses"
+  },
+  {
+    "City": "Karachi",
+    "District": "West",
+    "Class": "Lower",
+    "AreasName": "Nusrat Bhutto Colony"
+  },
+  {
+    "City": "Karachi",
+    "District": "South",
+    "Class": "Elite",
+    "AreasName": "Old Clifton"
+  },
+  {
+    "City": "Karachi",
+    "District": "Keamari",
+    "Class": "Lower",
+    "AreasName": "Old Golimar"
+  },
+  {
+    "City": "Karachi",
+    "District": "South",
+    "Class": "Lower",
+    "AreasName": "Old Haji Camp"
+  },
+  {
+    "City": "Karachi",
+    "District": "West",
+    "Class": "Lower",
+    "AreasName": "Old Muzzaffarabad Colony"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Old Ravians Housing Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "West",
+    "Class": "Lower",
+    "AreasName": "Orangi Sector 11"
+  },
+  {
+    "City": "Karachi",
+    "District": "West",
+    "Class": "Lower",
+    "AreasName": "Orangi Sector 12 L"
+  },
+  {
+    "City": "Karachi",
+    "District": "West",
+    "Class": "Lower",
+    "AreasName": "Orangi Sector 14 C"
+  },
+  {
+    "City": "Karachi",
+    "District": "West",
+    "Class": "Lower",
+    "AreasName": "Orangi Sector 14 D"
+  },
+  {
+    "City": "Karachi",
+    "District": "West",
+    "Class": "Lower",
+    "AreasName": "Orangi Sector 15 C"
+  },
+  {
+    "City": "Karachi",
+    "District": "West",
+    "Class": "Lower",
+    "AreasName": "Orangi Sector 4"
+  },
+  {
+    "City": "Karachi",
+    "District": "West",
+    "Class": "Lower",
+    "AreasName": "Orangi Sector 6"
+  },
+  {
+    "City": "Karachi",
+    "District": "West",
+    "Class": "Lower",
+    "AreasName": "Orangi Town"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Overseas Cooperative Housing Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Owais Homes"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "PAEC Cooperative Housing Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "Korangi",
+    "Class": "Elite",
+    "AreasName": "PAF Base Faisal"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Lower",
+    "AreasName": "Pahar Ganj Colony"
+  },
+  {
+    "City": "Karachi",
+    "District": "Keamari",
+    "Class": "Lower",
+    "AreasName": "Pak Colony"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Pak Ideal Cooperative Housing Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Pak Punjab Housing Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Lower",
+    "AreasName": "Pak Sadat Colony"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Pak Telecom Staff Cooperative Housing Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Pakistan Air Crew Cooperative Housing Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Pakistan Audit Cooperative Housing Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Lower",
+    "AreasName": "Pakistan Quarters"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Pakistan Scientist Cooperative Housing Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "South",
+    "Class": "Lower",
+    "AreasName": "Panjguri Mohallah"
+  },
+  {
+    "City": "Karachi",
+    "District": "South",
+    "Class": "Elite",
+    "AreasName": "Parsi Colony"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Patel Residency"
+  },
+  {
+    "City": "Karachi",
+    "District": "Keamari",
+    "Class": "Lower",
+    "AreasName": "Pathan Colony"
+  },
+  {
+    "City": "Karachi",
+    "District": "West",
+    "Class": "Lower",
+    "AreasName": "Pathan Colony"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "PCSIR Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Lower",
+    "AreasName": "Phar Ghanj"
+  },
+  {
+    "City": "Karachi",
+    "District": "South",
+    "Class": "Elite",
+    "AreasName": "Phase 1"
+  },
+  {
+    "City": "Karachi",
+    "District": "South",
+    "Class": "Elite",
+    "AreasName": "Phase 2"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "PIA Cooperative Housing Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Middle",
+    "AreasName": "PIA Township"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "PIDC Cooperative Housing Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Lower",
+    "AreasName": "Pili Kothi"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Pink Residency"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Pioneer Cottage"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Pioneer Park City"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Pir Ahmed Zaman Block 2"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Pir Ahmed Zaman Block 3"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Pir Ahmed Zaman Block 4"
+  },
+  {
+    "City": "Karachi",
+    "District": "South",
+    "Class": "Lower",
+    "AreasName": "Plaza Quarters"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Poineer Cottages"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Lower",
+    "AreasName": "Popat Goth"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Post Office Cooperative Housing Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Prem Villas"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "PTV Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "Korangi",
+    "Class": "Middle",
+    "AreasName": "Punjab Town Shah Faisal"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Punjabi Saudagar 2 Cooperative Housing Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Punjabi Saudagar Cooperative Housing Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Lower",
+    "AreasName": "Qasimabad"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Lower",
+    "AreasName": "Qazafi Town"
+  },
+  {
+    "City": "Karachi",
+    "District": "West",
+    "Class": "Lower",
+    "AreasName": "Quetta Town"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Qureshi Cooperative Housing Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Middle",
+    "AreasName": "Radio Pakistan Colony"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Radio Pakistan Cooperative Housing Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Lower",
+    "AreasName": "Raees Amrohi Colony"
+  },
+  {
+    "City": "Karachi",
+    "District": "Keamari",
+    "Class": "Lower",
+    "AreasName": "Raees Goth"
+  },
+  {
+    "City": "Karachi",
+    "District": "Korangi",
+    "Class": "Middle",
+    "AreasName": "Rafah e Aam Block J"
+  },
+  {
+    "City": "Karachi",
+    "District": "Korangi",
+    "Class": "Middle",
+    "AreasName": "Rafah e Aam Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Rafi Merry Land"
+  },
+  {
+    "City": "Karachi",
+    "District": "Korangi",
+    "Class": "Lower",
+    "AreasName": "Raheem Shah Colony"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Lower",
+    "AreasName": "Railway Colony"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Railway Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "West",
+    "Class": "Lower",
+    "AreasName": "Raja Tanveer Colony"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Lower",
+    "AreasName": "Rajput Mohalla ENCROAHMENT"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Lower",
+    "AreasName": "Ramzan Goth"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Lower",
+    "AreasName": "Rashidi Goth"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Lower",
+    "AreasName": "Razzaqabad"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Rehan Memorial Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Rehman Villas"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Lower",
+    "AreasName": "Rehri Goth"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Lower",
+    "AreasName": "Reta Plot Block 2"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Lower",
+    "AreasName": "Reta Plot Block 3"
+  },
+  {
+    "City": "Karachi",
+    "District": "Keamari",
+    "Class": "Lower",
+    "AreasName": "Rexber Colony"
+  },
+  {
+    "City": "Karachi",
+    "District": "South",
+    "Class": "Lower",
+    "AreasName": "Rexer Lane"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Middle",
+    "AreasName": "Rizvia Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Rizwan Cooperative Housing Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Rock Cooperative Housing Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Rufi Dream Land Bungalows"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Rufi Foundation"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Rufi Global City"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Rufi Heaven"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Rufi Homes"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Rufi Pearl"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Rufi Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Saadat Amroha"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Saadi Town Block 1"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Saadi Town Block 2"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Saadi Town Block 3"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Saadi Town Block 4"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Saadi Town Block 5"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Saadi Town Block 6"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Lower",
+    "AreasName": "Sabeel Goth"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Lower",
+    "AreasName": "Sachal Goth"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Sachal Sarmast Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Sadabagh"
+  },
+  {
+    "City": "Karachi",
+    "District": "South",
+    "Class": "Middle",
+    "AreasName": "Saddar Bazaar"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Saddar Market Cooperative Housing Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Lower",
+    "AreasName": "Saeedullah Goth"
+  },
+  {
+    "City": "Karachi",
+    "District": "South",
+    "Class": "Lower",
+    "AreasName": "Saifi Lane"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Middle",
+    "AreasName": "Saify Nagar"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Middle",
+    "AreasName": "Saima Arabian Villas"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Saima Elite Villas"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Saima Flowers"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Saima Luxury Homes"
+  },
+  {
+    "City": "Karachi",
+    "District": "Keamari",
+    "Class": "Lower",
+    "AreasName": "Salehabad"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Lower",
+    "AreasName": "Salfia Town"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Middle",
+    "AreasName": "Samanabad"
+  },
+  {
+    "City": "Karachi",
+    "District": "South",
+    "Class": "Lower",
+    "AreasName": "Sarbazi Muhallah"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Lower",
+    "AreasName": "Saudabad No 6"
+  },
+  {
+    "City": "Karachi",
+    "District": "West",
+    "Class": "Lower",
+    "AreasName": "Sawat Colony"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "SBP Cooperative Housing Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "SCHEME 33 SOCIETY"
+  },
+  {
+    "City": "Karachi",
+    "District": "Korangi",
+    "Class": "Lower",
+    "AreasName": "Sector 1"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Lower",
+    "AreasName": "Sector 11-A"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Lower",
+    "AreasName": "Sector 11-B"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Lower",
+    "AreasName": "Sector 11-C"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Lower",
+    "AreasName": "Sector 11-D"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Lower",
+    "AreasName": "Sector 11-E"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Lower",
+    "AreasName": "Sector 11-F"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Lower",
+    "AreasName": "Sector 11-G"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Lower",
+    "AreasName": "Sector 11-H"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Lower",
+    "AreasName": "Sector 11-I"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Lower",
+    "AreasName": "Sector 11-J"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Lower",
+    "AreasName": "Sector 11-L"
+  },
+  {
+    "City": "Karachi",
+    "District": "Korangi",
+    "Class": "Lower",
+    "AreasName": "Sector 2"
+  },
+  {
+    "City": "Karachi",
+    "District": "Korangi",
+    "Class": "Lower",
+    "AreasName": "Sector 3"
+  },
+  {
+    "City": "Karachi",
+    "District": "Korangi",
+    "Class": "Lower",
+    "AreasName": "Sector 4"
+  },
+  {
+    "City": "Karachi",
+    "District": "Keamari",
+    "Class": "Lower",
+    "AreasName": "Sector T-3"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Middle",
+    "AreasName": "Shadman Town Sector 14 A"
+  },
+  {
+    "City": "Karachi",
+    "District": "Korangi",
+    "Class": "Middle",
+    "AreasName": "Shah Faisal Block 2"
+  },
+  {
+    "City": "Karachi",
+    "District": "Korangi",
+    "Class": "Middle",
+    "AreasName": "Shah Faisal Block 3"
+  },
+  {
+    "City": "Karachi",
+    "District": "Korangi",
+    "Class": "Middle",
+    "AreasName": "Shah Faisal Block 4"
+  },
+  {
+    "City": "Karachi",
+    "District": "Korangi",
+    "Class": "Middle",
+    "AreasName": "Shah Faisal Colony Block 1"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Lower",
+    "AreasName": "Shah Latif Town"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Lower",
+    "AreasName": "Shah Nawaz Bhutto Village"
+  },
+  {
+    "City": "Karachi",
+    "District": "Korangi",
+    "Class": "Lower",
+    "AreasName": "Shahbaz Colony"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Lower",
+    "AreasName": "Shaheed Makhdoom Bilawal Village"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Shaheed Sardar Abdur Rehman Garden"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Lower",
+    "AreasName": "Shaiday Goth"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Shamshad Housing Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "Korangi",
+    "Class": "Middle",
+    "AreasName": "Shamsi Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Sharafabad"
+  },
+  {
+    "City": "Karachi",
+    "District": "South",
+    "Class": "Lower",
+    "AreasName": "Sheedi Village"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Lower",
+    "AreasName": "Sherkhan Abad"
+  },
+  {
+    "City": "Karachi",
+    "District": "Keamari",
+    "Class": "Lower",
+    "AreasName": "Shershah Colony"
+  },
+  {
+    "City": "Karachi",
+    "District": "Keamari",
+    "Class": "Lower",
+    "AreasName": "Shershah Village"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Lower",
+    "AreasName": "Shikarpur Colony"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Sindh Bagh"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Sindh Secretariat Cooperative Housing Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Sindhi Jamat Housing Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "Korangi",
+    "Class": "Lower",
+    "AreasName": "Siraj Colony"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Lower",
+    "AreasName": "SMBBT"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Sohni Chalet Bungalows"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Lower",
+    "AreasName": "Sohrab Goth"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Soomra Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "South",
+    "Class": "Lower",
+    "AreasName": "Subhash Nagar"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Sui Gas Company Karachi Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Lower",
+    "AreasName": "Sukhio Goth"
+  },
+  {
+    "City": "Karachi",
+    "District": "Keamari",
+    "Class": "Lower",
+    "AreasName": "Sultanabad Colony"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Sumera Bangalows"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Suniaya Bangalows"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Sunlay Cottages"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "SUPARCO Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "South",
+    "Class": "Lower",
+    "AreasName": "Suparivala Compound"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Lower",
+    "AreasName": "Super Market"
+  },
+  {
+    "City": "Karachi",
+    "District": "West",
+    "Class": "Lower",
+    "AreasName": "Surjani L 1"
+  },
+  {
+    "City": "Karachi",
+    "District": "West",
+    "Class": "Lower",
+    "AreasName": "Surjani Sector 4 B"
+  },
+  {
+    "City": "Karachi",
+    "District": "West",
+    "Class": "Lower",
+    "AreasName": "Surjani Sector 4 D"
+  },
+  {
+    "City": "Karachi",
+    "District": "West",
+    "Class": "Lower",
+    "AreasName": "Surjani Sector 5 C"
+  },
+  {
+    "City": "Karachi",
+    "District": "West",
+    "Class": "Lower",
+    "AreasName": "Surjani Sector 5 D"
+  },
+  {
+    "City": "Karachi",
+    "District": "West",
+    "Class": "Lower",
+    "AreasName": "Surjani Town Sector 4 A"
+  },
+  {
+    "City": "Karachi",
+    "District": "West",
+    "Class": "Lower",
+    "AreasName": "Surjani Town Sector 4 B"
+  },
+  {
+    "City": "Karachi",
+    "District": "West",
+    "Class": "Lower",
+    "AreasName": "Surjani Town Sector 4 C"
+  },
+  {
+    "City": "Karachi",
+    "District": "West",
+    "Class": "Lower",
+    "AreasName": "Surjani Town Sector 5 B"
+  },
+  {
+    "City": "Karachi",
+    "District": "West",
+    "Class": "Lower",
+    "AreasName": "Surjani Town Sector 5 C"
+  },
+  {
+    "City": "Karachi",
+    "District": "West",
+    "Class": "Lower",
+    "AreasName": "Surjani Town Sector 5 D"
+  },
+  {
+    "City": "Karachi",
+    "District": "West",
+    "Class": "Lower",
+    "AreasName": "Surjani Town Sector 5 E"
+  },
+  {
+    "City": "Karachi",
+    "District": "West",
+    "Class": "Lower",
+    "AreasName": "Surjani Town Sector 5 F"
+  },
+  {
+    "City": "Karachi",
+    "District": "West",
+    "Class": "Lower",
+    "AreasName": "Surjani Town Sector 7 B"
+  },
+  {
+    "City": "Karachi",
+    "District": "West",
+    "Class": "Lower",
+    "AreasName": "Surjani Town Sector 7 C"
+  },
+  {
+    "City": "Karachi",
+    "District": "West",
+    "Class": "Lower",
+    "AreasName": "Surjani Town Sector 7 D"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Surti Muslim Cooperative Housing Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Lower",
+    "AreasName": "Survey No 417"
+  },
+  {
+    "City": "Karachi",
+    "District": "West",
+    "Class": "Lower",
+    "AreasName": "Swat Colony"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Lower",
+    "AreasName": "Tariq Bin Ziyad Colony"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "TAUHEED SQUARE"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Teachers Cooperative Housing Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Teachers Cooperative Housnig Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Lower",
+    "AreasName": "Teen Mari"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Telephone Employees Cooperative Housing Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "South",
+    "Class": "Lower",
+    "AreasName": "Tharo Lane"
+  },
+  {
+    "City": "Karachi",
+    "District": "Korangi",
+    "Class": "Lower",
+    "AreasName": "Touheed Mohalla"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Traders Cooperative Housing Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "Keamari",
+    "Class": "Lower",
+    "AreasName": "Turk Colony"
+  },
+  {
+    "City": "Karachi",
+    "District": "Korangi",
+    "Class": "Lower",
+    "AreasName": "Umar Farooq Colony"
+  },
+  {
+    "City": "Karachi",
+    "District": "West",
+    "Class": "Lower",
+    "AreasName": "Usmani Town"
+  },
+  {
+    "City": "Karachi",
+    "District": "West",
+    "Class": "Lower",
+    "AreasName": "Usmania Colony"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Vanthali Memon Cooperative Housing Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Lower",
+    "AreasName": "Wahidabad"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Water Board Colony"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "White House Society"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Middle",
+    "AreasName": "Willayatabad"
+  },
+  {
+    "City": "Karachi",
+    "District": "Korangi",
+    "Class": "Lower",
+    "AreasName": "Yaseen Colony"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Middle",
+    "AreasName": "Yasinabad"
+  },
+  {
+    "City": "Karachi",
+    "District": "Keamari",
+    "Class": "Lower",
+    "AreasName": "Yousuf Goth"
+  },
+  {
+    "City": "Karachi",
+    "District": "Korangi",
+    "Class": "Lower",
+    "AreasName": "Zafar Town"
+  },
+  {
+    "City": "Karachi",
+    "District": "Central",
+    "Class": "Lower",
+    "AreasName": "Zaheenabad"
+  },
+  {
+    "City": "Karachi",
+    "District": "Korangi",
+    "Class": "Lower",
+    "AreasName": "Zeenatabad"
+  },
+  {
+    "City": "Karachi",
+    "District": "Korangi",
+    "Class": "Lower",
+    "AreasName": "Zhob Colony"
+  },
+  {
+    "City": "Karachi",
+    "District": "Korangi",
+    "Class": "Lower",
+    "AreasName": "Zia Colony"
+  },
+  {
+    "City": "Karachi",
+    "District": "South",
+    "Class": "Lower",
+    "AreasName": "Zikri Para"
+  },
+  {
+    "City": "Karachi",
+    "District": "Malir",
+    "Class": "Lower",
+    "AreasName": "Zohra Nagar"
+  },
+  {
+    "City": "Karachi",
+    "District": "East",
+    "Class": "Middle",
+    "AreasName": "Zoramin Residency"
+  }
+]

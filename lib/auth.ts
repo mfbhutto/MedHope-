@@ -50,3 +50,8 @@ export const hasRole = (role: 'donor' | 'accepter' | 'admin'): boolean => {
   return user?.role === role;
 };
 
+export const isAdmin = (): boolean => {
+  const user = getStoredUser();
+  return user?.role === 'admin';
+};
+

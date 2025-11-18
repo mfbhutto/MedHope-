@@ -105,11 +105,17 @@ export default function NeedyPersonsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50">
+    <div className="min-h-screen bg-gradient-to-br from-secondary via-white to-secondary/50">
       <Navbar />
-      <div className="max-w-7xl mx-auto px-4 py-6">
+      <div className="section-container pt-32 pb-12">
+        {/* Page Header */}
+        <div className="mb-8">
+          <h1 className="heading-lg text-dark mb-2">Needy Persons</h1>
+          <p className="text-gray-600">Browse and help those in need of medical assistance</p>
+        </div>
+
         {/* Search Bar and Priority Filter */}
-        <div className="bg-white rounded-lg shadow-md p-4 mb-6">
+        <div className="glass-card mb-8">
           <div className="flex flex-col md:flex-row gap-4">
             {/* Search Bar */}
             <div className="flex-1">
@@ -143,11 +149,18 @@ export default function NeedyPersonsPage() {
             <p className="text-gray-600">Loading needy persons...</p>
           </div>
         ) : filteredNeedyPersons.length === 0 ? (
-          <div className="bg-white rounded-lg shadow-md p-12 text-center">
-            <p className="text-gray-600 text-lg">No needy persons found.</p>
-            <p className="text-gray-500 mt-2">
-              {searchQuery ? 'Try adjusting your search query.' : 'Try adjusting your filters or check back later.'}
-            </p>
+          <div className="glass-card p-12 text-center">
+            <div className="max-w-md mx-auto">
+              <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg className="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <p className="text-gray-600 text-lg mb-2">No needy persons found.</p>
+              <p className="text-gray-500">
+                {searchQuery ? 'Try adjusting your search query.' : 'Try adjusting your filters or check back later.'}
+              </p>
+            </div>
           </div>
         ) : (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -157,7 +170,7 @@ export default function NeedyPersonsPage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="bg-white rounded-xl shadow-lg hover:shadow-2xl transition-shadow duration-300 overflow-hidden"
+                className="glass-card card-hover overflow-hidden"
               >
                 {/* Card Header */}
                 <div className="bg-gradient-to-r from-primary to-primary-dark p-4 text-white">

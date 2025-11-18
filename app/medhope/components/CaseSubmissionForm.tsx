@@ -216,31 +216,48 @@ export default function CaseSubmissionForm({ onClose, onSuccess }: CaseSubmissio
     : diseaseLabTests['General'];
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
-        <div className="p-6">
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+      <div className="glass-card max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-large">
+        <div className="p-6 md:p-8">
           {/* Progress Steps */}
-          <div className="flex justify-between items-center mb-6">
-            <div className="flex items-center space-x-2">
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center ${step >= 1 ? 'bg-primary text-white' : 'bg-gray-300'}`}>
+          <div className="flex justify-between items-center mb-8">
+            <div className="flex items-center gap-2">
+              <div className={`w-10 h-10 rounded-xl flex items-center justify-center font-semibold transition-all ${
+                step >= 1 
+                  ? 'bg-gradient-primary text-white shadow-soft' 
+                  : 'bg-gray-soft text-gray-400'
+              }`}>
                 1
               </div>
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center ${step >= 2 ? 'bg-primary text-white' : 'bg-gray-300'}`}>
+              <div className={`h-1 w-12 ${step >= 2 ? 'bg-gradient-primary' : 'bg-gray-soft'} rounded-full transition-all`}></div>
+              <div className={`w-10 h-10 rounded-xl flex items-center justify-center font-semibold transition-all ${
+                step >= 2 
+                  ? 'bg-gradient-primary text-white shadow-soft' 
+                  : 'bg-gray-soft text-gray-400'
+              }`}>
                 2
               </div>
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center ${step >= 3 ? 'bg-primary text-white' : 'bg-gray-300'}`}>
+              <div className={`h-1 w-12 ${step >= 3 ? 'bg-gradient-primary' : 'bg-gray-soft'} rounded-full transition-all`}></div>
+              <div className={`w-10 h-10 rounded-xl flex items-center justify-center font-semibold transition-all ${
+                step >= 3 
+                  ? 'bg-gradient-primary text-white shadow-soft' 
+                  : 'bg-gray-soft text-gray-400'
+              }`}>
                 3
               </div>
             </div>
-            <button onClick={onClose} className="text-gray-500 hover:text-gray-700">
+            <button 
+              onClick={onClose} 
+              className="w-10 h-10 rounded-xl bg-gray-soft hover:bg-gray-300 text-gray-600 hover:text-gray-900 flex items-center justify-center transition-all"
+            >
               ✕
             </button>
           </div>
 
           {/* Step 1: Personal Information */}
           {step === 1 && (
-            <form onSubmit={handleSubmit(handleStep1)} className="space-y-4">
-              <h2 className="text-2xl font-bold mb-4">Step 1: Personal Information</h2>
+            <form onSubmit={handleSubmit(handleStep1)} className="space-y-6">
+              <h2 className="heading-md text-primary mb-6">Step 1: Personal Information</h2>
               
               {/* Row 1 */}
               <div className="grid grid-cols-2 gap-4">
@@ -328,7 +345,7 @@ export default function CaseSubmissionForm({ onClose, onSuccess }: CaseSubmissio
                 {errors.address && <p className="text-red-500 text-sm mt-1">{errors.address.message as string}</p>}
               </div>
 
-              <div className="flex gap-4 pt-4">
+              <div className="flex gap-4 pt-6">
                 <button type="button" onClick={onClose} className="btn-secondary flex-1">
                   Cancel
                 </button>
@@ -341,8 +358,8 @@ export default function CaseSubmissionForm({ onClose, onSuccess }: CaseSubmissio
 
           {/* Step 2: Financial Information */}
           {step === 2 && (
-            <form onSubmit={handleSubmit(handleStep2)} className="space-y-4">
-              <h2 className="text-2xl font-bold mb-4">Step 2: Financial Information</h2>
+            <form onSubmit={handleSubmit(handleStep2)} className="space-y-6">
+              <h2 className="heading-md text-primary mb-6">Step 2: Financial Information</h2>
               
               <div className="grid grid-cols-2 gap-4">
                 <div>
@@ -486,7 +503,7 @@ export default function CaseSubmissionForm({ onClose, onSuccess }: CaseSubmissio
                 </>
               )}
 
-              <div className="flex gap-4 pt-4">
+              <div className="flex gap-4 pt-6">
                 <button type="button" onClick={() => setStep(1)} className="btn-secondary flex-1">
                   Back
                 </button>
@@ -499,8 +516,8 @@ export default function CaseSubmissionForm({ onClose, onSuccess }: CaseSubmissio
 
           {/* Step 3: Patient Information */}
           {step === 3 && (
-            <form onSubmit={handleSubmit(handleStep3)} className="space-y-4">
-              <h2 className="text-2xl font-bold mb-4">Step 3: Patient Information</h2>
+            <form onSubmit={handleSubmit(handleStep3)} className="space-y-6">
+              <h2 className="heading-md text-primary mb-6">Step 3: Patient Information</h2>
               
               <div className="grid grid-cols-2 gap-4">
                 <div>
@@ -605,12 +622,12 @@ export default function CaseSubmissionForm({ onClose, onSuccess }: CaseSubmissio
                 {errors.amount && <p className="text-red-500 text-sm mt-1">{errors.amount.message as string}</p>}
               </div>
 
-              <div className="flex gap-4 pt-4">
+              <div className="flex gap-4 pt-6">
                 <button type="button" onClick={() => setStep(2)} className="btn-secondary flex-1">
                   Back
                 </button>
                 <button type="submit" disabled={loading} className="btn-primary flex-1">
-                  {loading ? 'Submitting...' : 'Save'}
+                  {loading ? 'Submitting...' : 'Submit Case'}
                 </button>
               </div>
             </form>

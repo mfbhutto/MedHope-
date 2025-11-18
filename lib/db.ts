@@ -27,27 +27,63 @@ export async function connectToDatabase(): Promise<typeof mongoose> {
   }
 
   // Get MongoDB URI from environment variable
-  const mongoUri = process.env.MONGODB_URI;
+  // Next.js loads .env.local automatically, but we check both
+  const mongoUri = process.env.MONGODB_URI || process.env.MONGODB_URL;
 
   if (!mongoUri) {
-    throw new Error('MONGODB_URI environment variable is not defined');
+    console.error('❌ MONGODB_URI environment variable is not defined');
+    console.error('💡 Make sure you have a .env.local file in the root directory with:');
+    console.error('   MONGODB_URI=mongodb://localhost:27017/medhope');
+    console.error('Available env vars:', Object.keys(process.env).filter(key => key.includes('MONGO')));
+    throw new Error('MONGODB_URI environment variable is not defined. Please check your .env.local file.');
   }
 
-  // Create new connection promise
-  connectionPromise = mongoose.connect(mongoUri, mongoOptions);
+  // Ensure database name is in the URI (if not present, add default)
+  let finalMongoUri = mongoUri;
+  // Check if URI has a database name (after the last /, before any ?)
+  const uriWithoutQuery = mongoUri.split('?')[0]; // Remove query parameters
+  const uriParts = uriWithoutQuery.split('/');
+  const hasDatabaseName = uriParts.length >= 4 && uriParts[uriParts.length - 1] && uriParts[uriParts.length - 1].trim() !== '';
+  
+  if (!hasDatabaseName) {
+    // If no database name specified, add default
+    const dbName = process.env.MONGODB_DB_NAME || 'medhope';
+    // Preserve query parameters if they exist
+    const queryString = mongoUri.includes('?') ? mongoUri.substring(mongoUri.indexOf('?')) : '';
+    finalMongoUri = mongoUri.endsWith('/') 
+      ? `${mongoUri}${dbName}${queryString}` 
+      : `${mongoUri}/${dbName}${queryString}`;
+    console.log('⚠️ No database name in URI, using default:', dbName);
+  }
+
+  console.log('🔌 Attempting to connect to MongoDB...');
+  console.log('📍 Connection URI:', finalMongoUri.replace(/\/\/[^:]+:[^@]+@/, '//***:***@')); // Hide credentials if any
+
+  // Create new connection promise with better options
+  connectionPromise = mongoose.connect(finalMongoUri, {
+    ...mongoOptions,
+    serverSelectionTimeoutMS: 10000, // Timeout after 10s
+    socketTimeoutMS: 45000, // Close sockets after 45s of inactivity
+  });
 
   try {
     const db = await connectionPromise;
     isConnected = true;
     connectionPromise = null;
 
-    // Connection event handlers
+    console.log('✅ MongoDB connected successfully');
+    console.log('📊 Database:', mongoose.connection.db?.databaseName || 'unknown');
+    console.log('🔗 Connection state:', mongoose.connection.readyState === 1 ? 'connected' : 'not connected');
+
+    // Connection event handlers (set up before connection to catch all events)
     mongoose.connection.on('connected', () => {
       console.log('✅ MongoDB connected successfully');
+      isConnected = true;
     });
 
     mongoose.connection.on('error', (err: Error) => {
       console.error('❌ MongoDB connection error:', err);
+      console.error('Error details:', err.message);
       isConnected = false;
     });
 
@@ -57,10 +93,67 @@ export async function connectToDatabase(): Promise<typeof mongoose> {
     });
 
     return db;
-  } catch (error) {
+  } catch (error: any) {
     connectionPromise = null;
     isConnected = false;
-    console.error('❌ Failed to connect to MongoDB:', error);
+    console.error('❌ Failed to connect to MongoDB');
+    console.error('Error type:', error?.name);
+    console.error('Error message:', error?.message);
+    
+    if (error?.message?.includes('ECONNREFUSED')) {
+      console.error('');
+      console.error('═══════════════════════════════════════════════════════════');
+      console.error('🚨 MONGODB IS NOT RUNNING');
+      console.error('═══════════════════════════════════════════════════════════');
+      console.error('');
+      console.error('📋 QUICK FIX OPTIONS:');
+      console.error('');
+      console.error('Option 1: Use MongoDB Atlas (Cloud - Easiest)');
+      console.error('   1. Go to: https://www.mongodb.com/cloud/atlas/register');
+      console.error('   2. Create free account and cluster');
+      console.error('   3. Get connection string and update .env.local');
+      console.error('   4. Format: mongodb+srv://user:pass@cluster.mongodb.net/medhope');
+      console.error('');
+      console.error('Option 2: Start MongoDB Locally');
+      console.error('   1. Install MongoDB: https://www.mongodb.com/try/download/community');
+      console.error('   2. Start service: Start-Service MongoDB');
+      console.error('   3. Or run: mongod --dbpath "C:\\data\\db"');
+      console.error('');
+      console.error('Option 3: Use Docker');
+      console.error('   docker run -d -p 27017:27017 --name mongodb mongo:latest');
+      console.error('');
+      console.error('═══════════════════════════════════════════════════════════');
+      console.error('');
+    } else if (error?.message?.includes('whitelist') || error?.message?.includes('IP') || error?.reason?.type === 'ReplicaSetNoPrimary') {
+      console.error('');
+      console.error('═══════════════════════════════════════════════════════════');
+      console.error('🚨 IP ADDRESS NOT WHITELISTED IN MONGODB ATLAS');
+      console.error('═══════════════════════════════════════════════════════════');
+      console.error('');
+      console.error('📋 HOW TO FIX:');
+      console.error('');
+      console.error('1. Go to MongoDB Atlas Dashboard:');
+      console.error('   https://cloud.mongodb.com/');
+      console.error('');
+      console.error('2. Select your cluster (Cluster0)');
+      console.error('');
+      console.error('3. Click "Network Access" in the left sidebar');
+      console.error('');
+      console.error('4. Click "Add IP Address" button');
+      console.error('');
+      console.error('5. Choose one of these options:');
+      console.error('   ✅ "Allow Access from Anywhere" (0.0.0.0/0) - For development');
+      console.error('   ✅ "Add Current IP Address" - For your current location');
+      console.error('');
+      console.error('6. Click "Confirm"');
+      console.error('');
+      console.error('⚠️  Note: It may take 1-2 minutes for changes to take effect');
+      console.error('');
+      console.error('🔗 Direct link: https://cloud.mongodb.com/v2#/security/network/list');
+      console.error('');
+      console.error('═══════════════════════════════════════════════════════════');
+      console.error('');
+    }
     throw error;
   }
 }

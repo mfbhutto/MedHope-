@@ -4,29 +4,102 @@
 
 @layer base {
   body {
-    @apply bg-white-off text-gray-900;
+    @apply bg-secondary text-dark antialiased;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-bold text-dark;
   }
 }
 
 @layer components {
+  /* Button Variants */
   .btn-primary {
-    @apply bg-primary hover:bg-primary-dark text-white font-semibold py-2 px-6 rounded-lg transition-colors duration-200;
+    @apply bg-gradient-primary hover:bg-primary-dark text-white font-semibold py-3 px-8 rounded-xl transition-all duration-300 shadow-soft hover:shadow-medium hover:scale-105;
   }
   
-  .btn-golden {
-    @apply bg-golden hover:bg-golden-dark text-white font-semibold py-2 px-6 rounded-lg transition-colors duration-200;
+  .btn-accent {
+    @apply bg-accent hover:bg-accent-light text-white font-semibold py-3 px-8 rounded-xl transition-all duration-300 shadow-soft hover:shadow-medium hover:scale-105;
   }
   
   .btn-secondary {
-    @apply bg-white border-2 border-primary text-primary hover:bg-primary hover:text-white font-semibold py-2 px-6 rounded-lg transition-colors duration-200;
+    @apply bg-white border-2 border-primary text-primary hover:bg-primary hover:text-white font-semibold py-3 px-8 rounded-xl transition-all duration-300 shadow-soft;
   }
   
+  .btn-outline {
+    @apply bg-transparent border-2 border-white text-white hover:bg-white hover:text-primary font-semibold py-3 px-8 rounded-xl transition-all duration-300;
+  }
+  
+  /* Card Variants */
   .card {
-    @apply bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow duration-300;
+    @apply bg-white rounded-2xl shadow-soft p-6 hover:shadow-medium transition-all duration-300;
   }
   
+  .glass-card {
+    @apply bg-white/80 backdrop-blur-md rounded-2xl shadow-soft p-6 border border-white/20 hover:shadow-medium transition-all duration-300;
+  }
+  
+  .card-hover {
+    @apply card hover:scale-105 hover:-translate-y-2;
+  }
+  
+  /* Input Fields */
   .input-field {
-    @apply w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent;
+    @apply w-full px-4 py-3 border border-gray-soft rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200 bg-white;
+  }
+  
+  /* Section Containers */
+  .section-container {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+  
+  .section-padding {
+    @apply py-16 md:py-20 lg:py-24;
+  }
+  
+  /* Typography */
+  .heading-xl {
+    @apply text-4xl md:text-5xl lg:text-6xl font-bold text-dark leading-tight;
+  }
+  
+  .heading-lg {
+    @apply text-3xl md:text-4xl lg:text-5xl font-bold text-dark leading-tight;
+  }
+  
+  .heading-md {
+    @apply text-2xl md:text-3xl font-bold text-dark;
+  }
+  
+  .text-gradient {
+    @apply bg-gradient-primary bg-clip-text text-transparent;
+  }
+  
+  /* Background Variants */
+  .bg-section-white {
+    @apply bg-white;
+  }
+  
+  .bg-section-soft {
+    @apply bg-secondary;
+  }
+  
+  .bg-section-gradient {
+    @apply bg-gradient-soft;
+  }
+  
+  /* Divider */
+  .divider-gradient {
+    @apply h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent;
   }
 }
 
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  
+  .glass-effect {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+}

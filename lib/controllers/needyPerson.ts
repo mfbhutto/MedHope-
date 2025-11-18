@@ -63,8 +63,8 @@ export async function createNeedyPerson(
   // Hash password
   const hashedPassword = await bcrypt.hash(data.password, 10);
 
-  // Auto-assign priority based on area
-  const priority = getPriorityByArea(data.area);
+  // Auto-assign priority based on area and district from JSON file
+  const priority = getPriorityByArea(data.area, data.district);
 
   // Generate case number
   const caseNumber = await generateCaseNumber();

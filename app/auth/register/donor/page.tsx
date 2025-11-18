@@ -64,11 +64,11 @@ export default function DonorRegisterPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50">
+    <div className="min-h-screen bg-gradient-to-br from-secondary via-white to-secondary/50">
       <Navbar />
-      <div className="flex items-center justify-center py-12 px-4">
+      <div className="flex items-center justify-center pt-32 pb-12 px-4">
         <div className="max-w-2xl w-full">
-          <div className="bg-white rounded-2xl shadow-xl p-8 md:p-10">
+          <div className="glass-card p-8 md:p-10">
             {/* Header */}
             <div className="text-center mb-8">
               <h2 className="text-3xl font-bold text-gray-900 mb-2">

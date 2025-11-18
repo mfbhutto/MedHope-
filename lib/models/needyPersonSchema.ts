@@ -20,6 +20,12 @@ const needyPersonSchema = new Schema<NeedyPerson>(
       trim: true,
       index: true,
     },
+    originalEmail: {
+      type: String,
+      lowercase: true,
+      trim: true,
+      index: true,
+    },
     cnic: {
       type: String,
       required: true,
@@ -199,9 +205,10 @@ const needyPersonSchema = new Schema<NeedyPerson>(
 needyPersonSchema.pre('save', function (next) {
   if (this.isNew) {
     this.role = 'accepter';
-    // Auto-assign priority based on area
-    if (this.area) {
-      this.priority = getPriorityByArea(this.area);
+    // Auto-assign priority based on area and district from JSON file
+    // Only assign if priority is not already set (allows manual override)
+    if (this.area && !this.priority) {
+      this.priority = getPriorityByArea(this.area, this.district);
     }
   }
   next();

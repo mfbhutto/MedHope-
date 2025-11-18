@@ -9,6 +9,7 @@ import api from '@/lib/api';
 import { setAuthData } from '@/lib/auth';
 import Navbar from '@/app/medhope/components/Navbar';
 import { karachiDistricts, karachiAreas, diseaseLabTests } from '@/lib/karachiData';
+import areaData from '@/karachi-areas-list.json';
 
 interface Step1Data {
   name: string;
@@ -33,7 +34,7 @@ interface Step2Data {
   houseOwnership: 'own' | 'rent';
   rentAmount?: string;
   houseSize: string;
-  utilityBill: FileList;
+  utilityBill: FileList | null;
   zakatEligible: boolean;
 }
 
@@ -48,7 +49,7 @@ interface Step3Data {
   hospitalName: string;
   doctorName: string;
   amountNeeded: string;
-  document: FileList;
+  document: FileList | null;
 }
 
 const chronicDiseases = [
@@ -155,14 +156,89 @@ export default function AccepterRegisterPage() {
   };
 
   const handleStep2Next = async (data: Step2Data) => {
+    // Validate utility bill
+    if (!data.utilityBill || data.utilityBill.length === 0) {
+      step2Form.setError('utilityBill', { 
+        type: 'required', 
+        message: 'Utility bill is required' 
+      });
+      return;
+    }
     setCurrentStep(3);
   };
 
+  // Function to get areas for a specific district from JSON
+  const getAreasForDistrict = (district: string): string[] => {
+    if (!district) return [];
+    const areas = areaData
+      .filter((item: any) => item.District.toLowerCase() === district.toLowerCase())
+      .map((item: any) => item.AreasName)
+      .sort();
+    return Array.from(new Set(areas)); // Remove duplicates
+  };
+
+  // Function to determine priority based on area class
+  const getPriorityFromArea = (district: string, area: string): string => {
+    if (!district || !area) {
+      return 'Medium'; // Default priority if area not found
+    }
+
+    // Normalize strings for comparison
+    const normalizeString = (str: string) => str.toLowerCase().trim().replace(/\s+/g, ' ');
+
+    // Find matching area in the JSON data
+    const matchedArea = areaData.find((item: any) => {
+      const districtMatch = normalizeString(item.District) === normalizeString(district);
+      const areaName = normalizeString(item.AreasName);
+      const userArea = normalizeString(area);
+      
+      // Exact match or partial match
+      const areaMatch = areaName === userArea ||
+                       areaName.includes(userArea) ||
+                       userArea.includes(areaName) ||
+                       areaName.startsWith(userArea) ||
+                       userArea.startsWith(areaName);
+      
+      return districtMatch && areaMatch;
+    });
+
+    if (matchedArea) {
+      // Map class to priority: Lower → High, Middle → Medium, Elite → Low
+      const classToPriority: { [key: string]: string } = {
+        'Lower': 'High',
+        'Middle': 'Medium',
+        'Elite': 'Low',
+      };
+      return classToPriority[matchedArea.Class] || 'Medium';
+    }
+
+    // If area not found in list, default to Medium
+    return 'Medium';
+  };
+
   const handleStep3Submit = async (data: Step3Data) => {
+    // Validate document
+    if (!data.document || data.document.length === 0) {
+      step3Form.setError('document', { 
+        type: 'required', 
+        message: 'Medical document is required' 
+      });
+      return;
+    }
+
     setLoading(true);
     try {
       const step1Data = step1Form.getValues();
       const step2Data = step2Form.getValues();
+      
+      // Get the area name (either from dropdown or manual input)
+      const areaName = step1Data.area || step1Data.manualArea || '';
+      
+      // Determine priority based on area class
+      const priority = getPriorityFromArea(step1Data.district, areaName);
+      
+      // Log priority assignment for debugging
+      console.log(`Area: ${areaName}, District: ${step1Data.district}, Priority: ${priority}`);
       
       // Prepare form data
       const formData = new FormData();
@@ -172,11 +248,12 @@ export default function AccepterRegisterPage() {
       formData.append('email', step1Data.email);
       formData.append('cnic', step1Data.cnic);
       formData.append('district', step1Data.district);
-      formData.append('area', step1Data.area || step1Data.manualArea || '');
+      formData.append('area', areaName);
       formData.append('address', step1Data.manualAddress);
       formData.append('phone', step1Data.phone);
       formData.append('password', step1Data.password);
       formData.append('role', 'accepter');
+      formData.append('priority', priority);
       
       // Step 2 data
       formData.append('age', step2Data.age);
@@ -193,7 +270,7 @@ export default function AccepterRegisterPage() {
       }
       formData.append('houseSize', step2Data.houseSize);
       formData.append('zakatEligible', step2Data.zakatEligible ? 'true' : 'false');
-      if (step2Data.utilityBill && step2Data.utilityBill[0]) {
+      if (step2Data.utilityBill && step2Data.utilityBill.length > 0 && step2Data.utilityBill[0]) {
         formData.append('utilityBill', step2Data.utilityBill[0]);
       }
       
@@ -212,7 +289,7 @@ export default function AccepterRegisterPage() {
       formData.append('hospitalName', data.hospitalName);
       formData.append('doctorName', data.doctorName);
       formData.append('amountNeeded', data.amountNeeded);
-      if (data.document && data.document[0]) {
+      if (data.document && data.document.length > 0 && data.document[0]) {
         formData.append('document', data.document[0]);
       }
       
@@ -236,15 +313,16 @@ export default function AccepterRegisterPage() {
     }
   };
 
-  const availableAreas = selectedDistrict ? (karachiAreas[selectedDistrict] || []) : [];
+  // Get areas from JSON file for selected district
+  const availableAreas = selectedDistrict ? getAreasForDistrict(selectedDistrict) : [];
   const hasAreas = availableAreas.length > 0;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-50">
+    <div className="min-h-screen bg-gradient-to-br from-secondary via-white to-secondary/50">
       <Navbar />
-      <div className="flex items-center justify-center py-6 px-4">
+      <div className="flex items-center justify-center pt-32 pb-12 px-4">
         <div className="w-full max-w-[64%]">
-          <div className="bg-white rounded-2xl shadow-xl p-6 md:p-8">
+          <div className="glass-card p-6 md:p-8">
             {/* Headings */}
             <div className="text-center mb-6">
               <h1 className="text-3xl font-bold text-gray-900 mb-2">
@@ -762,9 +840,14 @@ export default function AccepterRegisterPage() {
                     </label>
                     <input
                       type="file"
-                      {...step2Form.register('utilityBill', { required: 'Utility bill is required' })}
                       accept="image/*,.pdf"
                       className="input-field text-xs"
+                      onChange={(e) => {
+                        const files = e.target.files;
+                        if (files && files.length > 0) {
+                          step2Form.setValue('utilityBill', files, { shouldValidate: true });
+                        }
+                      }}
                     />
                     {step2Form.formState.errors.utilityBill && (
                       <p className="text-red-500 text-xs mt-1">{step2Form.formState.errors.utilityBill.message}</p>
@@ -1066,9 +1149,14 @@ export default function AccepterRegisterPage() {
                     </label>
                     <input
                       type="file"
-                      {...step3Form.register('document', { required: 'Medical document is required' })}
                       accept="image/*,.pdf"
                       className="input-field text-xs"
+                      onChange={(e) => {
+                        const files = e.target.files;
+                        if (files && files.length > 0) {
+                          step3Form.setValue('document', files, { shouldValidate: true });
+                        }
+                      }}
                     />
                     {step3Form.formState.errors.document && (
                       <p className="text-red-500 text-xs mt-1">{step3Form.formState.errors.document.message}</p>

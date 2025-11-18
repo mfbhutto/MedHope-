@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import toast from 'react-hot-toast';
 import api from '@/lib/api';
@@ -10,6 +10,8 @@ import Navbar from '@/app/medhope/components/Navbar';
 
 export default function LoginPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const redirectUrl = searchParams.get('redirect') || null;
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -42,11 +44,19 @@ export default function LoginPage() {
       
       toast.success('Login successful!');
       
+      // If there's a redirect URL, use it (for donors accessing service-filtered cases)
+      if (redirectUrl && user.role === 'donor') {
+        window.location.href = redirectUrl;
+        return;
+      }
+      
       // Route based on user role - use window.location for reliable navigation
       const role = user.role;
       console.log('Routing user with role:', role);
       
-      if (role === 'donor') {
+      if (role === 'admin') {
+        window.location.href = '/superadmin/dashboard';
+      } else if (role === 'donor') {
         window.location.href = '/medhope/pages/donorprofile';
       } else if (role === 'accepter') {
         window.location.href = '/medhope/pages/needyprofile';
@@ -68,11 +78,11 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-white-off">
+    <div className="min-h-screen bg-gradient-to-br from-secondary via-white to-secondary/50">
       <Navbar />
-      <div className="flex items-center justify-center py-12 px-4">
+      <div className="flex items-center justify-center pt-32 pb-12 px-4">
         <div className="max-w-md w-full">
-          <div className="card">
+          <div className="glass-card">
             <h2 className="text-3xl font-bold text-center text-gray-900 mb-6">
               Login to MedHope
             </h2>

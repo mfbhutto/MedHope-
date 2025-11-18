@@ -126,10 +126,13 @@ export default function NeedyPersonDetailPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50">
+      <div className="min-h-screen bg-gradient-to-br from-secondary via-white to-secondary/50">
         <Navbar />
-        <div className="flex items-center justify-center h-screen">
-          <p className="text-gray-600">Loading...</p>
+        <div className="flex items-center justify-center h-screen pt-20">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+            <p className="text-gray-600">Loading...</p>
+          </div>
         </div>
       </div>
     );
@@ -137,12 +140,12 @@ export default function NeedyPersonDetailPage() {
 
   if (!needyPerson) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50">
+      <div className="min-h-screen bg-gradient-to-br from-secondary via-white to-secondary/50">
         <Navbar />
-        <div className="max-w-7xl mx-auto px-4 py-8">
-          <div className="bg-white rounded-lg shadow-md p-12 text-center">
-            <p className="text-gray-600 text-lg">Needy person not found.</p>
-            <Link href="/medhope/pages/needypersons" className="text-primary hover:underline mt-4 inline-block">
+        <div className="section-container pt-32 pb-12">
+          <div className="glass-card p-12 text-center">
+            <p className="text-gray-600 text-lg mb-4">Needy person not found.</p>
+            <Link href="/medhope/pages/needypersons" className="btn-primary inline-block">
               ← Back to Needy Persons
             </Link>
           </div>
@@ -155,9 +158,9 @@ export default function NeedyPersonDetailPage() {
   const progressPercentage = ((needyPerson.totalDonations || 0) / needyPerson.amountNeeded) * 100;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50">
+    <div className="min-h-screen bg-gradient-to-br from-secondary via-white to-secondary/50">
       <Navbar />
-      <div className="max-w-7xl mx-auto px-4 py-8">
+      <div className="section-container pt-32 pb-12">
         {/* Back Button */}
         <Link
           href="/medhope/pages/needypersons"
@@ -173,7 +176,7 @@ export default function NeedyPersonDetailPage() {
           {/* Main Content - Left Side (2 columns) */}
           <div className="lg:col-span-2 space-y-6">
             {/* Case Header */}
-            <div className="bg-white rounded-xl shadow-lg p-6">
+            <div className="glass-card">
               <div className="flex justify-between items-start mb-4">
                 <div>
                   <h1 className="text-3xl font-bold text-gray-900 mb-2">
@@ -201,7 +204,7 @@ export default function NeedyPersonDetailPage() {
             </div>
 
             {/* Personal Information */}
-            <div className="bg-white rounded-xl shadow-lg p-6">
+            <div className="glass-card">
               <h2 className="text-2xl font-bold text-gray-900 mb-4">Personal Information</h2>
               <div className="grid md:grid-cols-2 gap-4">
                 <div>
@@ -264,7 +267,7 @@ export default function NeedyPersonDetailPage() {
             </div>
 
             {/* Financial Information */}
-            <div className="bg-white rounded-xl shadow-lg p-6">
+            <div className="glass-card">
               <h2 className="text-2xl font-bold text-gray-900 mb-4">Financial Information</h2>
               <div className="grid md:grid-cols-2 gap-4">
                 <div>
@@ -295,11 +298,75 @@ export default function NeedyPersonDetailPage() {
                     )}
                   </p>
                 </div>
+                {needyPerson.utilityBill && (
+                  <div className="md:col-span-2">
+                    <p className="text-sm text-gray-500 mb-2">Utility Bill</p>
+                    <div className="mt-2">
+                      {(() => {
+                        // Normalize path - handle both old format (without /) and new format (with /)
+                        let imagePath = needyPerson.utilityBill;
+                        
+                        // Remove 'uploads/' prefix if present (old format)
+                        if (imagePath.startsWith('uploads/')) {
+                          imagePath = `/${imagePath}`;
+                        } else if (!imagePath.startsWith('/')) {
+                          imagePath = `/${imagePath}`;
+                        }
+                        
+                        // Check if it's an image file
+                        const isImage = imagePath.match(/\.(jpg|jpeg|png|gif|webp)$/i);
+                        
+                        if (isImage) {
+                          return (
+                            <a
+                              href={imagePath}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="block relative w-full max-w-md"
+                            >
+                              <div className="relative w-full h-64 rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-shadow overflow-hidden bg-gray-50">
+                                <img
+                                  src={imagePath}
+                                  alt="Utility Bill"
+                                  className="w-full h-full object-contain"
+                                  onError={(e) => {
+                                    // Fallback if image fails to load
+                                    const target = e.target as HTMLImageElement;
+                                    target.style.display = 'none';
+                                    const parent = target.parentElement;
+                                    if (parent) {
+                                      parent.innerHTML = '<p class="text-gray-500 text-center p-4">Image not found. <a href="' + imagePath + '" target="_blank" class="text-primary underline">Click to view</a></p>';
+                                    }
+                                  }}
+                                />
+                              </div>
+                              <p className="text-xs text-gray-500 mt-2 text-center">Click to view full size</p>
+                            </a>
+                          );
+                        } else {
+                          return (
+                            <a
+                              href={imagePath}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-2 text-primary hover:text-primary-dark underline"
+                            >
+                              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                              </svg>
+                              View Utility Bill (PDF/Document)
+                            </a>
+                          );
+                        }
+                      })()}
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
 
             {/* Disease Information */}
-            <div className="bg-white rounded-xl shadow-lg p-6">
+            <div className="glass-card">
               <h2 className="text-2xl font-bold text-gray-900 mb-4">Disease Information</h2>
               <div className="space-y-4">
                 <div>
@@ -342,7 +409,7 @@ export default function NeedyPersonDetailPage() {
 
           {/* Donation Sidebar - Right Side (1 column) */}
           <div className="lg:col-span-1">
-            <div className="bg-white rounded-xl shadow-lg p-6 sticky top-24">
+            <div className="glass-card sticky top-32">
               <h2 className="text-2xl font-bold text-gray-900 mb-6">Make a Donation</h2>
               
               {/* Amount Needed */}

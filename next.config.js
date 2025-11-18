@@ -3,6 +3,7 @@ const nextConfig = {
   reactStrictMode: true,
   images: {
     domains: ['localhost'],
+    unoptimized: false, // Enable image optimization
   },
 }
 

@@ -4,6 +4,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { connectToDatabase } from '@/lib/db';
 import { createNeedyPerson, needyPersonExists } from '@/lib/controllers/needyPerson';
+import { writeFile, mkdir } from 'fs/promises';
+import { join } from 'path';
 
 export async function POST(request: NextRequest) {
   try {
@@ -124,18 +126,64 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Handle file uploads (save to public/uploads or cloud storage)
-    // For now, we'll store file names/paths
+    // Handle file uploads - save to public/uploads directory
     let utilityBillPath: string | undefined;
     let documentPath: string | undefined;
 
-    // TODO: Implement file upload to storage (local or cloud)
-    // For now, just store file names
-    if (utilityBillFile) {
-      utilityBillPath = `uploads/utility-bills/${Date.now()}-${utilityBillFile.name}`;
+    if (utilityBillFile && utilityBillFile.size > 0) {
+      try {
+        // Create unique filename
+        const timestamp = Date.now();
+        const sanitizedName = utilityBillFile.name.replace(/[^a-zA-Z0-9.-]/g, '_');
+        const fileName = `${timestamp}-${sanitizedName}`;
+        
+        // Save to public/uploads/utility-bills
+        const uploadsDir = join(process.cwd(), 'public', 'uploads', 'utility-bills');
+        await mkdir(uploadsDir, { recursive: true });
+        
+        const filePath = join(uploadsDir, fileName);
+        const bytes = await utilityBillFile.arrayBuffer();
+        const buffer = Buffer.from(bytes);
+        
+        await writeFile(filePath, buffer);
+        
+        // Store URL path (accessible via /uploads/utility-bills/filename)
+        utilityBillPath = `/uploads/utility-bills/${fileName}`;
+      } catch (error) {
+        console.error('Error saving utility bill:', error);
+        return NextResponse.json(
+          { message: 'Failed to save utility bill file' },
+          { status: 500 }
+        );
+      }
     }
-    if (documentFile) {
-      documentPath = `uploads/documents/${Date.now()}-${documentFile.name}`;
+
+    if (documentFile && documentFile.size > 0) {
+      try {
+        // Create unique filename
+        const timestamp = Date.now();
+        const sanitizedName = documentFile.name.replace(/[^a-zA-Z0-9.-]/g, '_');
+        const fileName = `${timestamp}-${sanitizedName}`;
+        
+        // Save to public/uploads/documents
+        const uploadsDir = join(process.cwd(), 'public', 'uploads', 'documents');
+        await mkdir(uploadsDir, { recursive: true });
+        
+        const filePath = join(uploadsDir, fileName);
+        const bytes = await documentFile.arrayBuffer();
+        const buffer = Buffer.from(bytes);
+        
+        await writeFile(filePath, buffer);
+        
+        // Store URL path (accessible via /uploads/documents/filename)
+        documentPath = `/uploads/documents/${fileName}`;
+      } catch (error) {
+        console.error('Error saving document:', error);
+        return NextResponse.json(
+          { message: 'Failed to save document file' },
+          { status: 500 }
+        );
+      }
     }
 
     // Determine disease name

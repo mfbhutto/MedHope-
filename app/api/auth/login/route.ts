@@ -5,6 +5,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { connectToDatabase } from '@/lib/db';
 import { authenticateDonor } from '@/lib/controllers/donor';
 import { authenticateNeedyPerson } from '@/lib/controllers/needyPerson';
+import { authenticateAdmin } from '@/lib/controllers/admin';
 
 export async function POST(request: NextRequest) {
   try {
@@ -32,8 +33,13 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Try to authenticate as donor first
-    let user = await authenticateDonor(email, password);
+    // Try to authenticate as admin first
+    let user = await authenticateAdmin(email, password);
+
+    // If not an admin, try as donor
+    if (!user) {
+      user = await authenticateDonor(email, password);
+    }
 
     // If not a donor, try as needy person (accepter)
     if (!user) {

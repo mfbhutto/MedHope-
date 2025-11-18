@@ -6,6 +6,7 @@ import Navbar from '@/app/medhope/components/Navbar';
 import { getStoredUser, isAuthenticated } from '@/lib/auth';
 import api from '@/lib/api';
 import Link from 'next/link';
+import NewCaseForm from '@/app/medhope/components/NewCaseForm';
 
 export default function NeedyProfilePage() {
   const router = useRouter();
@@ -13,6 +14,7 @@ export default function NeedyProfilePage() {
   const [loading, setLoading] = useState(true);
   const [profileData, setProfileData] = useState<any>(null);
   const [cases, setCases] = useState<any[]>([]);
+  const [showNewCaseForm, setShowNewCaseForm] = useState(false);
 
   useEffect(() => {
     // Get user from localStorage
@@ -42,7 +44,7 @@ export default function NeedyProfilePage() {
       try {
         const [profileResponse, casesResponse] = await Promise.all([
           api.get('/users/me').catch(() => ({ data: { user: currentUser } })),
-          api.get('/cases/my-cases').catch(() => ({ data: { cases: [] } }))
+          api.get(`/cases/my-cases?email=${encodeURIComponent(currentUser.email)}`).catch(() => ({ data: { cases: [] } }))
         ]);
         
         setProfileData(profileResponse.data.user || currentUser);
@@ -59,12 +61,31 @@ export default function NeedyProfilePage() {
     fetchData();
   }, [router]);
 
+  const handleCaseSubmitSuccess = () => {
+    // Refresh cases list
+    const fetchCases = async () => {
+      try {
+        const currentUser = getStoredUser();
+        if (currentUser?.email) {
+          const casesResponse = await api.get(`/cases/my-cases?email=${encodeURIComponent(currentUser.email)}`).catch(() => ({ data: { cases: [] } }));
+          setCases(casesResponse.data.cases || []);
+        }
+      } catch (error) {
+        console.error('Error fetching cases:', error);
+      }
+    };
+    fetchCases();
+  };
+
   if (loading) {
     return (
-      <div className="min-h-screen bg-white-off">
+      <div className="min-h-screen bg-gradient-to-br from-secondary via-white to-secondary/50">
         <Navbar />
-        <div className="flex items-center justify-center h-screen">
-          <p className="text-gray-600">Loading...</p>
+        <div className="flex items-center justify-center h-screen pt-20">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+            <p className="text-gray-600">Loading...</p>
+          </div>
         </div>
       </div>
     );
@@ -75,92 +96,96 @@ export default function NeedyProfilePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-50">
+    <div className="min-h-screen bg-gradient-to-br from-secondary via-white to-secondary/50">
       <Navbar />
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        <div className="bg-white rounded-2xl shadow-xl p-8 mb-6">
-          <h1 className="text-3xl font-bold text-gray-900 mb-6">Needy Person Profile</h1>
+      <div className="section-container pt-32 pb-12">
+        {/* Page Header */}
+        <div className="mb-8">
+          <h1 className="heading-lg text-dark mb-2">Needy Person Profile</h1>
+          <p className="text-gray-600">Manage your profile and track your cases</p>
+        </div>
+
+        <div className="glass-card mb-8">
+          <h2 className="heading-md text-dark mb-6 pb-4 border-b border-gray-200">Personal Information</h2>
           
           <div className="grid md:grid-cols-2 gap-6">
-            {/* Personal Information */}
-            <div className="space-y-4">
-              <h2 className="text-xl font-semibold text-gray-800 mb-4">Personal Information</h2>
+            <div className="space-y-5">
               
               <div>
-                <label className="block text-sm font-medium text-gray-600 mb-1">Name</label>
-                <p className="text-gray-900 font-semibold">{profileData?.name || user?.name || 'N/A'}</p>
+                <label className="block text-sm font-semibold text-gray-500 mb-2 uppercase tracking-wide">Name</label>
+                <p className="text-lg text-dark font-semibold">{profileData?.name || user?.name || 'N/A'}</p>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-600 mb-1">Email</label>
-                <p className="text-gray-900">{profileData?.email || user?.email || 'N/A'}</p>
+                <label className="block text-sm font-semibold text-gray-500 mb-2 uppercase tracking-wide">Email</label>
+                <p className="text-lg text-dark">{profileData?.email || user?.email || 'N/A'}</p>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-600 mb-1">CNIC</label>
-                <p className="text-gray-900">{profileData?.cnic || 'N/A'}</p>
+                <label className="block text-sm font-semibold text-gray-500 mb-2 uppercase tracking-wide">CNIC</label>
+                <p className="text-lg text-dark">{profileData?.cnic || 'N/A'}</p>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-600 mb-1">Phone</label>
-                <p className="text-gray-900">{profileData?.phone || 'N/A'}</p>
+                <label className="block text-sm font-semibold text-gray-500 mb-2 uppercase tracking-wide">Phone</label>
+                <p className="text-lg text-dark">{profileData?.phone || 'N/A'}</p>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-600 mb-1">Address</label>
-                <p className="text-gray-900">{profileData?.address || 'N/A'}</p>
+                <label className="block text-sm font-semibold text-gray-500 mb-2 uppercase tracking-wide">Address</label>
+                <p className="text-lg text-dark">{profileData?.address || 'N/A'}</p>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-600 mb-1">District</label>
-                <p className="text-gray-900">{profileData?.district || 'N/A'}</p>
+                <label className="block text-sm font-semibold text-gray-500 mb-2 uppercase tracking-wide">District</label>
+                <p className="text-lg text-dark">{profileData?.district || 'N/A'}</p>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-600 mb-1">Area</label>
-                <p className="text-gray-900">{profileData?.area || 'N/A'}</p>
+                <label className="block text-sm font-semibold text-gray-500 mb-2 uppercase tracking-wide">Area</label>
+                <p className="text-lg text-dark">{profileData?.area || 'N/A'}</p>
               </div>
             </div>
 
             {/* Financial Information */}
-            <div className="space-y-4">
-              <h2 className="text-xl font-semibold text-gray-800 mb-4">Financial Information</h2>
+            <div className="space-y-5">
+              <h2 className="heading-md text-dark mb-6 pb-4 border-b border-gray-200">Financial Information</h2>
               
               <div>
-                <label className="block text-sm font-medium text-gray-600 mb-1">Age</label>
-                <p className="text-gray-900">{profileData?.age || 'N/A'}</p>
+                <label className="block text-sm font-semibold text-gray-500 mb-2 uppercase tracking-wide">Age</label>
+                <p className="text-lg text-dark">{profileData?.age || 'N/A'}</p>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-600 mb-1">Marital Status</label>
-                <p className="text-gray-900 capitalize">{profileData?.maritalStatus || 'N/A'}</p>
+                <label className="block text-sm font-semibold text-gray-500 mb-2 uppercase tracking-wide">Marital Status</label>
+                <p className="text-lg text-dark capitalize">{profileData?.maritalStatus || 'N/A'}</p>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-600 mb-1">Salary Range</label>
-                <p className="text-gray-900">{profileData?.salaryRange || 'N/A'}</p>
+                <label className="block text-sm font-semibold text-gray-500 mb-2 uppercase tracking-wide">Salary Range</label>
+                <p className="text-lg text-dark">{profileData?.salaryRange || 'N/A'}</p>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-600 mb-1">House Ownership</label>
-                <p className="text-gray-900 capitalize">{profileData?.houseOwnership || 'N/A'}</p>
+                <label className="block text-sm font-semibold text-gray-500 mb-2 uppercase tracking-wide">House Ownership</label>
+                <p className="text-lg text-dark capitalize">{profileData?.houseOwnership || 'N/A'}</p>
               </div>
 
               {profileData?.houseOwnership === 'rent' && (
                 <div>
-                  <label className="block text-sm font-medium text-gray-600 mb-1">Rent Amount</label>
-                  <p className="text-gray-900">PKR {profileData?.rentAmount?.toLocaleString() || 'N/A'}</p>
+                  <label className="block text-sm font-semibold text-gray-500 mb-2 uppercase tracking-wide">Rent Amount</label>
+                  <p className="text-lg text-dark">PKR {profileData?.rentAmount?.toLocaleString() || 'N/A'}</p>
                 </div>
               )}
 
               <div>
-                <label className="block text-sm font-medium text-gray-600 mb-1">House Size</label>
-                <p className="text-gray-900">{profileData?.houseSize || 'N/A'}</p>
+                <label className="block text-sm font-semibold text-gray-500 mb-2 uppercase tracking-wide">House Size</label>
+                <p className="text-lg text-dark">{profileData?.houseSize || 'N/A'}</p>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-600 mb-1">Zakat Eligible</label>
-                <p className="text-gray-900">
+                <label className="block text-sm font-semibold text-gray-500 mb-2 uppercase tracking-wide">Zakat Eligible</label>
+                <p className="text-lg text-dark">
                   {profileData?.zakatEligible ? (
                     <span className="text-green-600 font-semibold">Yes</span>
                   ) : (
@@ -173,14 +198,11 @@ export default function NeedyProfilePage() {
         </div>
 
         {/* My Cases */}
-        <div className="bg-white rounded-2xl shadow-xl p-8">
+        <div className="glass-card">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-xl font-semibold text-gray-800">My Cases</h2>
             <button
-              onClick={() => {
-                // TODO: Open case submission modal or navigate to case submission page
-                alert('Case submission feature coming soon!');
-              }}
+              onClick={() => setShowNewCaseForm(true)}
               className="btn-primary"
             >
               Submit New Case
@@ -191,10 +213,7 @@ export default function NeedyProfilePage() {
             <div className="bg-gray-50 p-8 rounded-lg text-center">
               <p className="text-gray-600 mb-4">No cases submitted yet.</p>
               <button
-                onClick={() => {
-                  // TODO: Open case submission modal or navigate to case submission page
-                  alert('Case submission feature coming soon!');
-                }}
+                onClick={() => setShowNewCaseForm(true)}
                 className="btn-primary"
               >
                 Submit Your First Case
@@ -239,6 +258,15 @@ export default function NeedyProfilePage() {
           )}
         </div>
       </div>
+
+      {/* New Case Form Modal */}
+      {showNewCaseForm && profileData && (
+        <NewCaseForm
+          onClose={() => setShowNewCaseForm(false)}
+          onSuccess={handleCaseSubmitSuccess}
+          userProfile={profileData}
+        />
+      )}
     </div>
   );
 }

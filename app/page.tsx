@@ -8,6 +8,8 @@ import Hero from '@/app/medhope/components/Hero';
 import Services from '@/app/medhope/components/Services';
 import PatientCases from '@/app/medhope/components/PatientCases';
 import Footer from '@/app/medhope/components/Footer';
+import HowItWorks from '@/app/components/HowItWorks';
+import WhyChooseUs from '@/app/components/WhyChooseUs';
 import api from '@/lib/api';
 
 // Home page - Main public site with header, footer, and all cards
@@ -34,10 +36,12 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-secondary">
       <Navbar />
       <Hero />
+      <HowItWorks />
       <Services />
+      <WhyChooseUs />
       <PatientCases cases={cases} loading={loading} />
       <Footer />
     </div>

@@ -6,6 +6,7 @@ export const karachiDistricts = [
   'West',
   'Malir',
   'Korangi',
+  'Keamari',
 ];
 
 export const karachiAreas: { [key: string]: string[] } = {

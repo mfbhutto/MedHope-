@@ -6,7 +6,7 @@ import { Toaster } from 'react-hot-toast'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Home - MedHope',
+  title: 'MedHope',
   description: 'A secure, intelligent, and charity-based medicine donation system',
 }
 

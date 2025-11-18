@@ -1,12 +1,16 @@
 // Needy Person (Accepter) Model
 // Based on needy person registration form (3-step form)
 
+// Import area data for priority assignment
+import areaData from '@/karachi-areas-list.json';
+
 export interface NeedyPerson {
   _id?: string;
   
   // Step 1: Personal Information
   name: string;
   email: string;
+  originalEmail?: string; // Original email for linking cases to the same user
   cnic: string; // Format: 12345-1234567-1
   district: string; // Karachi district
   area: string; // Area within district
@@ -60,6 +64,7 @@ export interface NeedyPerson {
 }
 
 // Priority mapping based on area (auto-assigned)
+// This is kept for backward compatibility but getPriorityByArea now uses JSON file
 export const areaPriorityMap: { [key: string]: 'High' | 'Medium' | 'Low' } = {
   // High Priority Areas (typically underserved)
   'Orangi Town': 'High',
@@ -99,9 +104,58 @@ export const areaPriorityMap: { [key: string]: 'High' | 'Medium' | 'Low' } = {
   'SITE': 'Low',
 };
 
-// Function to get priority based on area
-export function getPriorityByArea(area: string): 'High' | 'Medium' | 'Low' {
-  return areaPriorityMap[area] || 'Medium'; // Default to Medium if area not found
+// Function to get priority based on area and district from JSON file
+export function getPriorityByArea(area: string, district?: string): 'High' | 'Medium' | 'Low' {
+  if (!area) {
+    return 'Medium'; // Default priority if area not found
+  }
+
+  // Normalize strings for comparison
+  const normalizeString = (str: string) => str.toLowerCase().trim().replace(/\s+/g, ' ');
+
+  // Find matching area in the JSON data
+  const matchedArea = (areaData as any[]).find((item: any) => {
+    // If district is provided, match both district and area
+    if (district) {
+      const districtMatch = normalizeString(item.District) === normalizeString(district);
+      const areaName = normalizeString(item.AreasName);
+      const userArea = normalizeString(area);
+      
+      // Exact match or partial match
+      const areaMatch = areaName === userArea ||
+                       areaName.includes(userArea) ||
+                       userArea.includes(areaName) ||
+                       areaName.startsWith(userArea) ||
+                       userArea.startsWith(areaName);
+      
+      return districtMatch && areaMatch;
+    } else {
+      // If no district, just match area
+      const areaName = normalizeString(item.AreasName);
+      const userArea = normalizeString(area);
+      
+      const areaMatch = areaName === userArea ||
+                       areaName.includes(userArea) ||
+                       userArea.includes(areaName) ||
+                       areaName.startsWith(userArea) ||
+                       userArea.startsWith(areaName);
+      
+      return areaMatch;
+    }
+  });
+
+  if (matchedArea) {
+    // Map class to priority: Lower → High, Middle → Medium, Elite → Low
+    const classToPriority: { [key: string]: 'High' | 'Medium' | 'Low' } = {
+      'Lower': 'High',
+      'Middle': 'Medium',
+      'Elite': 'Low',
+    };
+    return classToPriority[matchedArea.Class] || 'Medium';
+  }
+
+  // If area not found in list, try old hardcoded map as fallback
+  return areaPriorityMap[area] || 'Medium';
 }
 
 // Function to generate unique case number

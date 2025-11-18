@@ -56,3 +56,7 @@ logs
 *.tmp
 *.temp
 
+# Uploaded files (keep folder structure, ignore contents)
+/public/uploads/**/*
+!/public/uploads/.gitkeep
+

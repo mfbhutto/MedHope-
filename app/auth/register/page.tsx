@@ -6,9 +6,9 @@ import Navbar from '@/app/medhope/components/Navbar';
 
 export default function RegisterPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-50">
+    <div className="min-h-screen bg-gradient-to-br from-secondary via-white to-secondary/50">
       <Navbar />
-      <div className="flex items-center justify-center py-12 px-4">
+      <div className="flex items-center justify-center pt-32 pb-12 px-4">
         <div className="max-w-4xl w-full">
           <div className="text-center mb-12">
             <h1 className="text-4xl font-bold text-gray-900 mb-4">
@@ -25,7 +25,7 @@ export default function RegisterPage() {
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5 }}
-              className="bg-white rounded-2xl shadow-xl p-8 hover:shadow-2xl transition-shadow duration-300"
+              className="glass-card p-8 card-hover"
             >
               <div className="text-center mb-6">
                 <div className="inline-flex items-center justify-center w-20 h-20 bg-blue-100 rounded-full mb-4">
@@ -62,7 +62,7 @@ export default function RegisterPage() {
               </ul>
               <Link
                 href="/auth/register/donor"
-                className="block w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200 text-center"
+                className="block w-full btn-primary text-center"
               >
                 Register as Donor
               </Link>
@@ -73,7 +73,7 @@ export default function RegisterPage() {
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5 }}
-              className="bg-white rounded-2xl shadow-xl p-8 hover:shadow-2xl transition-shadow duration-300"
+              className="glass-card p-8 card-hover"
             >
               <div className="text-center mb-6">
                 <div className="inline-flex items-center justify-center w-20 h-20 bg-green-100 rounded-full mb-4">
@@ -110,7 +110,7 @@ export default function RegisterPage() {
               </ul>
               <Link
                 href="/auth/register/accepter"
-                className="block w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200 text-center"
+                className="block w-full btn-accent text-center"
               >
                 Register as Needy Person
               </Link>
