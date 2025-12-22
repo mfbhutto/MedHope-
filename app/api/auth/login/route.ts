@@ -34,7 +34,8 @@ export async function POST(request: NextRequest) {
     }
 
     // Try to authenticate as admin first
-    let user = await authenticateAdmin(email, password);
+    let user: any = await authenticateAdmin(email, password);
+
 
     // If not an admin, try as donor
     if (!user) {
