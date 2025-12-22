@@ -179,18 +179,18 @@ export default function PatientCases({ cases, loading, showDonationModal = false
                   </p>
                 </div>
 
-                {(caseItem.labTests && caseItem.labTests.length > 0) || (caseItem.selectedTests && caseItem.selectedTests.length > 0) ? (
+                {(caseItem.labTests && caseItem.labTests.length > 0) || ((caseItem as any).selectedTests && (caseItem as any).selectedTests.length > 0) ? (
                   <div className="mb-4">
                     <p className="text-sm text-gray-500 mb-2">Recommended Tests</p>
                     <div className="flex flex-wrap gap-2">
-                      {(caseItem.labTests || caseItem.selectedTests || []).slice(0, 3).map((test: string, idx: number) => (
+                      {(caseItem.labTests || (caseItem as any).selectedTests || []).slice(0, 3).map((test: string, idx: number) => (
                         <span key={idx} className="bg-secondary text-gray-700 text-xs px-2 py-1 rounded-lg border border-gray-soft">
                           {test}
                         </span>
                       ))}
-                      {(caseItem.labTests || caseItem.selectedTests || []).length > 3 && (
+                      {(caseItem.labTests || (caseItem as any).selectedTests || []).length > 3 && (
                         <span className="text-xs text-gray-500">
-                          +{(caseItem.labTests || caseItem.selectedTests || []).length - 3} more
+                          +{(caseItem.labTests || (caseItem as any).selectedTests || []).length - 3} more
                         </span>
                       )}
                     </div>
