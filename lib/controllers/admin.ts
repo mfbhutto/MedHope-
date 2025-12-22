@@ -94,6 +94,6 @@ export async function createAdmin(
 
   await admin.save();
   const { password: _, ...adminWithoutPassword } = admin.toObject();
-  return adminWithoutPassword as Admin;
+  return adminWithoutPassword as any;
 }
 
