@@ -57,7 +57,7 @@ export default function CreateAdminPage() {
       
       if (existingEmail) {
         toast.error(`${errorMessage} (Existing: ${existingEmail})`);
-        toast.info('Try using a different email or delete the existing admin first');
+        toast.success('Try using a different email or delete the existing admin first');
       } else {
         toast.error(errorMessage);
       }
