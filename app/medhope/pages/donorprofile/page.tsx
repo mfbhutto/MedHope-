@@ -11,6 +11,45 @@ export default function DonorProfilePage() {
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [profileData, setProfileData] = useState<any>(null);
+  const [donations, setDonations] = useState<any[]>([]);
+  const [donationsLoading, setDonationsLoading] = useState(false);
+
+  // Fetch donor profile data
+  const fetchProfile = async () => {
+    const currentUser = getStoredUser();
+    if (!currentUser || !currentUser.email) return;
+
+    try {
+      console.log('Fetching donor profile for:', currentUser.email);
+      const response = await api.get(`/users/me?email=${encodeURIComponent(currentUser.email)}`);
+      console.log('Profile data received:', response.data.user);
+      setProfileData(response.data.user || currentUser);
+    } catch (error) {
+      console.error('Error fetching profile:', error);
+      // Use stored user data if API fails
+      setProfileData(currentUser);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Fetch donations
+  const fetchDonations = async () => {
+    const currentUser = getStoredUser();
+    if (!currentUser || !currentUser.email) return;
+
+    setDonationsLoading(true);
+    try {
+      const response = await api.get(`/donations?donorEmail=${encodeURIComponent(currentUser.email)}`);
+      console.log('Donations received:', response.data.donations);
+      setDonations(response.data.donations || []);
+    } catch (error) {
+      console.error('Error fetching donations:', error);
+      setDonations([]);
+    } finally {
+      setDonationsLoading(false);
+    }
+  };
 
   useEffect(() => {
     // Get user from localStorage
@@ -34,23 +73,45 @@ export default function DonorProfilePage() {
     }
 
     setUser(currentUser);
-    
-    // Fetch donor profile data
-    const fetchProfile = async () => {
-      try {
-        const response = await api.get('/users/me');
-        setProfileData(response.data.user || currentUser);
-      } catch (error) {
-        console.error('Error fetching profile:', error);
-        // Use stored user data if API fails
-        setProfileData(currentUser);
-      } finally {
-        setLoading(false);
+    fetchProfile();
+    fetchDonations();
+  }, [router]);
+
+  // Refresh profile when page becomes visible (user navigates back)
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible' && user) {
+        fetchProfile();
       }
     };
 
-    fetchProfile();
-  }, [router]);
+    // Also refresh on focus (when user switches back to tab)
+    const handleFocus = () => {
+      if (user) {
+        fetchProfile();
+        fetchDonations();
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    window.addEventListener('focus', handleFocus);
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      window.removeEventListener('focus', handleFocus);
+    };
+  }, [user]);
+
+  // Refresh profile data periodically (every 30 seconds) when on this page
+  useEffect(() => {
+    if (!user) return;
+    
+    const interval = setInterval(() => {
+      fetchProfile();
+      fetchDonations();
+    }, 30000); // Refresh every 30 seconds
+
+    return () => clearInterval(interval);
+  }, [user]);
 
   if (loading) {
     return (
@@ -75,9 +136,25 @@ export default function DonorProfilePage() {
       <Navbar />
       <div className="section-container pt-32 pb-12">
         {/* Page Header */}
-        <div className="mb-8">
-          <h1 className="heading-lg text-dark mb-2">Donor Profile</h1>
-          <p className="text-gray-600">Manage your profile and view your donation history</p>
+        <div className="mb-8 flex justify-between items-center">
+          <div>
+            <h1 className="heading-lg text-dark mb-2">Donor Profile</h1>
+            <p className="text-gray-600">Manage your profile and view your donation history</p>
+          </div>
+          <button
+            onClick={() => {
+              setLoading(true);
+              fetchProfile();
+              fetchDonations();
+            }}
+            className="btn-secondary flex items-center gap-2"
+            disabled={loading}
+          >
+            <svg className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+            </svg>
+            Refresh
+          </button>
         </div>
 
         <div className="grid lg:grid-cols-2 gap-8 mb-8">
@@ -136,17 +213,82 @@ export default function DonorProfilePage() {
         {/* Recent Donations Section */}
         <div className="glass-card">
           <h2 className="heading-md text-dark mb-6 pb-4 border-b border-gray-200">Recent Donations</h2>
-          <div className="bg-gradient-to-br from-gray-50 to-gray-100 p-12 rounded-xl border border-gray-200 text-center">
-            <div className="max-w-md mx-auto">
-              <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg className="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                </svg>
-              </div>
-              <p className="text-gray-600 text-lg mb-2">No donations yet</p>
-              <p className="text-gray-500">Start donating to help those in need and make a difference!</p>
+          {donationsLoading ? (
+            <div className="text-center py-12">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
+              <p className="text-gray-600">Loading donations...</p>
             </div>
-          </div>
+          ) : donations.length === 0 ? (
+            <div className="bg-gradient-to-br from-gray-50 to-gray-100 p-12 rounded-xl border border-gray-200 text-center">
+              <div className="max-w-md mx-auto">
+                <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <svg className="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                  </svg>
+                </div>
+                <p className="text-gray-600 text-lg mb-2">No donations yet</p>
+                <p className="text-gray-500">Start donating to help those in need and make a difference!</p>
+              </div>
+            </div>
+          ) : (
+            <div className="space-y-4">
+              {donations.map((donation) => (
+                <div
+                  key={donation._id}
+                  className="bg-gradient-to-br from-white to-gray-50 p-6 rounded-xl border border-gray-200 hover:shadow-medium transition-all duration-300"
+                >
+                  <div className="flex justify-between items-start">
+                    <div className="flex-1">
+                      <div className="flex items-center gap-3 mb-2">
+                        <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
+                          <svg className="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          </svg>
+                        </div>
+                        <div>
+                          <p className="text-lg font-semibold text-dark">
+                            PKR {donation.amount.toLocaleString()}
+                          </p>
+                          <p className="text-sm text-gray-600">
+                            Case #{donation.caseNumber}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-4 mt-3 text-sm text-gray-500">
+                        <span className="flex items-center gap-1">
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          </svg>
+                          {new Date(donation.createdAt).toLocaleDateString('en-US', {
+                            year: 'numeric',
+                            month: 'short',
+                            day: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit',
+                          })}
+                        </span>
+                        <span className="capitalize">{donation.paymentMethod}</span>
+                        {donation.isZakatDonation && (
+                          <span className="bg-golden text-white text-xs font-semibold px-2 py-1 rounded-full">
+                            Zakat
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                    <div className="ml-4">
+                      <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                        donation.status === 'completed' ? 'bg-green-100 text-green-800' :
+                        donation.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
+                        'bg-red-100 text-red-800'
+                      }`}>
+                        {donation.status}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>

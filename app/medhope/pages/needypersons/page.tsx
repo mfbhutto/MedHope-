@@ -184,7 +184,6 @@ export default function NeedyPersonsPage() {
                       {person.priority}
                     </span>
                   </div>
-                  <p className="text-sm opacity-90">{person.name}</p>
                 </div>
 
                 <div className="p-6">

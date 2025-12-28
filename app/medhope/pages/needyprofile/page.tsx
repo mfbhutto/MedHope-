@@ -43,7 +43,7 @@ export default function NeedyProfilePage() {
     const fetchData = async () => {
       try {
         const [profileResponse, casesResponse] = await Promise.all([
-          api.get('/users/me').catch(() => ({ data: { user: currentUser } })),
+          api.get(`/users/me?email=${encodeURIComponent(currentUser.email)}`).catch(() => ({ data: { user: currentUser } })),
           api.get(`/cases/my-cases?email=${encodeURIComponent(currentUser.email)}`).catch(() => ({ data: { cases: [] } }))
         ]);
         

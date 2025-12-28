@@ -7,6 +7,7 @@ import { Heart, ArrowRight, Users, Activity, Sparkles } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import Lottie from 'lottie-react';
 import { getStoredUser } from '@/lib/auth';
+import api from '@/lib/api';
 
 // Hero slider items with Lottie animation paths
 const heroImages = [
@@ -35,6 +36,7 @@ export default function Hero() {
   const [currentImage, setCurrentImage] = useState(0);
   const [animations, setAnimations] = useState<{ [key: string]: any }>({});
   const [user, setUser] = useState<any>(null);
+  const [donorCount, setDonorCount] = useState<number | null>(null);
 
   // Check user login status
   useEffect(() => {
@@ -42,6 +44,23 @@ export default function Hero() {
       const currentUser = getStoredUser();
       setUser(currentUser);
     }
+  }, []);
+
+  // Fetch donor count
+  useEffect(() => {
+    const fetchDonorCount = async () => {
+      try {
+        const response = await api.get('/stats');
+        if (response.data?.stats?.donorCount !== undefined) {
+          setDonorCount(response.data.stats.donorCount);
+        }
+      } catch (error) {
+        console.error('Error fetching donor count:', error);
+        // Keep null to show fallback
+      }
+    };
+
+    fetchDonorCount();
   }, []);
 
   // Load Lottie animations
@@ -109,7 +128,9 @@ export default function Hero() {
               className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-md px-4 py-2 rounded-full mb-4 border border-white/30"
             >
               <Sparkles className="w-4 h-4 fill-current" />
-              <span className="text-sm font-medium">Trusted by 500+ Donors</span>
+              <span className="text-sm font-medium">
+                Trusted by {donorCount !== null ? `${donorCount}+` : '500+'} Donors
+              </span>
             </motion.div>
 
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 leading-tight">

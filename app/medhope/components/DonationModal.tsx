@@ -7,6 +7,7 @@ import { Elements, CardElement, useStripe, useElements } from '@stripe/react-str
 import api from '@/lib/api';
 import toast from 'react-hot-toast';
 import { X, CreditCard, Heart, DollarSign, CheckCircle2, AlertCircle, Sparkles } from 'lucide-react';
+import { getStoredUser } from '@/lib/auth';
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || '');
 
@@ -72,34 +73,89 @@ function DonationForm({ caseItem, onClose, onSuccess }: DonationModalProps) {
           return;
         }
 
+        // Get current user (donor)
+        const currentUser = getStoredUser();
+        if (!currentUser || !currentUser.email) {
+          toast.error('Please log in to make a donation');
+          setLoading(false);
+          return;
+        }
+
         // Create donation record
-        await api.post('/donations', {
+        console.log('Creating donation with data:', {
+          caseId: caseItem._id,
+          amount: parseFloat(amount),
+          paymentMethod: 'stripe',
+          donorEmail: currentUser.email,
+        });
+        
+        console.log('About to call POST /api/donations (Stripe)');
+        const donationResponse = await api.post('/donations', {
           caseId: caseItem._id,
           amount: parseFloat(amount),
           paymentMethod: 'stripe',
           paymentId: paymentIntent?.id,
           isZakatDonation,
+          donorEmail: currentUser.email,
+        }).catch((error) => {
+          console.error('API call failed:', error);
+          throw error;
         });
 
+        console.log('Donation response received:', donationResponse);
+        console.log('Donation response data:', donationResponse.data);
         toast.success('Donation successful!');
-        onSuccess();
+        // Small delay to ensure database is updated
+        setTimeout(() => {
+          onSuccess();
+        }, 1000); // Increased delay to 1 second
       } else {
+        // Get current user (donor)
+        const currentUser = getStoredUser();
+        if (!currentUser || !currentUser.email) {
+          toast.error('Please log in to make a donation');
+          setLoading(false);
+          return;
+        }
+
         // For JazzCash and EasyPaisa (sandbox mode - auto complete)
         const paymentId = `test_${Date.now()}`;
-        await api.post('/donations', {
+        console.log('Creating donation with data:', {
+          caseId: caseItem._id,
+          amount: parseFloat(amount),
+          paymentMethod,
+          donorEmail: currentUser.email,
+        });
+        
+        console.log('About to call POST /api/donations');
+        const donationResponse = await api.post('/donations', {
           caseId: caseItem._id,
           amount: parseFloat(amount),
           paymentMethod,
           paymentId,
           transactionId: paymentId,
           isZakatDonation,
+          donorEmail: currentUser.email,
+        }).catch((error) => {
+          console.error('API call failed:', error);
+          throw error;
         });
 
+        console.log('Donation response received:', donationResponse);
+        console.log('Donation response data:', donationResponse.data);
         toast.success('Donation successful!');
-        onSuccess();
+        // Small delay to ensure database is updated
+        setTimeout(() => {
+          onSuccess();
+        }, 1000); // Increased delay to 1 second
       }
     } catch (error: any) {
-      toast.error(error.response?.data?.message || 'Donation failed');
+      console.error('=== DONATION ERROR ===');
+      console.error('Error object:', error);
+      console.error('Error response:', error.response);
+      console.error('Error message:', error.message);
+      console.error('Error data:', error.response?.data);
+      toast.error(error.response?.data?.message || error.message || 'Donation failed');
     } finally {
       setLoading(false);
     }
