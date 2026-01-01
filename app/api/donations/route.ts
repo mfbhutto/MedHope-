@@ -67,9 +67,9 @@ export async function POST(request: NextRequest) {
 
     // Create donation record
     // Convert donor._id to string (handles both ObjectId and string)
-    const donorIdString = typeof donor._id === 'object' && donor._id?.toString 
-      ? donor._id.toString() 
-      : String(donor._id);
+    const donorIdString = String(donor._id);
+
+  
 
     console.log('Donor ID conversion:', {
       original: donor._id,
@@ -184,7 +184,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Remove sensitive information from response
-    const { __v, ...donationResponse } = donation.toObject();
+    const { __v, ...donationResponse } = donation as any;
 
     return NextResponse.json(
       {
@@ -234,11 +234,7 @@ export async function GET(request: NextRequest) {
 
     // Convert donor._id to string - ensure consistent format
     let donorIdString: string;
-    if (typeof donor._id === 'object' && donor._id?.toString) {
-      donorIdString = donor._id.toString();
-    } else {
-      donorIdString = String(donor._id);
-    }
+    donorIdString = String(donor._id);
     
     // Remove any whitespace and ensure it's a valid ID
     donorIdString = donorIdString.trim();
