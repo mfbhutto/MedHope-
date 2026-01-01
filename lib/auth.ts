@@ -3,7 +3,7 @@ export interface User {
   id?: string;
   name: string;
   email: string;
-  role: 'donor' | 'accepter' | 'admin';
+  role: 'donor' | 'accepter' | 'admin' | 'superadmin';
   isVerified?: boolean;
   isActive?: boolean;
   [key: string]: any; // Allow additional properties
@@ -45,13 +45,13 @@ export const isAuthenticated = (): boolean => {
   return !!getStoredUser();
 };
 
-export const hasRole = (role: 'donor' | 'accepter' | 'admin'): boolean => {
+export const hasRole = (role: 'donor' | 'accepter' | 'admin' | 'superadmin'): boolean => {
   const user = getStoredUser();
   return user?.role === role;
 };
 
 export const isAdmin = (): boolean => {
   const user = getStoredUser();
-  return user?.role === 'admin';
+  return user?.role === 'admin' || user?.role === 'superadmin';
 };
 

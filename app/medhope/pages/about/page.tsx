@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion';
 import Navbar from '@/app/medhope/components/Navbar';
 import Footer from '@/app/medhope/components/Footer';
-import SectionHeading from '@/app/components/SectionHeading';
+import SectionHeading from '@/app/medhope/components/SectionHeading';
 import { Heart, Target, Users, TrendingUp, Award, Clock } from 'lucide-react';
 
 const stats = [
@@ -287,3 +287,4 @@ export default function AboutPage() {
     </div>
   );
 }
+

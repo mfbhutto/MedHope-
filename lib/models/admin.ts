@@ -6,7 +6,7 @@ export interface Admin {
   name: string;
   email: string;
   password: string; // Will be hashed in backend
-  role: 'admin'; // Default: 'admin'
+  role: 'admin' | 'superadmin'; // Default: 'admin'
   
   // Optional fields
   isActive?: boolean;
@@ -27,7 +27,7 @@ export interface AdminProfile {
   _id: string;
   name: string;
   email: string;
-  role: 'admin';
+  role: 'admin' | 'superadmin';
   isActive?: boolean;
   createdAt?: Date;
 }

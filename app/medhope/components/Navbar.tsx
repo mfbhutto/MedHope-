@@ -4,6 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { getStoredUser, clearAuthData, isAuthenticated } from '@/lib/auth';
+import NotificationIcon from './NotificationIcon';
 
 export default function Navbar() {
   const [user, setUser] = useState<any>(null);
@@ -11,20 +12,49 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    if (isAuthenticated()) {
-      setUser(getStoredUser());
-    }
+    // Check authentication on mount
+    const checkAuth = () => {
+      if (isAuthenticated()) {
+        setUser(getStoredUser());
+      } else {
+        setUser(null);
+      }
+    };
+    
+    checkAuth();
+
+    // Listen for storage changes (login/logout from other tabs or after redirect)
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === 'user') {
+        checkAuth();
+      }
+    };
+
+    // Listen for custom storage event (same tab login/logout)
+    const handleCustomStorageChange = () => {
+      checkAuth();
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    window.addEventListener('userAuthChange', handleCustomStorageChange);
 
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
     };
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      window.removeEventListener('userAuthChange', handleCustomStorageChange);
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, []);
 
   const handleLogout = () => {
     clearAuthData();
     setUser(null);
+    // Dispatch custom event to update Navbar
+    window.dispatchEvent(new Event('userAuthChange'));
     window.location.href = '/';
   };
 
@@ -80,9 +110,9 @@ export default function Navbar() {
             </Link>
             {user ? (
               <>
-                {user.role === 'admin' && (
+                {(user.role === 'admin' || user.role === 'superadmin') && (
                   <Link
-                    href="/superadmin/dashboard"
+                    href="/superadmin/pages/dashboard"
                     className="text-gray-700 hover:text-primary transition-colors font-medium relative group"
                   >
                     Admin Dashboard
@@ -98,7 +128,7 @@ export default function Navbar() {
                     <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300"></span>
                   </Link>
                 )}
-                {user.role !== 'admin' && (
+                {user.role !== 'admin' && user.role !== 'superadmin' && (
                   <Link
                     href={user.role === 'donor' ? '/medhope/pages/donorprofile' : '/medhope/pages/needyprofile'}
                     className="text-gray-700 hover:text-primary transition-colors font-medium relative group"
@@ -114,6 +144,12 @@ export default function Navbar() {
                   Logout
                   <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300"></span>
                 </button>
+                {user && user._id && (
+                  <NotificationIcon 
+                    userId={user._id} 
+                    userModel={user.role === 'donor' ? 'Donor' : (user.role === 'accepter' ? 'NeedyPerson' : 'Admin')} 
+                  />
+                )}
               </>
             ) : (
               <>
@@ -181,9 +217,9 @@ export default function Navbar() {
             </Link>
             {user ? (
               <>
-                {user.role === 'admin' && (
+                {(user.role === 'admin' || user.role === 'superadmin') && (
                   <Link
-                    href="/superadmin/dashboard"
+                    href="/superadmin/pages/dashboard"
                     className="block text-gray-700 hover:text-primary transition-colors font-medium py-2"
                     onClick={() => setMenuOpen(false)}
                   >
@@ -199,7 +235,7 @@ export default function Navbar() {
                     Needy Persons
                   </Link>
                 )}
-                {user.role !== 'admin' && (
+                {user.role !== 'admin' && user.role !== 'superadmin' && (
                   <Link
                     href={user.role === 'donor' ? '/medhope/pages/donorprofile' : '/medhope/pages/needyprofile'}
                     className="block text-gray-700 hover:text-primary transition-colors font-medium py-2"
@@ -217,6 +253,14 @@ export default function Navbar() {
                 >
                   Logout
                 </button>
+                {user && user._id && (
+                  <div className="py-2 border-t border-gray-soft">
+                    <NotificationIcon 
+                      userId={user._id} 
+                      userModel={user.role === 'donor' ? 'Donor' : (user.role === 'accepter' ? 'NeedyPerson' : 'Admin')} 
+                    />
+                  </div>
+                )}
               </>
             ) : (
               <>

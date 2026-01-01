@@ -1,5 +1,4 @@
-// Test script to verify priority matching logic
-// Run with: node scripts/test-priority.js
+/ Run with: node scripts/test-priority.js
 
 const areaData = require('../karachi-areas-list.json');
 

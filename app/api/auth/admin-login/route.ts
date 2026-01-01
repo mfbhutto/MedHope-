@@ -62,7 +62,7 @@ export async function POST(request: NextRequest) {
       ...admin,
       _id: admin._id?.toString() || (admin as any)._id?.toString(),
       email: admin.email,
-      role: 'admin' as const,
+      role: admin.role || 'admin',
     };
 
     // Return admin data (without password)

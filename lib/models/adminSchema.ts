@@ -29,7 +29,7 @@ const adminSchema = new Schema<Admin>(
     role: {
       type: String,
       default: 'admin',
-      enum: ['admin'],
+      enum: ['admin', 'superadmin'],
       immutable: true,
     },
     isActive: {

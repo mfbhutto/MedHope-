@@ -28,3 +28,4 @@ export default function SectionHeading({ title, subtitle, center = true }: Secti
     </motion.div>
   );
 }
+

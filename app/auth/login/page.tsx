@@ -40,6 +40,8 @@ export default function LoginPage() {
       // Store user data in localStorage
       if (typeof window !== 'undefined') {
         localStorage.setItem('user', JSON.stringify(user));
+        // Dispatch custom event to update Navbar
+        window.dispatchEvent(new Event('userAuthChange'));
       }
       
       toast.success('Login successful!');
@@ -54,8 +56,8 @@ export default function LoginPage() {
       const role = user.role;
       console.log('Routing user with role:', role);
       
-      if (role === 'admin') {
-        window.location.href = '/superadmin/dashboard';
+      if (role === 'admin' || role === 'superadmin') {
+        window.location.href = '/superadmin/pages/dashboard';
       } else if (role === 'donor') {
         window.location.href = '/medhope/pages/donorprofile';
       } else if (role === 'accepter') {
