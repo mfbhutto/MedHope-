@@ -4,6 +4,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { connectToDatabase } from '@/lib/db';
 import { createNeedyPerson, getNeedyPersonByEmail } from '@/lib/controllers/needyPerson';
+import { uploadFileToCloudinary } from '@/lib/cloudinary';
 import { notifyAllAdmins } from '@/lib/controllers/notification';
 import { writeFile, mkdir } from 'fs/promises';
 import { join } from 'path';
@@ -68,24 +69,17 @@ export async function POST(request: NextRequest) {
     let documentPath: string | undefined;
     if (documentFile && documentFile.size > 0) {
       try {
-        const timestamp = Date.now();
-        const sanitizedName = documentFile.name.replace(/[^a-zA-Z0-9.-]/g, '_');
-        const fileName = `${timestamp}-${sanitizedName}`;
-        
-        const uploadsDir = join(process.cwd(), 'public', 'uploads', 'documents');
-        await mkdir(uploadsDir, { recursive: true });
-        
-        const filePath = join(uploadsDir, fileName);
-        const bytes = await documentFile.arrayBuffer();
-        const buffer = Buffer.from(bytes);
-        
-        await writeFile(filePath, buffer);
-        
-        documentPath = `/uploads/documents/${fileName}`;
-      } catch (error) {
-        console.error('Error saving document:', error);
+        // Upload to Cloudinary
+        const uploadResult = await uploadFileToCloudinary(documentFile, 'documents');
+        documentPath = uploadResult.url;
+        console.log('Document uploaded to Cloudinary:', uploadResult.url);
+      } catch (error: any) {
+        console.error('Error uploading document to Cloudinary:', error);
         return NextResponse.json(
-          { message: 'Failed to save document file' },
+          { 
+            message: 'Failed to upload document file',
+            error: process.env.NODE_ENV === 'development' ? error.message : undefined
+          },
           { status: 500 }
         );
       }
