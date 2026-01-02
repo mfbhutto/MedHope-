@@ -6,6 +6,7 @@ import { connectToDatabase } from '@/lib/db';
 import { updateDocumentById } from '@/lib/db';
 import NeedyPersonModel from '@/lib/models/needyPersonSchema';
 import { getAdminByEmail } from '@/lib/controllers/admin';
+import { createNotification } from '@/lib/controllers/notification';
 
 export async function POST(request: NextRequest) {
   try {
@@ -25,7 +26,7 @@ export async function POST(request: NextRequest) {
     }
 
     const admin = await getAdminByEmail(adminEmail);
-    if (!admin || admin.role !== 'admin' || !admin.isActive) {
+    if (!admin || (admin.role !== 'admin' && admin.role !== 'superadmin') || !admin.isActive) {
       return NextResponse.json(
         { message: 'Unauthorized. Admin access required.' },
         { status: 401 }
@@ -60,6 +61,30 @@ export async function POST(request: NextRequest) {
         { message: 'Case not found' },
         { status: 404 }
       );
+    }
+
+    // Create notification for the needy person
+    try {
+      const needyPersonId = String(updatedCase._id);
+      const diseaseName = (updatedCase as any).chronicDisease 
+        || (updatedCase as any).manualDisease 
+        || (updatedCase as any).otherDisease 
+        || 'Medical Case';
+      
+      await createNotification({
+        userId: needyPersonId,
+        userModel: 'NeedyPerson',
+        type: action === 'approve' ? 'case_approved' : 'case_rejected',
+        title: action === 'approve' ? 'Case Approved' : 'Case Rejected',
+        message: action === 'approve'
+          ? `Your case (${(updatedCase as any).caseNumber || 'N/A'}) has been approved and is now visible to donors.`
+          : `Your case (${(updatedCase as any).caseNumber || 'N/A'}) has been rejected. Please contact support for more information.`,
+        relatedId: needyPersonId,
+        relatedType: 'case',
+      });
+    } catch (notifError) {
+      console.error('Error creating notification:', notifError);
+      // Don't fail the approve/reject if notification fails
     }
 
     return NextResponse.json(

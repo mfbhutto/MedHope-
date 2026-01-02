@@ -24,7 +24,7 @@ export async function GET(request: NextRequest) {
     }
 
     const admin = await getAdminByEmail(adminEmail);
-    if (!admin || admin.role !== 'admin' || !admin.isActive) {
+    if (!admin || (admin.role !== 'admin' && admin.role !== 'superadmin') || !admin.isActive) {
       return NextResponse.json(
         { message: 'Unauthorized. Admin access required.' },
         { status: 401 }

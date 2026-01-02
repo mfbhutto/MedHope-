@@ -1,19 +1,17 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import Link from 'next/link';
-import { motion } from 'framer-motion';
 import Navbar from '@/app/medhope/components/Navbar';
 import Hero from '@/app/medhope/components/Hero';
 import Services from '@/app/medhope/components/Services';
 import PatientCases from '@/app/medhope/components/PatientCases';
 import Footer from '@/app/medhope/components/Footer';
-import HowItWorks from '@/app/components/HowItWorks';
-import WhyChooseUs from '@/app/components/WhyChooseUs';
+import HowItWorks from '@/app/medhope/components/HowItWorks';
+import WhyChooseUs from '@/app/medhope/components/WhyChooseUs';
 import api from '@/lib/api';
 
-// Home page - Main public site with header, footer, and all cards
-export default function Home() {
+// Root home page - Public, no login required
+export default function HomePage() {
   const [cases, setCases] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -25,7 +23,7 @@ export default function Home() {
         setCases(response.data.cases || []);
       } catch (error) {
         console.error('Error fetching cases:', error);
-        // If API fails, use dummy data (handled in PatientCases component)
+        // If API fails, use empty array (handled in PatientCases component)
         setCases([]);
       } finally {
         setLoading(false);
@@ -47,3 +45,4 @@ export default function Home() {
     </div>
   );
 }
+

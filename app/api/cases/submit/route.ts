@@ -5,6 +5,9 @@ import { NextRequest, NextResponse } from 'next/server';
 import { connectToDatabase } from '@/lib/db';
 import { createNeedyPerson, getNeedyPersonByEmail } from '@/lib/controllers/needyPerson';
 import { uploadFileToCloudinary } from '@/lib/cloudinary';
+import { notifyAllAdmins } from '@/lib/controllers/notification';
+import { writeFile, mkdir } from 'fs/promises';
+import { join } from 'path';
 
 export async function POST(request: NextRequest) {
   try {
@@ -136,6 +139,24 @@ export async function POST(request: NextRequest) {
 
     // Remove password from response
     const { password: _, ...caseWithoutPassword } = newCase;
+
+    // Create notification for all superadmins
+    try {
+      const diseaseName = diseaseType === 'chronic' 
+        ? (chronicDisease || 'Chronic Disease')
+        : (otherDisease === 'Other' ? (manualDisease || 'Other Disease') : (otherDisease || 'Other Disease'));
+      
+      await notifyAllAdmins({
+        type: 'case_submitted',
+        title: 'New Case Submitted',
+        message: `A new case has been submitted by ${existingUser.name} (${newCase.caseNumber}) - ${diseaseName}. Amount needed: PKR ${amountNeeded.toLocaleString()}`,
+        relatedId: String(newCase._id),
+        relatedType: 'case',
+      });
+    } catch (notifError) {
+      console.error('Error creating notification:', notifError);
+      // Don't fail the case submission if notification fails
+    }
 
     return NextResponse.json(
       {

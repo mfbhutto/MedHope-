@@ -7,6 +7,7 @@ import { incrementDonorStats, getDonorByEmail } from '@/lib/controllers/donor';
 import DonationModel from '@/lib/models/donationSchema';
 import NeedyPersonModel from '@/lib/models/needyPersonSchema';
 import { createDocument, findDocuments } from '@/lib/db';
+import { notifyAllAdmins } from '@/lib/controllers/notification';
 
 export async function POST(request: NextRequest) {
   console.log('=== POST /api/donations called ===');
@@ -181,6 +182,24 @@ export async function POST(request: NextRequest) {
     } catch (error) {
       console.error('Error updating needy person donations:', error);
       // Don't fail the donation, just log the error
+    }
+
+    // Create notification for all superadmins
+    try {
+      const needyPerson = await NeedyPersonModel.findById(caseId).lean();
+      const caseNumber = (needyPerson as any)?.caseNumber || 'N/A';
+      const needyPersonName = (needyPerson as any)?.name || 'Unknown';
+      
+      await notifyAllAdmins({
+        type: 'donation_received',
+        title: 'New Donation Received',
+        message: `A donation of PKR ${amount.toLocaleString()} has been received from ${donor.name} for case ${caseNumber} (${needyPersonName})`,
+        relatedId: String(donation._id),
+        relatedType: 'donation',
+      });
+    } catch (notifError) {
+      console.error('Error creating notification:', notifError);
+      // Don't fail the donation if notification fails
     }
 
     // Remove sensitive information from response

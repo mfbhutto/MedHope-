@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion';
 import Navbar from '@/app/medhope/components/Navbar';
 import Footer from '@/app/medhope/components/Footer';
-import SectionHeading from '@/app/components/SectionHeading';
+import SectionHeading from '@/app/medhope/components/SectionHeading';
 import { Pill, TestTube, Heart, DollarSign, Users, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 
@@ -162,3 +162,4 @@ export default function ServicesPage() {
     </div>
   );
 }
+
