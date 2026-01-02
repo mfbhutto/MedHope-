@@ -36,12 +36,12 @@ export async function getUserNotifications(
     query.isRead = false;
   }
 
-  const notifications = await NotificationModel.find(query)
-    .sort({ createdAt: -1 })
-    .limit(options.limit || 50)
-    .lean();
+  const notifications = await NotificationModel
+    .find({ userId })
+    .lean<Notification[]>();
 
-  return notifications as Notification[];
+  return notifications;
+
 }
 
 /**
