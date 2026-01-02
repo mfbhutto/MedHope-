@@ -469,7 +469,7 @@ export default function SuperAdminDashboard() {
                                       <button
                                         onClick={() => {
                                           // View donor details - placeholder
-                                          toast.info('View donor details - coming soon');
+                                          toast('View donor details - coming soon');
                                           setShowDonorMenu(null);
                                         }}
                                         className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-secondary transition-colors"
