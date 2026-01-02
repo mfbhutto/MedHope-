@@ -4,8 +4,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { connectToDatabase } from '@/lib/db';
 import { createNeedyPerson, needyPersonExists } from '@/lib/controllers/needyPerson';
-import { writeFile, mkdir } from 'fs/promises';
-import { join } from 'path';
+import { uploadFileToCloudinary } from '@/lib/cloudinary';
 
 export async function POST(request: NextRequest) {
   try {
@@ -130,29 +129,21 @@ export async function POST(request: NextRequest) {
     let utilityBillPath: string | undefined;
     let documentPath: string | undefined;
 
+
     if (utilityBillFile && utilityBillFile.size > 0) {
       try {
-        // Create unique filename
-        const timestamp = Date.now();
-        const sanitizedName = utilityBillFile.name.replace(/[^a-zA-Z0-9.-]/g, '_');
-        const fileName = `${timestamp}-${sanitizedName}`;
-        
-        // Save to public/uploads/utility-bills
-        const uploadsDir = join(process.cwd(), 'public', 'uploads', 'utility-bills');
-        await mkdir(uploadsDir, { recursive: true });
-        
-        const filePath = join(uploadsDir, fileName);
-        const bytes = await utilityBillFile.arrayBuffer();
-        const buffer = Buffer.from(bytes);
-        
-        await writeFile(filePath, buffer);
-        
-        // Store URL path (accessible via /uploads/utility-bills/filename)
-        utilityBillPath = `/uploads/utility-bills/${fileName}`;
-      } catch (error) {
-        console.error('Error saving utility bill:', error);
+        // Upload to Cloudinary
+        const uploadResult = await uploadFileToCloudinary(utilityBillFile, 'utility-bills');
+        utilityBillPath = uploadResult.url;
+        console.log('Utility bill uploaded to Cloudinary:', uploadResult.url);
+      } catch (error: any) {
+        console.error('Error uploading utility bill to Cloudinary:', error);
+        console.error('Error stack:', error.stack);
         return NextResponse.json(
-          { message: 'Failed to save utility bill file' },
+          { 
+            message: 'Failed to upload utility bill file',
+            error: process.env.NODE_ENV === 'development' ? error.message : undefined
+          },
           { status: 500 }
         );
       }
@@ -160,27 +151,18 @@ export async function POST(request: NextRequest) {
 
     if (documentFile && documentFile.size > 0) {
       try {
-        // Create unique filename
-        const timestamp = Date.now();
-        const sanitizedName = documentFile.name.replace(/[^a-zA-Z0-9.-]/g, '_');
-        const fileName = `${timestamp}-${sanitizedName}`;
-        
-        // Save to public/uploads/documents
-        const uploadsDir = join(process.cwd(), 'public', 'uploads', 'documents');
-        await mkdir(uploadsDir, { recursive: true });
-        
-        const filePath = join(uploadsDir, fileName);
-        const bytes = await documentFile.arrayBuffer();
-        const buffer = Buffer.from(bytes);
-        
-        await writeFile(filePath, buffer);
-        
-        // Store URL path (accessible via /uploads/documents/filename)
-        documentPath = `/uploads/documents/${fileName}`;
-      } catch (error) {
-        console.error('Error saving document:', error);
+        // Upload to Cloudinary
+        const uploadResult = await uploadFileToCloudinary(documentFile, 'documents');
+        documentPath = uploadResult.url;
+        console.log('Document uploaded to Cloudinary:', uploadResult.url);
+      } catch (error: any) {
+        console.error('Error uploading document to Cloudinary:', error);
+        console.error('Error stack:', error.stack);
         return NextResponse.json(
-          { message: 'Failed to save document file' },
+          { 
+            message: 'Failed to upload document file',
+            error: process.env.NODE_ENV === 'development' ? error.message : undefined
+          },
           { status: 500 }
         );
       }
