@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import Navbar from '@/app/medhope/components/Navbar';
 import Footer from '@/app/medhope/components/Footer';
 import SectionHeading from '@/app/medhope/components/SectionHeading';
-import { Pill, TestTube, Heart, DollarSign, Users, ArrowRight } from 'lucide-react';
+import { Pill, TestTube, Heart, DollarSign, Users } from 'lucide-react';
 import Link from 'next/link';
 
 const services = [
@@ -111,11 +111,6 @@ export default function ServicesPage() {
                   <p className="text-gray-600 mb-6 flex-grow group-hover:text-white/90 transition-colors leading-relaxed">
                     {service.description}
                   </p>
-
-                  <div className="flex items-center text-primary font-semibold group-hover:text-white transition-colors">
-                    <span>Learn more</span>
-                    <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-2 transition-transform" />
-                  </div>
                 </motion.div>
               );
             })}

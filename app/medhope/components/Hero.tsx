@@ -145,21 +145,13 @@ export default function Hero() {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 mb-6">
-              <button
-                onClick={() => {
-                  // If user is logged in as donor, go to cases page
-                  // Otherwise, go to donor registration
-                  if (user && user.role === 'donor') {
-                    router.push('/cases');
-                  } else {
-                    router.push('/auth/register/donor');
-                  }
-                }}
+              <Link
+                href="/medhope/pages/needypersons"
                 className="group btn-accent flex items-center justify-center gap-2"
               >
                 Donate Now
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </button>
+              </Link>
               <Link
                 href="/auth/register/accepter"
                 className="btn-outline flex items-center justify-center gap-2"

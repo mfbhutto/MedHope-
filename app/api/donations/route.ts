@@ -7,7 +7,7 @@ import { incrementDonorStats, getDonorByEmail } from '@/lib/controllers/donor';
 import DonationModel from '@/lib/models/donationSchema';
 import NeedyPersonModel from '@/lib/models/needyPersonSchema';
 import { createDocument, findDocuments } from '@/lib/db';
-import { notifyAllAdmins } from '@/lib/controllers/notification';
+import { notifyAllAdmins, createNotification } from '@/lib/controllers/notification';
 
 export async function POST(request: NextRequest) {
   console.log('=== POST /api/donations called ===');
@@ -25,7 +25,7 @@ export async function POST(request: NextRequest) {
       donorEmail: body.donorEmail,
     });
     
-    const { caseId, amount, paymentMethod, paymentId, transactionId, isZakatDonation, donorEmail } = body;
+    const { caseId, amount, paymentMethod, paymentId, transactionId, isZakatDonation, donorEmail, walletType, mobileNumber } = body;
 
     // Validate required fields
     if (!caseId || !amount || !paymentMethod) {
@@ -78,15 +78,17 @@ export async function POST(request: NextRequest) {
       converted: donorIdString,
     });
 
+    // For practice purposes, all donations are marked as completed
+    // In production, this would depend on actual payment gateway response
     const donationData = {
       donorId: donorIdString,
       caseId: caseId,
       amount: amount,
-      paymentMethod: paymentMethod,
-      paymentId: paymentId || undefined,
+      paymentMethod: paymentMethod === 'card' ? 'card' : paymentMethod, // Normalize payment method
+      paymentId: paymentId || (walletType && mobileNumber ? `${walletType}-${mobileNumber}` : undefined),
       transactionId: transactionId || undefined,
       isZakatDonation: isZakatDonation || false,
-      status: 'completed' as const,
+      status: 'completed' as const, // For practice, mark as completed immediately
     };
 
     // Check if this is the first donation to this case (before creating this one)
@@ -184,12 +186,32 @@ export async function POST(request: NextRequest) {
       // Don't fail the donation, just log the error
     }
 
+    // Get needy person info for notifications
+    const needyPerson = await NeedyPersonModel.findById(caseId).lean();
+    const caseNumber = (needyPerson as any)?.caseNumber || 'N/A';
+    const needyPersonName = (needyPerson as any)?.name || 'Unknown';
+    const needyPersonId = (needyPerson as any)?._id;
+
+    // Create notification for needy person
+    if (needyPersonId) {
+      try {
+        await createNotification({
+          userId: String(needyPersonId),
+          userModel: 'NeedyPerson',
+          type: 'donation_received',
+          title: 'Donation Received',
+          message: `You have received a donation of PKR ${amount.toLocaleString()} from ${donor.name} for your case ${caseNumber}`,
+          relatedId: String(caseId),
+          relatedType: 'case',
+        });
+      } catch (notifError) {
+        console.error('Error creating notification for needy person:', notifError);
+        // Don't fail the donation if notification fails
+      }
+    }
+
     // Create notification for all superadmins
     try {
-      const needyPerson = await NeedyPersonModel.findById(caseId).lean();
-      const caseNumber = (needyPerson as any)?.caseNumber || 'N/A';
-      const needyPersonName = (needyPerson as any)?.name || 'Unknown';
-      
       await notifyAllAdmins({
         type: 'donation_received',
         title: 'New Donation Received',
@@ -198,7 +220,7 @@ export async function POST(request: NextRequest) {
         relatedType: 'donation',
       });
     } catch (notifError) {
-      console.error('Error creating notification:', notifError);
+      console.error('Error creating notification for admins:', notifError);
       // Don't fail the donation if notification fails
     }
 

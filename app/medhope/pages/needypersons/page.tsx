@@ -74,6 +74,17 @@ export default function NeedyPersonsPage() {
     }
   };
 
+  const getDiseaseName = (person: NeedyPerson): string => {
+    if (person.diseaseType === 'chronic') {
+      return person.chronicDisease || 'Chronic Disease';
+    } else {
+      if (person.otherDisease === 'Other') {
+        return person.manualDisease || 'Other Disease';
+      }
+      return person.otherDisease || 'Other Disease';
+    }
+  };
+
   // Filter needy persons by search query
   const filteredNeedyPersons = needyPersons.filter((person) => {
     if (!searchQuery) return true;
@@ -88,17 +99,6 @@ export default function NeedyPersonsPage() {
       person.description.toLowerCase().includes(query)
     );
   });
-
-  const getDiseaseName = (person: NeedyPerson): string => {
-    if (person.diseaseType === 'chronic') {
-      return person.chronicDisease || 'Chronic Disease';
-    } else {
-      if (person.otherDisease === 'Other') {
-        return person.manualDisease || 'Other Disease';
-      }
-      return person.otherDisease || 'Other Disease';
-    }
-  };
 
   if (!user) {
     return null;
@@ -170,77 +170,79 @@ export default function NeedyPersonsPage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="glass-card card-hover overflow-hidden"
+                className="glass-card card-hover overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100"
               >
                 {/* Card Header */}
-                <div className="bg-gradient-to-r from-primary to-primary-dark p-4 text-white">
-                  <div className="flex justify-between items-start mb-2">
-                    <h3 className="text-xl font-bold">Case #{person.caseNumber}</h3>
-                    <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
-                      person.priority === 'High' ? 'bg-red-500' :
-                      person.priority === 'Medium' ? 'bg-yellow-500' :
-                      'bg-green-500'
-                    }`}>
-                      {person.priority}
-                    </span>
+                <div className="bg-gradient-to-br from-primary via-primary to-primary-dark p-5 text-white rounded-t-xl">
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <h3 className="text-lg font-bold text-white mb-1">Case #{person.caseNumber}</h3>
+                      <span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${
+                        person.priority === 'High' ? 'bg-red-500 text-white' :
+                        person.priority === 'Medium' ? 'bg-yellow-500 text-white' :
+                        'bg-green-500 text-white'
+                      }`}>
+                        {person.priority} Priority
+                      </span>
+                    </div>
                   </div>
                 </div>
 
-                <div className="p-6">
+                <div className="p-6 bg-white">
                   {/* Disease Information */}
-                  <div className="mb-4">
-                    <p className="text-sm text-gray-500 mb-1">Disease</p>
-                    <p className="text-lg font-semibold text-gray-900">
+                  <div className="mb-4 pb-4 border-b border-gray-100">
+                    <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Disease</p>
+                    <p className="text-base font-bold text-gray-900">
                       {getDiseaseName(person)}
                     </p>
                   </div>
 
                   {/* Location */}
                   <div className="mb-4">
-                    <p className="text-sm text-gray-500 mb-1">Location</p>
-                    <p className="text-sm text-gray-700">
+                    <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Location</p>
+                    <p className="text-sm font-medium text-gray-800">
                       {person.area}, {person.district}
                     </p>
                   </div>
 
                   {/* Age */}
                   <div className="mb-4">
-                    <p className="text-sm text-gray-500 mb-1">Age</p>
-                    <p className="text-sm text-gray-700">{person.age} years</p>
+                    <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Age</p>
+                    <p className="text-sm font-medium text-gray-800">{person.age} years</p>
                   </div>
 
                   {/* Description */}
                   <div className="mb-4">
-                    <p className="text-sm text-gray-500 mb-1">Description</p>
-                    <p className="text-sm text-gray-700 line-clamp-3">
+                    <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Description</p>
+                    <p className="text-sm text-gray-700 line-clamp-3 leading-relaxed">
                       {person.description}
                     </p>
                   </div>
 
                   {/* Hospital & Doctor */}
-                  <div className="mb-4 space-y-2">
+                  <div className="mb-4 space-y-3 pb-4 border-b border-gray-100">
                     <div>
-                      <p className="text-xs text-gray-500">Hospital</p>
-                      <p className="text-sm text-gray-700">{person.hospitalName}</p>
+                      <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Hospital</p>
+                      <p className="text-sm font-medium text-gray-800">{person.hospitalName}</p>
                     </div>
                     <div>
-                      <p className="text-xs text-gray-500">Doctor</p>
-                      <p className="text-sm text-gray-700">{person.doctorName}</p>
+                      <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Doctor</p>
+                      <p className="text-sm font-medium text-gray-800">{person.doctorName}</p>
                     </div>
                   </div>
 
                   {/* Tests (if any) */}
                   {person.selectedTests && person.selectedTests.length > 0 && (
-                    <div className="mb-4">
-                      <p className="text-sm text-gray-500 mb-2">Required Tests</p>
+                    <div className="mb-4 pb-4 border-b border-gray-100">
+                      <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Required Tests</p>
                       <div className="flex flex-wrap gap-2">
                         {person.selectedTests.slice(0, 3).map((test, idx) => (
-                          <span key={idx} className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">
+                          <span key={idx} className="bg-primary/10 text-primary text-xs font-medium px-3 py-1.5 rounded-lg border border-primary/20">
                             {test}
                           </span>
                         ))}
                         {person.selectedTests.length > 3 && (
-                          <span className="text-xs text-gray-500">
+                          <span className="text-xs text-gray-600 font-medium">
                             +{person.selectedTests.length - 3} more
                           </span>
                         )}
@@ -249,41 +251,51 @@ export default function NeedyPersonsPage() {
                   )}
 
                   {/* Amount Needed */}
-                  <div className="mb-4 pb-4 border-b border-gray-200">
-                    <p className="text-sm text-gray-500 mb-1">Amount Needed</p>
+                  <div className="mb-4 pb-4 border-b-2 border-primary/20">
+                    <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Amount Needed</p>
                     <p className="text-2xl font-bold text-primary">
                       PKR {person.amountNeeded.toLocaleString()}
                     </p>
                     {person.totalDonations && person.totalDonations > 0 && (
-                      <p className="text-xs text-gray-500 mt-1">
-                        Received: PKR {person.totalDonations.toLocaleString()}
+                      <p className="text-xs text-green-600 font-medium mt-2">
+                        ✓ Received: PKR {person.totalDonations.toLocaleString()}
                       </p>
                     )}
                   </div>
 
                   {/* Status & Zakat Badge */}
                   <div className="flex justify-between items-center mb-4">
-                    <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                      person.status === 'accepted' ? 'bg-green-100 text-green-800' :
-                      person.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
-                      'bg-red-100 text-red-800'
+                    <span className={`px-3 py-1.5 rounded-lg text-xs font-semibold ${
+                      person.status === 'accepted' ? 'bg-green-100 text-green-800 border border-green-200' :
+                      person.status === 'pending' ? 'bg-yellow-100 text-yellow-800 border border-yellow-200' :
+                      'bg-red-100 text-red-800 border border-red-200'
                     }`}>
-                      {person.status}
+                      {person.status.charAt(0).toUpperCase() + person.status.slice(1)}
                     </span>
-                    {person.zakatEligible && (
-                      <span className="bg-golden text-white text-xs font-semibold px-3 py-1 rounded-full">
+                    {person.zakatEligible && person.status !== 'rejected' && (
+                      <span className="bg-gradient-to-r from-yellow-400 to-yellow-500 text-white text-xs font-semibold px-3 py-1.5 rounded-lg shadow-sm">
                         Zakat Eligible
                       </span>
                     )}
                   </div>
 
-                  {/* View Details Button */}
-                  <Link
-                    href={`/medhope/pages/needypersons/${person._id}`}
-                    className="btn-primary w-full text-center block"
-                  >
-                    View Details & Donate
-                  </Link>
+                  {/* View Details Button - Only show for accepted and pending cases */}
+                  {person.status !== 'rejected' && (
+                    <Link
+                      href={`/medhope/pages/needypersons/${person._id}`}
+                      className="btn-primary w-full text-center block font-semibold"
+                    >
+                      View Details & Donate
+                    </Link>
+                  )}
+                  
+                  {/* Message for rejected cases */}
+                  {person.status === 'rejected' && (
+                    <div className="text-center py-4 px-4 bg-red-50 border-2 border-red-200 rounded-xl">
+                      <p className="text-sm text-red-800 font-semibold mb-1">This case has been rejected</p>
+                      <p className="text-xs text-red-600">Donations are not available for this case</p>
+                    </div>
+                  )}
                 </div>
               </motion.div>
             ))}

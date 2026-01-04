@@ -34,8 +34,9 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Extract disease information (new case data)
-    const diseaseType = formData.get('diseaseType') as 'chronic' | 'other';
+    // Extract case type and disease information (new case data)
+    const caseType = formData.get('caseType') as 'medicine' | 'test' | null;
+    const diseaseType = formData.get('diseaseType') as 'chronic' | 'other' | 'medicine' | null;
     const chronicDisease = formData.get('chronicDisease') as string | null;
     const otherDisease = formData.get('otherDisease') as string | null;
     const manualDisease = formData.get('manualDisease') as string | null;
@@ -47,21 +48,47 @@ export async function POST(request: NextRequest) {
     const description = formData.get('description') as string;
     const hospitalName = formData.get('hospitalName') as string;
     const doctorName = formData.get('doctorName') as string;
-    const amountNeeded = parseFloat(formData.get('amountNeeded') as string);
+    const amountNeededStr = formData.get('amountNeeded') as string;
+    const amountNeeded = amountNeededStr ? parseFloat(amountNeededStr) : 0;
     const documentFile = formData.get('document') as File | null;
 
-    // Validate required fields
-    if (
-      !diseaseType ||
-      !description ||
-      !hospitalName ||
-      !doctorName ||
-      !amountNeeded
-    ) {
+    // Validate case type
+    if (!caseType || (caseType !== 'medicine' && caseType !== 'test')) {
       return NextResponse.json(
-        { message: 'All disease information fields are required' },
+        { message: 'Case type (medicine or test) is required' },
         { status: 400 }
       );
+    }
+
+    // Validate based on case type
+    if (caseType === 'test') {
+      // For test cases: diseaseType, selectedTests are required
+      if (!diseaseType || (diseaseType !== 'chronic' && diseaseType !== 'other')) {
+        return NextResponse.json(
+          { message: 'Disease type is required for test cases' },
+          { status: 400 }
+        );
+      }
+      if (!selectedTests || selectedTests.length === 0) {
+        return NextResponse.json(
+          { message: 'At least one test must be selected' },
+          { status: 400 }
+        );
+      }
+      if (amountNeeded <= 0) {
+        return NextResponse.json(
+          { message: 'Amount needed is required' },
+          { status: 400 }
+        );
+      }
+    } else if (caseType === 'medicine') {
+      // For medicine cases: description, hospitalName, doctorName, amountNeeded are required
+      if (!description || !hospitalName || !doctorName || amountNeeded <= 0) {
+        return NextResponse.json(
+          { message: 'Description, hospital name, doctor name, and amount are required for medicine cases' },
+          { status: 400 }
+        );
+      }
     }
 
     // Handle document file upload
@@ -91,12 +118,18 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // Determine disease name
+    // Determine disease name based on case type
     let diseaseName = '';
-    if (diseaseType === 'chronic') {
-      diseaseName = chronicDisease || '';
+    if (caseType === 'test') {
+      // For test cases, use the selected disease
+      if (diseaseType === 'chronic') {
+        diseaseName = chronicDisease || '';
+      } else {
+        diseaseName = otherDisease === 'Other' ? manualDisease || '' : otherDisease || '';
+      }
     } else {
-      diseaseName = otherDisease === 'Other' ? manualDisease || '' : otherDisease || '';
+      // For medicine cases, use a generic name or the description
+      diseaseName = 'Medicine/Treatment Request';
     }
 
     // Create new case using existing user's personal and financial info
@@ -130,12 +163,12 @@ export async function POST(request: NextRequest) {
       zakatEligible: existingUser.zakatEligible,
       
       // New disease information
-      diseaseType,
-      chronicDisease: diseaseType === 'chronic' ? diseaseName : undefined,
-      otherDisease: diseaseType === 'other' ? diseaseName : undefined,
-      manualDisease: otherDisease === 'Other' ? manualDisease || undefined : undefined,
-      testNeeded,
-      selectedTests,
+      diseaseType: caseType === 'test' ? diseaseType as 'chronic' | 'other' : 'other',
+      chronicDisease: caseType === 'test' && diseaseType === 'chronic' ? diseaseName : undefined,
+      otherDisease: caseType === 'test' && diseaseType === 'other' ? (otherDisease === 'Other' ? 'Other' : otherDisease || '') : (caseType === 'medicine' ? 'Medicine Request' : undefined),
+      manualDisease: caseType === 'test' && otherDisease === 'Other' ? manualDisease || undefined : undefined,
+      testNeeded: caseType === 'test',
+      selectedTests: caseType === 'test' ? selectedTests : undefined,
       description,
       hospitalName,
       doctorName,

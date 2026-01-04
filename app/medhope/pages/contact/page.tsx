@@ -26,16 +26,25 @@ export default function ContactPage() {
   const onSubmit = async (data: ContactFormData) => {
     setLoading(true);
     try {
-      // For now, just log the data
-      console.log('Contact form submission:', data);
-      
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.message || 'Failed to send message');
+      }
+
       toast.success('Thank you for your message! We\'ll get back to you soon.');
       reset();
-    } catch (error) {
-      toast.error('Failed to send message. Please try again.');
+    } catch (error: any) {
+      console.error('Contact form error:', error);
+      toast.error(error.message || 'Failed to send message. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -98,10 +107,10 @@ export default function ContactPage() {
                     <div>
                       <h3 className="text-lg font-semibold text-white mb-1">Email</h3>
                       <a
-                        href="mailto:support@medhope.com"
+                        href="mailto:medhope74@gmail.com"
                         className="text-white/90 hover:text-white transition-colors"
                       >
-                        support@medhope.com
+                        medhope74@gmail.com
                       </a>
                     </div>
                   </div>

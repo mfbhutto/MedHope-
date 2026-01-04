@@ -31,10 +31,11 @@ export async function GET(request: NextRequest) {
     // This includes:
     // 1. The original registration (email matches exactly, no originalEmail field)
     // 2. Additional cases (originalEmail field matches user's email)
+    const normalizedEmail = userEmail.toLowerCase().trim();
     const filters: any = {
       $or: [
-        { email: userEmail.toLowerCase() }, // Original registration
-        { originalEmail: userEmail.toLowerCase() }, // Additional cases
+        { email: normalizedEmail }, // Original registration
+        { originalEmail: normalizedEmail }, // Additional cases
       ],
       isActive: true,
     };

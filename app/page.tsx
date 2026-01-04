@@ -8,6 +8,7 @@ import PatientCases from '@/app/medhope/components/PatientCases';
 import Footer from '@/app/medhope/components/Footer';
 import HowItWorks from '@/app/medhope/components/HowItWorks';
 import WhyChooseUs from '@/app/medhope/components/WhyChooseUs';
+import Collaborators from '@/app/medhope/components/Collaborators';
 import api from '@/lib/api';
 
 // Root home page - Public, no login required
@@ -37,6 +38,7 @@ export default function HomePage() {
     <div className="min-h-screen bg-secondary">
       <Navbar />
       <Hero />
+      <Collaborators />
       <HowItWorks />
       <Services />
       <WhyChooseUs />

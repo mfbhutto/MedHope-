@@ -190,7 +190,7 @@
 
 ## 📧 Contact Information (from pages)
 
-- **Email:** support@medhope.com
+- **Email:** medhope74@gmail.com
 - **Phone/WhatsApp:** +92 300 1234567
 - **Location:** Karachi, Pakistan
 

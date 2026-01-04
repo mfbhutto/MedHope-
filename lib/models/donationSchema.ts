@@ -23,7 +23,7 @@ const donationSchema = new Schema<Donation>(
     paymentMethod: {
       type: String,
       required: true,
-      enum: ['stripe', 'jazzcash', 'easypaisa'],
+      enum: ['stripe', 'jazzcash', 'easypaisa', 'card'],
     },
     paymentId: {
       type: String,

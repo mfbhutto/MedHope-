@@ -73,9 +73,9 @@ export default function PrivacyPolicyPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-secondary via-white to-secondary/50 relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-secondary via-white to-secondary/50 relative">
       {/* Background Elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
         <motion.div
           animate={{ y: [0, -30, 0], x: [0, 20, 0] }}
           transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
@@ -95,7 +95,7 @@ export default function PrivacyPolicyPage() {
           <div className="grid lg:grid-cols-4 gap-8">
             {/* Table of Contents - Sticky Sidebar */}
             <div className="lg:col-span-1">
-              <div className="sticky top-32">
+              <div className="sticky top-24 z-10">
                 <motion.div
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
@@ -106,21 +106,21 @@ export default function PrivacyPolicyPage() {
                     <FileText className="w-5 h-5 text-primary" />
                     Contents
                   </h3>
-                  <nav className="space-y-2">
+                  <nav className="space-y-1.5">
                     {sections.map((section) => {
                       const Icon = section.icon;
                       return (
                         <button
                           key={section.id}
                           onClick={() => scrollToSection(section.id)}
-                          className={`w-full text-left flex items-center gap-2 px-3 py-2 rounded-lg transition-all ${
+                          className={`w-full text-left flex items-center gap-2 px-3 py-1.5 rounded-lg transition-all ${
                             activeSection === section.id
                               ? 'bg-primary/10 text-primary font-semibold'
                               : 'text-gray-600 hover:bg-secondary/50 hover:text-primary'
                           }`}
                         >
                           <Icon className="w-4 h-4 flex-shrink-0" />
-                          <span className="text-sm">{section.title}</span>
+                          <span className="text-xs">{section.title}</span>
                           {activeSection === section.id && (
                             <ChevronRight className="w-4 h-4 ml-auto" />
                           )}
@@ -382,7 +382,7 @@ export default function PrivacyPolicyPage() {
                   </div>
                   <div className="mt-6 p-4 bg-primary/5 rounded-lg border border-primary/20">
                     <p className="text-gray-700">
-                      To exercise these rights, please contact us at <a href="mailto:support@medhope.com" className="text-primary hover:underline font-semibold">support@medhope.com</a>.
+                      To exercise these rights, please contact us at <a href="mailto:medhope74@gmail.com" className="text-primary hover:underline font-semibold">medhope74@gmail.com</a>.
                     </p>
                   </div>
                 </motion.section>
@@ -469,8 +469,8 @@ export default function PrivacyPolicyPage() {
                     <div className="bg-white/80 p-5 rounded-xl border border-primary/20 hover:shadow-soft transition-all">
                       <Mail className="w-8 h-8 text-primary mb-3" />
                       <h4 className="font-semibold text-dark mb-1">Email</h4>
-                      <a href="mailto:support@medhope.com" className="text-primary hover:underline text-sm">
-                        support@medhope.com
+                      <a href="mailto:medhope74@gmail.com" className="text-primary hover:underline text-sm">
+                        medhope74@gmail.com
                       </a>
                     </div>
                     <div className="bg-white/80 p-5 rounded-xl border border-primary/20 hover:shadow-soft transition-all">

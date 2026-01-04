@@ -117,48 +117,52 @@ export async function needyPersonExists(email: string): Promise<boolean> {
  * Get all needy persons with filters
  */
 export async function getAllNeedyPersons(
-  filters: {
-    status?: 'pending' | 'accepted' | 'rejected';
-    priority?: 'High' | 'Medium' | 'Low';
-    district?: string;
-    isVerified?: boolean;
-    isActive?: boolean;
-    search?: string;
-  } = {},
+  filters: any = {},
   options: {
     limit?: number;
     skip?: number;
     sort?: any;
   } = {}
 ): Promise<NeedyPerson[]> {
+  // If filters contains MongoDB operators like $or, use it directly
+  // Otherwise, build query from individual filter properties
   const query: any = {};
 
-  if (filters.status) {
-    query.status = filters.status;
-  }
+  // Check if filters already contains MongoDB operators (like $or, $and, etc.)
+  const hasMongoOperators = filters && Object.keys(filters).some(key => key.startsWith('$'));
+  
+  if (hasMongoOperators) {
+    // Use filters directly if it contains MongoDB operators
+    Object.assign(query, filters);
+  } else {
+    // Build query from individual filter properties
+    if (filters.status) {
+      query.status = filters.status;
+    }
 
-  if (filters.priority) {
-    query.priority = filters.priority;
-  }
+    if (filters.priority) {
+      query.priority = filters.priority;
+    }
 
-  if (filters.district) {
-    query.district = filters.district;
-  }
+    if (filters.district) {
+      query.district = filters.district;
+    }
 
-  if (filters.isVerified !== undefined) {
-    query.isVerified = filters.isVerified;
-  }
+    if (filters.isVerified !== undefined) {
+      query.isVerified = filters.isVerified;
+    }
 
-  if (filters.isActive !== undefined) {
-    query.isActive = filters.isActive;
-  }
+    if (filters.isActive !== undefined) {
+      query.isActive = filters.isActive;
+    }
 
-  if (filters.search) {
-    query.$or = [
-      { name: { $regex: filters.search, $options: 'i' } },
-      { email: { $regex: filters.search, $options: 'i' } },
-      { caseNumber: { $regex: filters.search, $options: 'i' } },
-    ];
+    if (filters.search) {
+      query.$or = [
+        { name: { $regex: filters.search, $options: 'i' } },
+        { email: { $regex: filters.search, $options: 'i' } },
+        { caseNumber: { $regex: filters.search, $options: 'i' } },
+      ];
+    }
   }
 
   return await findDocuments(NeedyPersonModel, query, options);

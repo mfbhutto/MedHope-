@@ -13,6 +13,11 @@ export default function DonorProfilePage() {
   const [profileData, setProfileData] = useState<any>(null);
   const [donations, setDonations] = useState<any[]>([]);
   const [donationsLoading, setDonationsLoading] = useState(false);
+  const [donationStats, setDonationStats] = useState({
+    totalCommitted: 0,
+    totalDonated: 0,
+    casesHelped: 0,
+  });
 
   // Fetch donor profile data
   const fetchProfile = async () => {
@@ -42,10 +47,25 @@ export default function DonorProfilePage() {
     try {
       const response = await api.get(`/donations?donorEmail=${encodeURIComponent(currentUser.email)}`);
       console.log('Donations received:', response.data.donations);
-      setDonations(response.data.donations || []);
+      const donationsList = response.data.donations || [];
+      setDonations(donationsList);
+      
+      // Calculate statistics
+      const totalCommitted = donationsList.reduce((sum: number, d: any) => sum + (d.amount || 0), 0);
+      const completedDonations = donationsList.filter((d: any) => d.status === 'completed');
+      const totalDonated = completedDonations.reduce((sum: number, d: any) => sum + (d.amount || 0), 0);
+      const uniqueCases = new Set(completedDonations.map((d: any) => d.caseId).filter(Boolean));
+      const casesHelped = uniqueCases.size;
+      
+      setDonationStats({
+        totalCommitted,
+        totalDonated,
+        casesHelped,
+      });
     } catch (error) {
       console.error('Error fetching donations:', error);
       setDonations([]);
+      setDonationStats({ totalCommitted: 0, totalDonated: 0, casesHelped: 0 });
     } finally {
       setDonationsLoading(false);
     }
@@ -190,21 +210,26 @@ export default function DonorProfilePage() {
             <h2 className="heading-md text-dark mb-6 pb-4 border-b border-gray-200">Donation Statistics</h2>
             
             <div className="space-y-4">
-              <div className="bg-gradient-to-br from-primary-light/10 to-primary/10 p-6 rounded-xl border border-primary/20 hover:shadow-medium transition-all duration-300">
-                <p className="text-sm font-semibold text-gray-600 mb-2 uppercase tracking-wide">Total Donations</p>
-                <p className="text-3xl font-bold text-primary">{profileData?.totalDonations || 0}</p>
+              <div className="bg-gradient-to-br from-blue-50 to-indigo-50 p-6 rounded-xl border border-blue-200 hover:shadow-medium transition-all duration-300">
+                <p className="text-sm font-semibold text-gray-600 mb-2 uppercase tracking-wide">Total Committed</p>
+                <p className="text-3xl font-bold text-blue-600">
+                  PKR {donationStats.totalCommitted.toLocaleString()}
+                </p>
+                <p className="text-xs text-gray-500 mt-1">Sum of all donation amounts</p>
               </div>
 
               <div className="bg-gradient-to-br from-green-50 to-emerald-50 p-6 rounded-xl border border-green-200 hover:shadow-medium transition-all duration-300">
                 <p className="text-sm font-semibold text-gray-600 mb-2 uppercase tracking-wide">Total Amount Donated</p>
                 <p className="text-3xl font-bold text-green-600">
-                  PKR {profileData?.totalAmountDonated?.toLocaleString() || '0'}
+                  PKR {donationStats.totalDonated.toLocaleString()}
                 </p>
+                <p className="text-xs text-gray-500 mt-1">Completed donations</p>
               </div>
 
               <div className="bg-gradient-to-br from-purple-50 to-violet-50 p-6 rounded-xl border border-purple-200 hover:shadow-medium transition-all duration-300">
                 <p className="text-sm font-semibold text-gray-600 mb-2 uppercase tracking-wide">Cases Helped</p>
-                <p className="text-3xl font-bold text-purple-600">{profileData?.casesHelped || 0}</p>
+                <p className="text-3xl font-bold text-purple-600">{donationStats.casesHelped}</p>
+                <p className="text-xs text-gray-500 mt-1">Unique cases with donations</p>
               </div>
             </div>
           </div>

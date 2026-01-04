@@ -8,6 +8,11 @@ const inter = Inter({ subsets: ['latin'] })
 export const metadata: Metadata = {
   title: 'MedHope',
   description: 'A secure, intelligent, and charity-based medicine donation system',
+  icons: {
+    icon: '/favlogo.png',
+    shortcut: '/favlogo.png',
+    apple: '/favlogo.png',
+  },
 }
 
 export default function RootLayout({
