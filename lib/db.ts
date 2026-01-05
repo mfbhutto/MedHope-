@@ -111,7 +111,7 @@ export async function connectToDatabase(): Promise<typeof mongoose> {
 
       console.log('✅ MongoDB connected successfully');
       console.log('📊 Database:', mongoose.connection.db?.databaseName || 'unknown');
-      console.log('🔗 Connection state:', mongoose.connection.readyState === 1 ? 'connected' : 'not connected');
+      console.log('🔗 Connection state:', (mongoose.connection.readyState as number) === 1 ? 'connected' : 'not connected');
     } else {
       // Connection already established
       isConnected = true;
