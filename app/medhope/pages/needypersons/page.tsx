@@ -72,7 +72,7 @@ export default function NeedyPersonsPage() {
       const donations = response.data.donations || [];
       
       // Get case IDs where donor has completed donations
-      const donatedIds = new Set(
+      const donatedIds = new Set<string>(
         donations
           .filter((donation: any) => donation.status === 'completed')
           .map((donation: any) => String(donation.caseId))
