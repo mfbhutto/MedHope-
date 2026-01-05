@@ -38,6 +38,33 @@ const otherDiseases = [
   'Other',
 ];
 
+const medicineDiseases = [
+  'Diabetes',
+  'Hypertension',
+  'Heart Disease',
+  'Asthma',
+  'Chronic Kidney Disease',
+  'Arthritis',
+  'COPD (Chronic Obstructive Pulmonary Disease)',
+  'Epilepsy',
+  'Thyroid Disorders',
+  'Mental Health Conditions',
+  'Infections',
+  'Fractures',
+  'Surgery Required',
+  'Cancer Treatment',
+  'Accident Recovery',
+  'Pregnancy Complications',
+  'Child Illness',
+  'Fever',
+  'Cough & Cold',
+  'Gastrointestinal Issues',
+  'Skin Conditions',
+  'Eye Problems',
+  'Dental Issues',
+  'Other',
+];
+
 export default function NewCaseForm({ onClose, onSuccess, userProfile }: NewCaseFormProps) {
   const [loading, setLoading] = useState(false);
   const [caseType, setCaseType] = useState<'medicine' | 'test' | ''>('');
@@ -45,6 +72,8 @@ export default function NewCaseForm({ onClose, onSuccess, userProfile }: NewCase
   const [chronicDisease, setChronicDisease] = useState('');
   const [otherDisease, setOtherDisease] = useState('');
   const [manualDisease, setManualDisease] = useState('');
+  const [medicineDisease, setMedicineDisease] = useState('');
+  const [medicineManualDisease, setMedicineManualDisease] = useState('');
   const [selectedTests, setSelectedTests] = useState<string[]>([]);
   const [documentFile, setDocumentFile] = useState<File | null>(null);
   const [documentFileName, setDocumentFileName] = useState('');
@@ -107,6 +136,16 @@ export default function NewCaseForm({ onClose, onSuccess, userProfile }: NewCase
 
     // Validation for Medicine type
     if (caseType === 'medicine') {
+      if (!medicineDisease) {
+        toast.error('Please select or enter a disease');
+        return;
+      }
+
+      if (medicineDisease === 'Other' && !medicineManualDisease) {
+        toast.error('Please specify the disease');
+        return;
+      }
+
       if (!data.description) {
         toast.error('Please provide a description');
         return;
@@ -203,6 +242,10 @@ export default function NewCaseForm({ onClose, onSuccess, userProfile }: NewCase
       } else {
         // Medicine type
         formData.append('diseaseType', 'medicine'); // Special type for medicine
+        formData.append('medicineDisease', medicineDisease === 'Other' ? 'Other' : medicineDisease);
+        if (medicineDisease === 'Other') {
+          formData.append('medicineManualDisease', medicineManualDisease);
+        }
         formData.append('testNeeded', 'false');
         formData.append('description', data.description);
         formData.append('hospitalName', data.hospitalName);
@@ -325,6 +368,8 @@ export default function NewCaseForm({ onClose, onSuccess, userProfile }: NewCase
                         setChronicDisease('');
                         setOtherDisease('');
                         setManualDisease('');
+                        setMedicineDisease('');
+                        setMedicineManualDisease('');
                         setSelectedTests([]);
                       }}
                       className="w-5 h-5 text-primary focus:ring-primary"
@@ -556,6 +601,42 @@ export default function NewCaseForm({ onClose, onSuccess, userProfile }: NewCase
                     exit={{ opacity: 0, height: 0 }}
                     className="space-y-4 sm:space-y-6"
                   >
+                    {/* Disease Selection for Medicine */}
+                    <div className="bg-gradient-to-br from-accent/5 to-accent/10 p-4 sm:p-6 rounded-xl border border-accent/20">
+                      <label className="block text-sm font-semibold text-gray-700 mb-3 flex items-center gap-2">
+                        <AlertCircle className="w-5 h-5 text-accent flex-shrink-0" />
+                        Disease <span className="text-red-500">*</span>
+                      </label>
+                      <select
+                        value={medicineDisease}
+                        onChange={(e) => setMedicineDisease(e.target.value)}
+                        className="input-field bg-white w-full text-sm sm:text-base"
+                        required
+                      >
+                        <option value="">Select Disease</option>
+                        {medicineDiseases.map((disease) => (
+                          <option key={disease} value={disease}>
+                            {disease}
+                          </option>
+                        ))}
+                      </select>
+                      <AnimatePresence>
+                        {medicineDisease === 'Other' && (
+                          <motion.input
+                            initial={{ opacity: 0, y: -10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -10 }}
+                            type="text"
+                            value={medicineManualDisease}
+                            onChange={(e) => setMedicineManualDisease(e.target.value)}
+                            className="input-field bg-white w-full mt-3 text-sm sm:text-base"
+                            placeholder="Specify disease manually"
+                            required
+                          />
+                        )}
+                      </AnimatePresence>
+                    </div>
+
                     {/* Description */}
                     <div>
                       <label className="block text-sm font-semibold text-gray-700 mb-3 flex items-center gap-2">

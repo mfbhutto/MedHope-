@@ -10,7 +10,7 @@ import { setAuthData } from '@/lib/auth';
 import Navbar from '@/app/medhope/components/Navbar';
 import { karachiDistricts, karachiAreas, diseaseLabTests } from '@/lib/karachiData';
 import areaData from '@/karachi-areas-list.json';
-import { Eye, EyeOff, Pill, TestTube, Stethoscope } from 'lucide-react';
+import { Eye, EyeOff, Pill, TestTube, Stethoscope, AlertCircle } from 'lucide-react';
 
 interface Step1Data {
   name: string;
@@ -45,6 +45,8 @@ interface Step3Data {
   chronicDisease?: string[];
   otherDisease?: string[];
   manualDisease?: string;
+  medicineDisease?: string[];
+  medicineManualDisease?: string;
   testNeeded: boolean;
   selectedTests?: string[];
   description: string;
@@ -75,6 +77,33 @@ const otherDiseases = [
   'Accident Recovery',
   'Pregnancy Complications',
   'Child Illness',
+  'Other',
+];
+
+const medicineDiseases = [
+  'Diabetes',
+  'Hypertension',
+  'Heart Disease',
+  'Asthma',
+  'Chronic Kidney Disease',
+  'Arthritis',
+  'COPD (Chronic Obstructive Pulmonary Disease)',
+  'Epilepsy',
+  'Thyroid Disorders',
+  'Mental Health Conditions',
+  'Infections',
+  'Fractures',
+  'Surgery Required',
+  'Cancer Treatment',
+  'Accident Recovery',
+  'Pregnancy Complications',
+  'Child Illness',
+  'Fever',
+  'Cough & Cold',
+  'Gastrointestinal Issues',
+  'Skin Conditions',
+  'Eye Problems',
+  'Dental Issues',
   'Other',
 ];
 
@@ -123,6 +152,8 @@ export default function AccepterRegisterPage() {
   const diseaseType = watchStep3('diseaseType') as 'chronic' | 'other' | undefined;
   const chronicDisease = watchStep3('chronicDisease') || [];
   const otherDisease = watchStep3('otherDisease') || [];
+  const medicineDisease = watchStep3('medicineDisease') || [];
+  const medicineManualDisease = watchStep3('medicineManualDisease') || '';
   const testNeeded = watchStep3('testNeeded');
   const selectedTests = watchStep3('selectedTests') || [];
 
@@ -293,6 +324,14 @@ export default function AccepterRegisterPage() {
     
     // Validate medicine-specific fields if medicine type is selected
     if (data.caseType === 'medicine') {
+      if (!data.medicineDisease || data.medicineDisease.length === 0) {
+        toast.error('Please select at least one disease');
+        return;
+      }
+      if (data.medicineDisease.includes('Other') && !data.medicineManualDisease) {
+        toast.error('Please specify the disease name for "Other"');
+        return;
+      }
       if (!data.description) {
         toast.error('Please provide a description');
         return;
@@ -398,7 +437,14 @@ export default function AccepterRegisterPage() {
         formData.append('doctorName', data.doctorName || 'Not specified');
         formData.append('amountNeeded', data.amountNeeded || '0');
       } else if (data.caseType === 'medicine') {
-        // Medicine type - no diseaseType needed
+        // Medicine type
+        formData.append('diseaseType', 'medicine');
+        // Join multiple medicine diseases with comma
+        const diseases = (data.medicineDisease || []).filter(d => d).join(', ');
+        formData.append('medicineDisease', diseases);
+        if (data.medicineDisease && data.medicineDisease.includes('Other') && data.medicineManualDisease) {
+          formData.append('medicineManualDisease', data.medicineManualDisease);
+        }
         formData.append('testNeeded', 'false');
         formData.append('description', data.description);
         formData.append('hospitalName', data.hospitalName);
@@ -574,13 +620,43 @@ export default function AccepterRegisterPage() {
                       {...step1Form.register('phone', { 
                         required: 'Phone number is required',
                         pattern: {
-                          value: /^[0-9+\-\s()]+$/,
-                          message: 'Invalid phone number format'
+                          value: /^[0-9]{11}$/,
+                          message: 'Phone number must be exactly 11 digits (numbers only)'
                         },
-                        minLength: { value: 10, message: 'Phone number must be at least 10 digits' }
+                        validate: {
+                          onlyNumbers: (value: string) => {
+                            const digitsOnly = value.replace(/\D/g, '');
+                            if (digitsOnly.length !== 11) {
+                              return 'Phone number must be exactly 11 digits';
+                            }
+                            return true;
+                          },
+                          noLetters: (value: string) => {
+                            if (/[a-zA-Z]/.test(value)) {
+                              return 'Phone number cannot contain letters';
+                            }
+                            return true;
+                          }
+                        }
                       })}
+                      onKeyPress={(e: React.KeyboardEvent<HTMLInputElement>) => {
+                        // Only allow numeric keys (0-9)
+                        const char = String.fromCharCode(e.which || e.keyCode);
+                        if (!/[0-9]/.test(char)) {
+                          e.preventDefault();
+                        }
+                      }}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                        // Remove all non-numeric characters as user types
+                        const value = e.target.value.replace(/\D/g, '');
+                        // Limit to 11 digits
+                        const limitedValue = value.slice(0, 11);
+                        e.target.value = limitedValue;
+                        step1Form.setValue('phone', limitedValue, { shouldValidate: true });
+                      }}
                       className="input-field w-full text-sm sm:text-base"
-                      placeholder="+92 300 1234567"
+                      placeholder="03001234567"
+                      maxLength={11}
                     />
                     {step1Form.formState.errors.phone && (
                       <p className="text-red-500 text-xs mt-1">{step1Form.formState.errors.phone.message}</p>
@@ -1048,6 +1124,8 @@ export default function AccepterRegisterPage() {
                           step3Form.setValue('chronicDisease', []);
                           step3Form.setValue('otherDisease', []);
                           step3Form.setValue('manualDisease', undefined);
+                          step3Form.setValue('medicineDisease', []);
+                          step3Form.setValue('medicineManualDisease', '');
                           step3Form.setValue('selectedTests', []);
                         }}
                       />
@@ -1409,6 +1487,77 @@ export default function AccepterRegisterPage() {
                       <p className="text-xs text-gray-500 mt-1">
                         Please select at least one test
                       </p>
+                    )}
+                  </div>
+                )}
+
+                {/* Medicine Disease Selection - Only shown when Medicine is selected */}
+                {caseType === 'medicine' && (
+                  <div className="bg-gradient-to-br from-accent/5 to-accent/10 p-4 sm:p-6 rounded-xl border border-accent/20">
+                    <label className="block text-sm font-semibold text-gray-700 mb-3 flex items-center gap-2">
+                      <AlertCircle className="w-5 h-5 text-accent flex-shrink-0" />
+                      Select Disease(s) <span className="text-red-500">*</span>
+                    </label>
+                    <p className="text-xs text-gray-500 mb-3">You can select multiple diseases</p>
+                    <div className="border border-gray-300 rounded-lg p-2 max-h-48 overflow-y-auto bg-white">
+                      {medicineDiseases.map((disease) => {
+                        const isSelected = (medicineDisease || []).includes(disease);
+                        return (
+                          <label
+                            key={disease}
+                            className="flex items-center justify-between p-2 hover:bg-gray-50 rounded cursor-pointer border-b border-gray-100 last:border-b-0"
+                            onClick={() => {
+                              const currentDiseases = medicineDisease || [];
+                              if (isSelected) {
+                                step3Form.setValue('medicineDisease', currentDiseases.filter(d => d !== disease));
+                                // Clear manual disease if "Other" is deselected
+                                if (disease === 'Other') {
+                                  step3Form.setValue('medicineManualDisease', '');
+                                }
+                              } else {
+                                step3Form.setValue('medicineDisease', [...currentDiseases, disease]);
+                              }
+                            }}
+                          >
+                            <span className="text-sm text-gray-700 flex-1">{disease}</span>
+                            <div className="flex items-center ml-2">
+                              {isSelected ? (
+                                <svg className="w-5 h-5 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                                </svg>
+                              ) : (
+                                <div className="w-5 h-5 border-2 border-gray-300 rounded"></div>
+                              )}
+                            </div>
+                          </label>
+                        );
+                      })}
+                    </div>
+                    {medicineDisease && medicineDisease.length > 0 && (
+                      <p className="text-xs text-green-600 mt-2 font-medium">
+                        ✓ {medicineDisease.length} disease(s) selected: {medicineDisease.filter(d => d !== 'Other' || medicineManualDisease).join(', ').replace(/Other/g, medicineManualDisease || 'Other')}
+                      </p>
+                    )}
+                    {medicineDisease && medicineDisease.includes('Other') && (
+                      <div className="mt-3">
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">
+                          Enter Disease Name <span className="text-red-500">*</span>
+                        </label>
+                        <input
+                          type="text"
+                          value={medicineManualDisease}
+                          onChange={(e) => step3Form.setValue('medicineManualDisease', e.target.value)}
+                          className="input-field bg-white w-full text-sm sm:text-base"
+                          placeholder="Specify disease manually"
+                          required
+                        />
+                        {step3Form.formState.errors.medicineManualDisease && (
+                          <p className="text-red-500 text-xs mt-1">{step3Form.formState.errors.medicineManualDisease.message}</p>
+                        )}
+                      </div>
+                    )}
+                    {step3Form.formState.errors.medicineDisease && (
+                      <p className="text-red-500 text-xs mt-1">{step3Form.formState.errors.medicineDisease.message}</p>
                     )}
                   </div>
                 )}

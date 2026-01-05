@@ -4,8 +4,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { connectToDatabase } from '@/lib/db';
 import { createNeedyPerson, needyPersonExists } from '@/lib/controllers/needyPerson';
-import { writeFile, mkdir } from 'fs/promises';
-import { join } from 'path';
+import { uploadFileToCloudinary } from '@/lib/cloudinary';
 
 export async function POST(request: NextRequest) {
   try {
@@ -48,10 +47,12 @@ export async function POST(request: NextRequest) {
     const utilityBillFile = formData.get('utilityBill') as File | null;
 
     // Extract Step 3: Disease Information
-    const diseaseType = formData.get('diseaseType') as 'chronic' | 'other';
+    const diseaseType = formData.get('diseaseType') as 'chronic' | 'other' | 'medicine' | null;
     const chronicDisease = formData.get('chronicDisease') as string | null;
     const otherDisease = formData.get('otherDisease') as string | null;
     const manualDisease = formData.get('manualDisease') as string | null;
+    const medicineDisease = formData.get('medicineDisease') as string | null;
+    const medicineManualDisease = formData.get('medicineManualDisease') as string | null;
     const testNeeded = formData.get('testNeeded') === 'true';
     const selectedTestsStr = formData.get('selectedTests') as string | null;
     const selectedTests = selectedTestsStr
@@ -87,17 +88,43 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    if (
-      !diseaseType ||
-      !description ||
-      !hospitalName ||
-      !doctorName ||
-      !amountNeeded
-    ) {
-      return NextResponse.json(
-        { message: 'All disease information fields are required' },
-        { status: 400 }
-      );
+    // Validate disease information based on case type
+    if (diseaseType === 'medicine') {
+      // For medicine type, validate medicine disease
+      if (!medicineDisease || !description || !hospitalName || !doctorName || !amountNeeded) {
+        return NextResponse.json(
+          { message: 'All disease information fields are required' },
+          { status: 400 }
+        );
+      }
+      // Parse medicine diseases (comma-separated string)
+      const medicineDiseasesList = medicineDisease.split(',').map(d => d.trim()).filter(d => d);
+      if (medicineDiseasesList.length === 0) {
+        return NextResponse.json(
+          { message: 'Please select at least one disease' },
+          { status: 400 }
+        );
+      }
+      if (medicineDiseasesList.includes('Other') && !medicineManualDisease) {
+        return NextResponse.json(
+          { message: 'Please specify the disease name for "Other"' },
+          { status: 400 }
+        );
+      }
+    } else {
+      // For test type, validate disease type
+      if (
+        !diseaseType ||
+        !description ||
+        !hospitalName ||
+        !doctorName ||
+        !amountNeeded
+      ) {
+        return NextResponse.json(
+          { message: 'All disease information fields are required' },
+          { status: 400 }
+        );
+      }
     }
 
     // Validate email format
@@ -126,33 +153,19 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Handle file uploads - save to public/uploads directory
+    // Handle file uploads - upload to Cloudinary
     let utilityBillPath: string | undefined;
     let documentPath: string | undefined;
 
     if (utilityBillFile && utilityBillFile.size > 0) {
       try {
-        // Create unique filename
-        const timestamp = Date.now();
-        const sanitizedName = utilityBillFile.name.replace(/[^a-zA-Z0-9.-]/g, '_');
-        const fileName = `${timestamp}-${sanitizedName}`;
-        
-        // Save to public/uploads/utility-bills
-        const uploadsDir = join(process.cwd(), 'public', 'uploads', 'utility-bills');
-        await mkdir(uploadsDir, { recursive: true });
-        
-        const filePath = join(uploadsDir, fileName);
-        const bytes = await utilityBillFile.arrayBuffer();
-        const buffer = Buffer.from(bytes);
-        
-        await writeFile(filePath, buffer);
-        
-        // Store URL path (accessible via /uploads/utility-bills/filename)
-        utilityBillPath = `/uploads/utility-bills/${fileName}`;
+        // Upload to Cloudinary
+        const uploadResult = await uploadFileToCloudinary(utilityBillFile, 'utility-bills');
+        utilityBillPath = uploadResult.secure_url;
       } catch (error) {
-        console.error('Error saving utility bill:', error);
+        console.error('Error uploading utility bill to Cloudinary:', error);
         return NextResponse.json(
-          { message: 'Failed to save utility bill file' },
+          { message: 'Failed to save utility bill file. Please check Cloudinary configuration in .env file.' },
           { status: 500 }
         );
       }
@@ -160,27 +173,13 @@ export async function POST(request: NextRequest) {
 
     if (documentFile && documentFile.size > 0) {
       try {
-        // Create unique filename
-        const timestamp = Date.now();
-        const sanitizedName = documentFile.name.replace(/[^a-zA-Z0-9.-]/g, '_');
-        const fileName = `${timestamp}-${sanitizedName}`;
-        
-        // Save to public/uploads/documents
-        const uploadsDir = join(process.cwd(), 'public', 'uploads', 'documents');
-        await mkdir(uploadsDir, { recursive: true });
-        
-        const filePath = join(uploadsDir, fileName);
-        const bytes = await documentFile.arrayBuffer();
-        const buffer = Buffer.from(bytes);
-        
-        await writeFile(filePath, buffer);
-        
-        // Store URL path (accessible via /uploads/documents/filename)
-        documentPath = `/uploads/documents/${fileName}`;
+        // Upload to Cloudinary
+        const uploadResult = await uploadFileToCloudinary(documentFile, 'documents');
+        documentPath = uploadResult.secure_url;
       } catch (error) {
-        console.error('Error saving document:', error);
+        console.error('Error uploading document to Cloudinary:', error);
         return NextResponse.json(
-          { message: 'Failed to save document file' },
+          { message: 'Failed to save document file. Please check Cloudinary configuration in .env file.' },
           { status: 500 }
         );
       }
@@ -188,7 +187,17 @@ export async function POST(request: NextRequest) {
 
     // Determine disease name
     let diseaseName = '';
-    if (diseaseType === 'chronic') {
+    if (diseaseType === 'medicine') {
+      // Parse medicine diseases and format them
+      const medicineDiseasesList = medicineDisease ? medicineDisease.split(',').map(d => d.trim()).filter(d => d) : [];
+      const formattedDiseases = medicineDiseasesList.map(d => {
+        if (d === 'Other' && medicineManualDisease) {
+          return medicineManualDisease;
+        }
+        return d;
+      });
+      diseaseName = formattedDiseases.length > 0 ? formattedDiseases.join(', ') : 'Medicine Request';
+    } else if (diseaseType === 'chronic') {
       diseaseName = chronicDisease || '';
     } else {
       diseaseName = otherDisease === 'Other' ? manualDisease || '' : otherDisease || '';
@@ -219,10 +228,10 @@ export async function POST(request: NextRequest) {
       utilityBill: utilityBillPath,
       zakatEligible,
       // Step 3
-      diseaseType,
+      diseaseType: diseaseType === 'medicine' ? 'other' : diseaseType,
       chronicDisease: diseaseType === 'chronic' ? diseaseName : undefined,
-      otherDisease: diseaseType === 'other' ? diseaseName : undefined,
-      manualDisease: otherDisease === 'Other' ? manualDisease || undefined : undefined,
+      otherDisease: diseaseType === 'other' ? (otherDisease === 'Other' ? 'Other' : otherDisease || '') : (diseaseType === 'medicine' ? diseaseName : undefined),
+      manualDisease: diseaseType === 'other' && otherDisease === 'Other' ? manualDisease || undefined : (diseaseType === 'medicine' && medicineDisease && medicineDisease.includes('Other') ? medicineManualDisease || undefined : undefined),
       testNeeded,
       selectedTests,
       description,

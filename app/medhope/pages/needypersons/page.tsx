@@ -35,6 +35,7 @@ export default function NeedyPersonsPage() {
   const [user, setUser] = useState<any>(null);
   const [needyPersons, setNeedyPersons] = useState<NeedyPerson[]>([]);
   const [loading, setLoading] = useState(true);
+  const [donatedCaseIds, setDonatedCaseIds] = useState<Set<string>>(new Set());
   const [filters, setFilters] = useState({
     priority: '' as string,
   });
@@ -56,7 +57,33 @@ export default function NeedyPersonsPage() {
 
     setUser(currentUser);
     fetchNeedyPersons();
+    fetchDonatedCases();
   }, [router, filters]);
+
+  const fetchDonatedCases = async () => {
+    const currentUser = getStoredUser();
+    if (!currentUser || !currentUser.email || currentUser.role !== 'donor') {
+      return;
+    }
+
+    try {
+      // Fetch all donations for this donor
+      const response = await api.get(`/donations?donorEmail=${encodeURIComponent(currentUser.email)}`);
+      const donations = response.data.donations || [];
+      
+      // Get case IDs where donor has completed donations
+      const donatedIds = new Set(
+        donations
+          .filter((donation: any) => donation.status === 'completed')
+          .map((donation: any) => String(donation.caseId))
+      );
+      
+      setDonatedCaseIds(donatedIds);
+    } catch (error) {
+      console.error('Error fetching donated cases:', error);
+      // Don't show error, just continue without donation status
+    }
+  };
 
   const fetchNeedyPersons = async () => {
     setLoading(true);
@@ -90,7 +117,6 @@ export default function NeedyPersonsPage() {
     if (!searchQuery) return true;
     const query = searchQuery.toLowerCase();
     return (
-      person.name.toLowerCase().includes(query) ||
       person.caseNumber.toLowerCase().includes(query) ||
       person.district.toLowerCase().includes(query) ||
       person.area.toLowerCase().includes(query) ||
@@ -123,7 +149,7 @@ export default function NeedyPersonsPage() {
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search by name, case number, disease, location, hospital..."
+                placeholder="Search by case number, disease, location, hospital..."
                 className="input-field w-full"
               />
             </div>
@@ -170,7 +196,7 @@ export default function NeedyPersonsPage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="glass-card card-hover overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100"
+                className="glass-card card-hover overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 flex flex-col h-full"
               >
                 {/* Card Header */}
                 <div className="bg-gradient-to-br from-primary via-primary to-primary-dark p-5 text-white rounded-t-xl">
@@ -188,7 +214,7 @@ export default function NeedyPersonsPage() {
                   </div>
                 </div>
 
-                <div className="p-6 bg-white">
+                <div className="p-6 bg-white flex flex-col flex-grow">
                   {/* Disease Information */}
                   <div className="mb-4 pb-4 border-b border-gray-100">
                     <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Disease</p>
@@ -256,11 +282,11 @@ export default function NeedyPersonsPage() {
                     <p className="text-2xl font-bold text-primary">
                       PKR {person.amountNeeded.toLocaleString()}
                     </p>
-                    {person.totalDonations && person.totalDonations > 0 && (
+                    {person.totalDonations && person.totalDonations > 0 ? (
                       <p className="text-xs text-green-600 font-medium mt-2">
                         ✓ Received: PKR {person.totalDonations.toLocaleString()}
                       </p>
-                    )}
+                    ) : null}
                   </div>
 
                   {/* Status & Zakat Badge */}
@@ -279,23 +305,42 @@ export default function NeedyPersonsPage() {
                     )}
                   </div>
 
-                  {/* View Details Button - Only show for accepted and pending cases */}
-                  {person.status !== 'rejected' && (
-                    <Link
-                      href={`/medhope/pages/needypersons/${person._id}`}
-                      className="btn-primary w-full text-center block font-semibold"
-                    >
-                      View Details & Donate
-                    </Link>
-                  )}
-                  
-                  {/* Message for rejected cases */}
-                  {person.status === 'rejected' && (
-                    <div className="text-center py-4 px-4 bg-red-50 border-2 border-red-200 rounded-xl">
-                      <p className="text-sm text-red-800 font-semibold mb-1">This case has been rejected</p>
-                      <p className="text-xs text-red-600">Donations are not available for this case</p>
-                    </div>
-                  )}
+                  {/* Check if user has donated to this case - Push to bottom with mt-auto */}
+                  <div className="mt-auto">
+                    {(() => {
+                      const hasDonatedToCase = donatedCaseIds.has(String(person._id));
+                      
+                      if (hasDonatedToCase) {
+                        // Show message for donated cases (similar to rejected)
+                        return (
+                          <div className="text-center py-4 px-4 bg-green-50 border-2 border-green-200 rounded-xl">
+                            <p className="text-sm text-green-800 font-semibold mb-1">You have already donated to this case</p>
+                            <p className="text-xs text-green-600">Thank you for your generosity!</p>
+                          </div>
+                        );
+                      }
+                      
+                      if (person.status === 'rejected') {
+                        // Show message for rejected cases
+                        return (
+                          <div className="text-center py-4 px-4 bg-red-50 border-2 border-red-200 rounded-xl">
+                            <p className="text-sm text-red-800 font-semibold mb-1">This case has been rejected</p>
+                            <p className="text-xs text-red-600">Donations are not available for this case</p>
+                          </div>
+                        );
+                      }
+                      
+                      // Show button for cases that haven't been donated to and aren't rejected
+                      return (
+                        <Link
+                          href={`/medhope/pages/needypersons/${person._id}`}
+                          className="btn-primary w-full text-center block font-semibold"
+                        >
+                          View Details & Donate
+                        </Link>
+                      );
+                    })()}
+                  </div>
                 </div>
               </motion.div>
             ))}

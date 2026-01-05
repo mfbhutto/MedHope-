@@ -51,10 +51,14 @@ export default function NeedyPersonDetailPage() {
   const [user, setUser] = useState<any>(null);
   const [needyPerson, setNeedyPerson] = useState<NeedyPerson | null>(null);
   const [loading, setLoading] = useState(true);
+  const [hasDonated, setHasDonated] = useState(false);
   const [donationAmount, setDonationAmount] = useState('');
+  const [donationAmountError, setDonationAmountError] = useState('');
   const [donating, setDonating] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState<'card' | 'wallet' | ''>('');
   const [cardNumber, setCardNumber] = useState('');
+  const [cardError, setCardError] = useState('');
+  const [cardType, setCardType] = useState<'visa' | 'mastercard' | ''>('');
   const [walletType, setWalletType] = useState<'easypaisa' | 'jazcash' | ''>('');
   const [mobileNumber, setMobileNumber] = useState('');
 
@@ -76,6 +80,7 @@ export default function NeedyPersonDetailPage() {
 
     setUser(currentUser);
     fetchNeedyPerson();
+    checkIfDonated();
   }, [router, params]);
 
   const fetchNeedyPerson = async () => {
@@ -94,10 +99,92 @@ export default function NeedyPersonDetailPage() {
     }
   };
 
+  const checkIfDonated = async () => {
+    const currentUser = getStoredUser();
+    // Only check for donors, not admins
+    if (!currentUser || !currentUser.email || !params?.id || currentUser.role !== 'donor') {
+      setHasDonated(false);
+      return;
+    }
+
+    try {
+      // Check if donor has already donated to this case
+      // Use the specific caseId to filter donations
+      const caseIdParam = String(params.id).trim();
+      const response = await api.get(`/donations?donorEmail=${encodeURIComponent(currentUser.email)}&caseId=${caseIdParam}`);
+      const donations = response.data.donations || [];
+      
+      // Strictly check if there's a completed donation for this specific case
+      // The API should filter by caseId, but we double-check here for safety
+      const hasCompletedDonation = donations.length > 0 && donations.some((donation: any) => {
+        // Normalize both IDs for comparison
+        const donationCaseId = String(donation.caseId || '').trim();
+        const currentCaseId = caseIdParam;
+        const matchesCase = donationCaseId === currentCaseId;
+        const isCompleted = donation.status === 'completed';
+        
+        // Only return true if both conditions are met
+        return matchesCase && isCompleted;
+      });
+      
+      // Explicitly set to false if no matching donations found
+      setHasDonated(hasCompletedDonation);
+    } catch (error) {
+      console.error('Error checking donation status:', error);
+      // Don't show error to user, just assume they haven't donated
+      setHasDonated(false);
+    }
+  };
+
+  // Validate card number format
+  const validateCardNumber = (cardNum: string): { isValid: boolean; type: 'visa' | 'mastercard' | 'invalid'; error: string } => {
+    // Remove spaces and non-digits
+    const cleaned = cardNum.replace(/\D/g, '');
+    
+    if (!cleaned) {
+      return { isValid: false, type: 'invalid', error: 'Card number is required' };
+    }
+    
+    // Visa: starts with 4, 13 or 16 digits
+    if (cleaned.startsWith('4')) {
+      if (cleaned.length === 13 || cleaned.length === 16) {
+        return { isValid: true, type: 'visa', error: '' };
+      }
+      return { isValid: false, type: 'visa', error: 'Visa card must be 13 or 16 digits' };
+    }
+    
+    // Mastercard: starts with 51-55 or 2221-2720, 16 digits
+    const firstTwo = parseInt(cleaned.substring(0, 2));
+    const firstFour = parseInt(cleaned.substring(0, 4));
+    
+    if ((firstTwo >= 51 && firstTwo <= 55) || (firstFour >= 2221 && firstFour <= 2720)) {
+      if (cleaned.length === 16) {
+        return { isValid: true, type: 'mastercard', error: '' };
+      }
+      return { isValid: false, type: 'mastercard', error: 'Mastercard must be 16 digits' };
+    }
+    
+    return { isValid: false, type: 'invalid', error: 'Invalid card number. Only Visa and Mastercard are accepted' };
+  };
+
   const handleDonate = async () => {
     if (!donationAmount || parseFloat(donationAmount) <= 0) {
       toast.error('Please enter a valid donation amount');
+      setDonationAmountError('Please enter a valid donation amount');
       return;
+    }
+
+    // Check if donation amount exceeds remaining amount needed
+    if (needyPerson) {
+      const remainingAmount = needyPerson.amountNeeded - (needyPerson.totalDonations || 0);
+      const amount = parseFloat(donationAmount);
+      
+      if (amount > remainingAmount) {
+        const errorMsg = `Donation amount cannot exceed the remaining amount needed (PKR ${remainingAmount.toLocaleString()})`;
+        setDonationAmountError(errorMsg);
+        toast.error(errorMsg);
+        return;
+      }
     }
 
     if (!paymentMethod) {
@@ -105,9 +192,29 @@ export default function NeedyPersonDetailPage() {
       return;
     }
 
-    if (paymentMethod === 'card' && (!cardNumber || cardNumber.replace(/\s/g, '').length < 16)) {
-      toast.error('Please enter a valid 16-digit card number');
-      return;
+    if (paymentMethod === 'card') {
+      if (!cardType) {
+        toast.error('Please select a card type (Visa or Mastercard)');
+        return;
+      }
+      if (!cardNumber) {
+        toast.error('Please enter your card number');
+        return;
+      }
+      const validation = validateCardNumber(cardNumber);
+      if (!validation.isValid) {
+        setCardError(validation.error);
+        toast.error(validation.error);
+        return;
+      }
+      // Check if the card number matches the selected card type
+      if (validation.type !== cardType) {
+        const errorMsg = `Card number does not match selected ${cardType === 'visa' ? 'Visa' : 'Mastercard'} card`;
+        setCardError(errorMsg);
+        toast.error(errorMsg);
+        return;
+      }
+      setCardError('');
     }
 
     if (paymentMethod === 'wallet') {
@@ -152,11 +259,15 @@ export default function NeedyPersonDetailPage() {
       
       toast.success(`Donation of PKR ${amount.toLocaleString()} submitted successfully!`);
       setDonationAmount('');
+      setDonationAmountError('');
       setPaymentMethod('');
       setCardNumber('');
+      setCardType('');
+      setCardError('');
       setWalletType('');
       setMobileNumber('');
-      // Refresh needy person data to update total donations
+      // Mark as donated and refresh needy person data
+      setHasDonated(true);
       fetchNeedyPerson();
     } catch (error: any) {
       console.error('Donation error:', error);
@@ -468,17 +579,36 @@ export default function NeedyPersonDetailPage() {
                     <div className="mt-2">
                       {(() => {
                         // Normalize path - handle both old format (without /) and new format (with /)
+                        // Also handle Cloudinary URLs (https://)
                         let imagePath = needyPerson.document;
                         
-                        // Remove 'uploads/' prefix if present (old format)
-                        if (imagePath.startsWith('uploads/')) {
-                          imagePath = `/${imagePath}`;
-                        } else if (!imagePath.startsWith('/')) {
-                          imagePath = `/${imagePath}`;
+                        // Check if it's a Cloudinary URL (starts with http:// or https://)
+                        const isCloudinaryUrl = imagePath.startsWith('http://') || imagePath.startsWith('https://');
+                        
+                        if (!isCloudinaryUrl) {
+                          // Handle local file paths
+                          // Remove 'uploads/' prefix if present (old format)
+                          if (imagePath.startsWith('uploads/')) {
+                            imagePath = `/${imagePath}`;
+                          } else if (!imagePath.startsWith('/')) {
+                            imagePath = `/${imagePath}`;
+                          }
                         }
                         
                         // Check if it's an image file
-                        const isImage = imagePath.match(/\.(jpg|jpeg|png|gif|webp)$/i);
+                        // Cloudinary URLs typically contain image transformations or end with image extensions
+                        // For Cloudinary, check if URL contains image indicators or assume it's an image if it's a Cloudinary URL
+                        const hasImageExtension = imagePath.match(/\.(jpg|jpeg|png|gif|webp)$/i);
+                        const isCloudinaryImage = isCloudinaryUrl && (
+                          imagePath.includes('image/upload') || 
+                          imagePath.includes('.jpg') || 
+                          imagePath.includes('.jpeg') || 
+                          imagePath.includes('.png') || 
+                          imagePath.includes('.gif') ||
+                          imagePath.includes('.webp') ||
+                          !imagePath.includes('.pdf') // If it's Cloudinary and not PDF, assume image
+                        );
+                        const isImage = hasImageExtension || isCloudinaryImage;
                         
                         if (isImage) {
                           return (
@@ -571,21 +701,63 @@ export default function NeedyPersonDetailPage() {
                 </div>
               )}
 
-              {/* Donation Form */}
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Donation Amount (PKR)
-                  </label>
-                  <input
-                    type="number"
-                    value={donationAmount}
-                    onChange={(e) => setDonationAmount(e.target.value)}
-                    placeholder="Enter amount"
-                    min="1"
-                    className="input-field w-full"
-                  />
+              {/* Donation Form or Already Donated Message */}
+              {hasDonated ? (
+                <div className="space-y-4">
+                  <div className="bg-green-50 border-2 border-green-200 rounded-xl p-6 text-center">
+                    <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                    </div>
+                    <h3 className="text-lg font-bold text-green-800 mb-2">Thank You for Your Donation!</h3>
+                    <p className="text-sm text-green-700">
+                      You have already donated to this case. Your generosity is making a difference!
+                    </p>
+                  </div>
                 </div>
+              ) : (
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                      Donation Amount (PKR)
+                    </label>
+                    {needyPerson && (needyPerson.amountNeeded - (needyPerson.totalDonations || 0)) > 0 && (
+                      <p className="text-xs text-gray-500 mb-2">
+                        Remaining amount needed: PKR {(needyPerson.amountNeeded - (needyPerson.totalDonations || 0)).toLocaleString()}
+                      </p>
+                    )}
+                    <input
+                      type="number"
+                      value={donationAmount}
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        setDonationAmount(value);
+                        setDonationAmountError('');
+                        
+                        // Real-time validation
+                        if (value && needyPerson) {
+                          const amount = parseFloat(value);
+                          const remainingAmount = needyPerson.amountNeeded - (needyPerson.totalDonations || 0);
+                          
+                          if (amount <= 0) {
+                            setDonationAmountError('Donation amount must be greater than 0');
+                          } else if (amount > remainingAmount) {
+                            setDonationAmountError(`Amount cannot exceed remaining needed amount (PKR ${remainingAmount.toLocaleString()})`);
+                          } else {
+                            setDonationAmountError('');
+                          }
+                        }
+                      }}
+                      placeholder="Enter amount"
+                      min="1"
+                      max={needyPerson ? needyPerson.amountNeeded - (needyPerson.totalDonations || 0) : undefined}
+                      className={`input-field w-full ${donationAmountError ? 'border-red-500' : ''}`}
+                    />
+                    {donationAmountError && (
+                      <p className="text-sm text-red-600 mt-1">{donationAmountError}</p>
+                    )}
+                  </div>
 
                 {/* Payment Method Selection */}
                 <div>
@@ -599,8 +771,11 @@ export default function NeedyPersonDetailPage() {
                         setPaymentMethod('card');
                         setWalletType('');
                         setMobileNumber('');
+                        setCardType('');
+                        setCardNumber('');
+                        setCardError('');
                       }}
-                      className={`p-3 rounded-lg border-2 transition-all ${
+                      className={`p-3 rounded-lg border-2 transition-all select-none ${
                         paymentMethod === 'card'
                           ? 'border-primary bg-primary/10 text-primary'
                           : 'border-gray-300 hover:border-primary/50'
@@ -619,8 +794,9 @@ export default function NeedyPersonDetailPage() {
                       onClick={() => {
                         setPaymentMethod('wallet');
                         setCardNumber('');
+                        setCardError('');
                       }}
-                      className={`p-3 rounded-lg border-2 transition-all ${
+                      className={`p-3 rounded-lg border-2 transition-all select-none ${
                         paymentMethod === 'wallet'
                           ? 'border-primary bg-primary/10 text-primary'
                           : 'border-gray-300 hover:border-primary/50'
@@ -642,40 +818,98 @@ export default function NeedyPersonDetailPage() {
                 {paymentMethod === 'card' && (
                   <div className="space-y-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
                     <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-2">
-                        Card Number <span className="text-red-500">*</span>
+                      <label className="block text-sm font-semibold text-gray-700 mb-3">
+                        Select Card Type <span className="text-red-500">*</span>
                       </label>
-                      <input
-                        type="text"
-                        value={cardNumber}
-                        onChange={(e) => {
-                          const value = e.target.value.replace(/\D/g, '').slice(0, 16);
-                          setCardNumber(value.replace(/(.{4})/g, '$1 ').trim());
-                        }}
-                        placeholder="1234 5678 9012 3456"
-                        maxLength={19}
-                        className="input-field w-full"
-                      />
-                      <div className="flex items-center gap-3 mt-3">
-                        <div className="flex items-center gap-2 bg-white px-3 py-2 rounded-lg border border-gray-200 shadow-sm">
-                          <svg width="48" height="30" viewBox="0 0 48 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <rect width="48" height="30" rx="4" fill="#1A1F71"/>
-                            <path d="M19.5 9.5h9v11h-9z" fill="white"/>
-                            <circle cx="33.5" cy="15" r="3.5" fill="#EB001B"/>
-                            <circle cx="38.5" cy="15" r="3.5" fill="#F79E1B"/>
-                          </svg>
-                          <span className="text-xs font-bold text-gray-800">Visa</span>
-                        </div>
-                        <div className="flex items-center gap-2 bg-white px-3 py-2 rounded-lg border border-gray-200 shadow-sm">
-                          <svg width="48" height="30" viewBox="0 0 48 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <rect width="48" height="30" rx="4" fill="#EB001B"/>
-                            <circle cx="18" cy="15" r="7" fill="#F79E1B" opacity="0.8"/>
-                            <circle cx="30" cy="15" r="7" fill="#EB001B" opacity="0.8"/>
-                          </svg>
-                          <span className="text-xs font-bold text-gray-800">Mastercard</span>
-                        </div>
+                      <div className="grid grid-cols-2 gap-3 mb-4">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setCardType('visa');
+                            setCardNumber('');
+                            setCardError('');
+                          }}
+                          className={`p-3 rounded-lg border-2 transition-all select-none ${
+                            cardType === 'visa'
+                              ? 'border-blue-600 bg-blue-50'
+                              : 'border-gray-300 hover:border-blue-600/50'
+                          }`}
+                        >
+                          <div className="flex flex-col items-center gap-2">
+                            <div className="w-16 h-16 flex items-center justify-center">
+                              <img
+                                src="/Visa-Card-Logo-Background-PNG-Image.png"
+                                alt="Visa"
+                                className="max-w-full max-h-full object-contain"
+                                draggable="false"
+                              />
+                            </div>
+                            <span className="text-xs font-medium text-gray-700">Visa</span>
+                          </div>
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setCardType('mastercard');
+                            setCardNumber('');
+                            setCardError('');
+                          }}
+                          className={`p-3 rounded-lg border-2 transition-all select-none ${
+                            cardType === 'mastercard'
+                              ? 'border-red-600 bg-red-50'
+                              : 'border-gray-300 hover:border-red-600/50'
+                          }`}
+                        >
+                          <div className="flex flex-col items-center gap-2">
+                            <div className="w-16 h-16 flex items-center justify-center">
+                              <img
+                                src="/mastercard logo.jpg"
+                                alt="Mastercard"
+                                className="max-w-full max-h-full object-contain"
+                                draggable="false"
+                              />
+                            </div>
+                            <span className="text-xs font-medium text-gray-700">Mastercard</span>
+                          </div>
+                        </button>
                       </div>
                     </div>
+
+                    {cardType && (
+                      <div>
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">
+                          Card Number <span className="text-red-500">*</span>
+                        </label>
+                        <input
+                          type="text"
+                          value={cardNumber}
+                          onChange={(e) => {
+                            const value = e.target.value.replace(/\D/g, '').slice(0, 16);
+                            const formatted = value.replace(/(.{4})/g, '$1 ').trim();
+                            setCardNumber(formatted);
+                            setCardError('');
+                            
+                            // Validate as user types
+                            if (value.length > 0) {
+                              const validation = validateCardNumber(value);
+                              if (!validation.isValid && value.length >= 4) {
+                                setCardError(validation.error);
+                              } else if (validation.type !== cardType) {
+                                setCardError(`Card number does not match selected ${cardType === 'visa' ? 'Visa' : 'Mastercard'} card`);
+                              } else {
+                                setCardError('');
+                              }
+                            }
+                          }}
+                          placeholder={cardType === 'visa' ? '4XXX XXXX XXXX XXXX' : '5XXX XXXX XXXX XXXX'}
+                          maxLength={19}
+                          className={`input-field w-full ${cardError ? 'border-red-500' : ''}`}
+                        />
+                        {cardError && (
+                          <p className="text-sm text-red-600 mt-1">{cardError}</p>
+                        )}
+                      </div>
+                    )}
                   </div>
                 )}
 
@@ -750,37 +984,22 @@ export default function NeedyPersonDetailPage() {
                   </div>
                 )}
 
-                <button
-                  onClick={handleDonate}
-                  disabled={
-                    donating ||
-                    !donationAmount ||
-                    parseFloat(donationAmount) <= 0 ||
-                    !paymentMethod ||
-                    (paymentMethod === 'card' && (!cardNumber || cardNumber.replace(/\s/g, '').length < 16)) ||
-                    (paymentMethod === 'wallet' && (!walletType || !mobileNumber || mobileNumber.length !== 11))
-                  }
-                  className="btn-primary w-full disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  {donating ? 'Processing...' : 'Donate Now'}
-                </button>
-              </div>
-
-              {/* Quick Donation Amounts */}
-              <div className="mt-6">
-                <p className="text-sm text-gray-500 mb-3">Quick Donate</p>
-                <div className="grid grid-cols-3 gap-2">
-                  {[1000, 5000, 10000].map((amount) => (
-                    <button
-                      key={amount}
-                      onClick={() => setDonationAmount(amount.toString())}
-                      className="text-sm border border-gray-300 hover:border-primary hover:text-primary rounded-lg py-2 px-3 transition-colors"
-                    >
-                      PKR {amount.toLocaleString()}
-                    </button>
-                  ))}
+                  <button
+                    onClick={handleDonate}
+                    disabled={
+                      donating ||
+                      !donationAmount ||
+                      parseFloat(donationAmount) <= 0 ||
+                      !paymentMethod ||
+                      (paymentMethod === 'card' && (!cardNumber || cardNumber.replace(/\s/g, '').length < 16)) ||
+                      (paymentMethod === 'wallet' && (!walletType || !mobileNumber || mobileNumber.length !== 11))
+                    }
+                    className="btn-primary w-full disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {donating ? 'Processing...' : 'Donate Now'}
+                  </button>
                 </div>
-              </div>
+              )}
 
               {/* Case Summary */}
               <div className="mt-6 pt-6 border-t border-gray-200">

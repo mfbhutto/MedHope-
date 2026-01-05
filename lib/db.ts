@@ -6,6 +6,7 @@ import mongoose from 'mongoose';
 // Connection state
 let isConnected = false;
 let connectionPromise: Promise<typeof mongoose> | null = null;
+let currentConnectionUri: string | null = null;
 
 // MongoDB connection options (these are default in Mongoose 6+)
 const mongoOptions: mongoose.ConnectOptions = {};
@@ -16,16 +17,6 @@ const mongoOptions: mongoose.ConnectOptions = {};
  * @returns Promise<mongoose.Connection>
  */
 export async function connectToDatabase(): Promise<typeof mongoose> {
-  // Return existing connection if already connected
-  if (isConnected && mongoose.connection.readyState === 1) {
-    return mongoose;
-  }
-
-  // Return existing connection promise if connection is in progress
-  if (connectionPromise) {
-    return connectionPromise;
-  }
-
   // Get MongoDB URI from environment variable
   // Next.js loads .env.local automatically, but we check both
   const mongoUri = process.env.MONGODB_URI || process.env.MONGODB_URL;
@@ -56,49 +47,131 @@ export async function connectToDatabase(): Promise<typeof mongoose> {
     console.log('⚠️ No database name in URI, using default:', dbName);
   }
 
+  // Check connection state
+  const readyState = mongoose.connection.readyState;
+  // 0 = disconnected, 1 = connected, 2 = connecting, 3 = disconnecting
+
+  // If already connected (state 1), return immediately
+  if (readyState === 1) {
+    // Update current URI if not set
+    if (!currentConnectionUri) {
+      currentConnectionUri = finalMongoUri;
+    }
+    isConnected = true;
+    return mongoose;
+  }
+
+  // If connecting (state 2), wait for existing connection promise
+  if (readyState === 2 && connectionPromise) {
+    return connectionPromise;
+  }
+
+  // If disconnecting (state 3), wait a bit and check again
+  if (readyState === 3) {
+    // Wait for disconnection to complete
+    await new Promise(resolve => setTimeout(resolve, 100));
+    // Check again
+    if (mongoose.connection.readyState === 1) {
+      isConnected = true;
+      currentConnectionUri = finalMongoUri;
+      return mongoose;
+    }
+  }
+
+  // Return existing connection promise if connection is in progress
+  if (connectionPromise) {
+    return connectionPromise;
+  }
+
   console.log('🔌 Attempting to connect to MongoDB...');
   console.log('📍 Connection URI:', finalMongoUri.replace(/\/\/[^:]+:[^@]+@/, '//***:***@')); // Hide credentials if any
 
+  // Store the URI we're connecting with
+  currentConnectionUri = finalMongoUri;
+
   // Create new connection promise with better options
-  connectionPromise = mongoose.connect(finalMongoUri, {
-    ...mongoOptions,
-    serverSelectionTimeoutMS: 10000, // Timeout after 10s
-    socketTimeoutMS: 45000, // Close sockets after 45s of inactivity
-  });
+  // Only connect if disconnected (state 0)
+  if (mongoose.connection.readyState === 0) {
+    connectionPromise = mongoose.connect(finalMongoUri, {
+      ...mongoOptions,
+      serverSelectionTimeoutMS: 10000, // Timeout after 10s
+      socketTimeoutMS: 45000, // Close sockets after 45s of inactivity
+    });
+  } else {
+    // Already connected or connecting, return mongoose
+    isConnected = true;
+    return mongoose;
+  }
 
   try {
-    const db = await connectionPromise;
-    isConnected = true;
-    connectionPromise = null;
-
-    console.log('✅ MongoDB connected successfully');
-    console.log('📊 Database:', mongoose.connection.db?.databaseName || 'unknown');
-    console.log('🔗 Connection state:', mongoose.connection.readyState === 1 ? 'connected' : 'not connected');
-
-    // Connection event handlers (set up before connection to catch all events)
-    mongoose.connection.on('connected', () => {
-      console.log('✅ MongoDB connected successfully');
+    if (connectionPromise) {
+      const db = await connectionPromise;
       isConnected = true;
-    });
+      connectionPromise = null;
 
-    mongoose.connection.on('error', (err: Error) => {
-      console.error('❌ MongoDB connection error:', err);
-      console.error('Error details:', err.message);
-      isConnected = false;
-    });
+      console.log('✅ MongoDB connected successfully');
+      console.log('📊 Database:', mongoose.connection.db?.databaseName || 'unknown');
+      console.log('🔗 Connection state:', mongoose.connection.readyState === 1 ? 'connected' : 'not connected');
+    } else {
+      // Connection already established
+      isConnected = true;
+    }
 
-    mongoose.connection.on('disconnected', () => {
-      console.log('⚠️ MongoDB disconnected');
-      isConnected = false;
-    });
+    // Connection event handlers (only set up once)
+    if (!mongoose.connection.listeners('connected').length) {
+      mongoose.connection.on('connected', () => {
+        console.log('✅ MongoDB connected successfully');
+        isConnected = true;
+      });
 
-    return db;
+      mongoose.connection.on('error', (err: Error) => {
+        console.error('❌ MongoDB connection error:', err);
+        console.error('Error details:', err.message);
+        isConnected = false;
+        currentConnectionUri = null;
+      });
+
+      mongoose.connection.on('disconnected', () => {
+        console.log('⚠️ MongoDB disconnected');
+        isConnected = false;
+        currentConnectionUri = null;
+      });
+    }
+
+    return mongoose;
   } catch (error: any) {
     connectionPromise = null;
     isConnected = false;
+    currentConnectionUri = null;
     console.error('❌ Failed to connect to MongoDB');
     console.error('Error type:', error?.name);
     console.error('Error message:', error?.message);
+    
+    // Check for DNS/connection string errors
+    if (error?.message?.includes('querySrv') || error?.message?.includes('ENOTFOUND')) {
+      console.error('');
+      console.error('═══════════════════════════════════════════════════════════');
+      console.error('🚨 MONGODB CONNECTION STRING ERROR');
+      console.error('═══════════════════════════════════════════════════════════');
+      console.error('');
+      console.error('The error "querySrv ENOTFOUND" usually means:');
+      console.error('1. The MongoDB connection string is incorrect');
+      console.error('2. The hostname in the connection string cannot be resolved');
+      console.error('3. For MongoDB Atlas, make sure you\'re using the correct cluster URL');
+      console.error('');
+      console.error('📋 HOW TO FIX:');
+      console.error('');
+      console.error('1. Check your .env file for MONGODB_URI');
+      console.error('2. For MongoDB Atlas, the format should be:');
+      console.error('   mongodb+srv://username:password@cluster0.xxxxx.mongodb.net/medhope');
+      console.error('3. Make sure there are no extra spaces or characters');
+      console.error('4. Verify the cluster name matches your Atlas cluster');
+      console.error('');
+      console.error('Current URI (masked):', finalMongoUri.replace(/\/\/[^:]+:[^@]+@/, '//***:***@'));
+      console.error('');
+      console.error('═══════════════════════════════════════════════════════════');
+      console.error('');
+    }
     
     if (error?.message?.includes('ECONNREFUSED')) {
       console.error('');

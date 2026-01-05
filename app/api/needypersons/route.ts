@@ -19,12 +19,17 @@ export async function GET(request: NextRequest) {
     const skip = parseInt(searchParams.get('skip') || '0');
 
     // Build filters
+    // For donors: Only show accepted and rejected cases (not pending)
+    // Pending cases are only visible to superadmin in dashboard
     const filters: any = {
       isActive: true, // Only show active needy persons
     };
 
     if (status) {
       filters.status = status;
+    } else {
+      // Default: Exclude pending cases - only show accepted and rejected
+      filters.status = { $in: ['accepted', 'rejected'] };
     }
 
     if (priority) {

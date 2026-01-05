@@ -16,11 +16,11 @@ export async function GET(request: NextRequest) {
     const skip = parseInt(searchParams.get('skip') || '0');
     const service = searchParams.get('service'); // Filter by service type: 'medicine', 'laboratory', 'chronic'
 
-    // Build filters - show only accepted cases on public pages
-    // Pending cases need admin approval first
+    // Build filters - show accepted and rejected cases (matching needy persons page)
+    // Pending cases need admin approval first and are only visible to superadmin
     const filters: any = {
       isActive: true,
-      status: 'accepted', // Only show approved cases
+      status: { $in: ['accepted', 'rejected'] }, // Show accepted and rejected cases (matching needy persons page)
     };
 
     // Filter by service type

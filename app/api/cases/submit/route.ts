@@ -5,8 +5,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { connectToDatabase } from '@/lib/db';
 import { createNeedyPerson, getNeedyPersonByEmail } from '@/lib/controllers/needyPerson';
 import { notifyAllAdmins } from '@/lib/controllers/notification';
-import { writeFile, mkdir } from 'fs/promises';
-import { join } from 'path';
+import { uploadFileToCloudinary } from '@/lib/cloudinary';
 
 export async function POST(request: NextRequest) {
   try {
@@ -40,6 +39,8 @@ export async function POST(request: NextRequest) {
     const chronicDisease = formData.get('chronicDisease') as string | null;
     const otherDisease = formData.get('otherDisease') as string | null;
     const manualDisease = formData.get('manualDisease') as string | null;
+    const medicineDisease = formData.get('medicineDisease') as string | null;
+    const medicineManualDisease = formData.get('medicineManualDisease') as string | null;
     const testNeeded = formData.get('testNeeded') === 'true';
     const selectedTestsStr = formData.get('selectedTests') as string | null;
     const selectedTests = selectedTestsStr
@@ -91,28 +92,17 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // Handle document file upload
+    // Handle document file upload - upload to Cloudinary
     let documentPath: string | undefined;
     if (documentFile && documentFile.size > 0) {
       try {
-        const timestamp = Date.now();
-        const sanitizedName = documentFile.name.replace(/[^a-zA-Z0-9.-]/g, '_');
-        const fileName = `${timestamp}-${sanitizedName}`;
-        
-        const uploadsDir = join(process.cwd(), 'public', 'uploads', 'documents');
-        await mkdir(uploadsDir, { recursive: true });
-        
-        const filePath = join(uploadsDir, fileName);
-        const bytes = await documentFile.arrayBuffer();
-        const buffer = Buffer.from(bytes);
-        
-        await writeFile(filePath, buffer);
-        
-        documentPath = `/uploads/documents/${fileName}`;
+        // Upload to Cloudinary
+        const uploadResult = await uploadFileToCloudinary(documentFile, 'documents');
+        documentPath = uploadResult.secure_url;
       } catch (error) {
-        console.error('Error saving document:', error);
+        console.error('Error uploading document to Cloudinary:', error);
         return NextResponse.json(
-          { message: 'Failed to save document file' },
+          { message: 'Failed to save document file. Please check Cloudinary configuration in .env file.' },
           { status: 500 }
         );
       }
@@ -128,8 +118,8 @@ export async function POST(request: NextRequest) {
         diseaseName = otherDisease === 'Other' ? manualDisease || '' : otherDisease || '';
       }
     } else {
-      // For medicine cases, use a generic name or the description
-      diseaseName = 'Medicine/Treatment Request';
+      // For medicine cases, use the selected medicine disease
+      diseaseName = medicineDisease === 'Other' ? (medicineManualDisease || 'Medicine Request') : (medicineDisease || 'Medicine Request');
     }
 
     // Create new case using existing user's personal and financial info
@@ -165,8 +155,8 @@ export async function POST(request: NextRequest) {
       // New disease information
       diseaseType: caseType === 'test' ? diseaseType as 'chronic' | 'other' : 'other',
       chronicDisease: caseType === 'test' && diseaseType === 'chronic' ? diseaseName : undefined,
-      otherDisease: caseType === 'test' && diseaseType === 'other' ? (otherDisease === 'Other' ? 'Other' : otherDisease || '') : (caseType === 'medicine' ? 'Medicine Request' : undefined),
-      manualDisease: caseType === 'test' && otherDisease === 'Other' ? manualDisease || undefined : undefined,
+      otherDisease: caseType === 'test' && diseaseType === 'other' ? (otherDisease === 'Other' ? 'Other' : otherDisease || '') : (caseType === 'medicine' ? (medicineDisease === 'Other' ? 'Other' : medicineDisease || 'Medicine Request') : undefined),
+      manualDisease: caseType === 'test' && otherDisease === 'Other' ? manualDisease || undefined : (caseType === 'medicine' && medicineDisease === 'Other' ? medicineManualDisease || undefined : undefined),
       testNeeded: caseType === 'test',
       selectedTests: caseType === 'test' ? selectedTests : undefined,
       description,
@@ -181,14 +171,19 @@ export async function POST(request: NextRequest) {
 
     // Create notification for all superadmins
     try {
-      const diseaseName = diseaseType === 'chronic' 
-        ? (chronicDisease || 'Chronic Disease')
-        : (otherDisease === 'Other' ? (manualDisease || 'Other Disease') : (otherDisease || 'Other Disease'));
+      let notificationDiseaseName = '';
+      if (caseType === 'test') {
+        notificationDiseaseName = diseaseType === 'chronic' 
+          ? (chronicDisease || 'Chronic Disease')
+          : (otherDisease === 'Other' ? (manualDisease || 'Other Disease') : (otherDisease || 'Other Disease'));
+      } else {
+        notificationDiseaseName = medicineDisease === 'Other' ? (medicineManualDisease || 'Medicine Request') : (medicineDisease || 'Medicine Request');
+      }
       
       await notifyAllAdmins({
         type: 'case_submitted',
         title: 'New Case Submitted',
-        message: `A new case has been submitted by ${existingUser.name} (${newCase.caseNumber}) - ${diseaseName}. Amount needed: PKR ${amountNeeded.toLocaleString()}`,
+        message: `A new case has been submitted by ${existingUser.name} (${newCase.caseNumber}) - ${notificationDiseaseName}. Amount needed: PKR ${amountNeeded.toLocaleString()}`,
         relatedId: String(newCase._id),
         relatedType: 'case',
       });

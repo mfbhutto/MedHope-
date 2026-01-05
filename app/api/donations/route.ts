@@ -91,11 +91,20 @@ export async function POST(request: NextRequest) {
       status: 'completed' as const, // For practice, mark as completed immediately
     };
 
-    // Check if this is the first donation to this case (before creating this one)
+    // Check if donor has already donated to this case
     const existingDonationsBefore = await DonationModel.find({
       donorId: donorIdString,
       caseId: caseId,
+      status: 'completed', // Only check completed donations
     });
+
+    // Prevent multiple donations from the same donor to the same case
+    if (existingDonationsBefore.length > 0) {
+      return NextResponse.json(
+        { message: 'You have already donated to this case. Each donor can only donate once per case.' },
+        { status: 400 }
+      );
+    }
 
     const isFirstDonationToCase = existingDonationsBefore.length === 0; // No previous donations to this case
 
@@ -254,8 +263,9 @@ export async function GET(request: NextRequest) {
     // Connect to database
     await connectToDatabase();
 
-    // Get donor email from query params
+    // Get query params
     const donorEmail = request.nextUrl.searchParams.get('donorEmail');
+    const caseId = request.nextUrl.searchParams.get('caseId');
     
     if (!donorEmail) {
       return NextResponse.json(
@@ -288,19 +298,35 @@ export async function GET(request: NextRequest) {
 
     console.log('Querying donations for donorId:', donorIdString, 'Type:', typeof donorIdString);
     
-    // Get all donations for this donor
+    // Build query - filter by donorId and optionally by caseId
+    const query: any = { 
+      donorId: donorIdString,
+      status: 'completed' // Only return completed donations
+    };
+    if (caseId) {
+      // Ensure caseId is a string for consistent comparison
+      const caseIdString = String(caseId).trim();
+      query.caseId = caseIdString;
+      console.log('Filtering donations by caseId:', caseIdString);
+    }
+    
+    console.log('Donations query:', query);
+    
+    // Get all donations for this donor (and optionally for this case)
     // Try multiple query formats to handle different ID formats
     let donations = await findDocuments(DonationModel, 
-      { donorId: donorIdString },
+      query,
       { 
         sort: { createdAt: -1 }, 
         limit: 20 
       }
     );
+    
+    console.log('Found donations:', donations.length, 'for query:', query);
 
     console.log('Found donations with string match:', donations.length);
 
-    // If no donations found, try with ObjectId format
+    // If no donations found, try with ObjectId format (but still respect caseId filter if provided)
     if (donations.length === 0 && donor._id) {
       try {
         const mongoose = require('mongoose');
@@ -308,8 +334,14 @@ export async function GET(request: NextRequest) {
           ? new mongoose.Types.ObjectId(donor._id)
           : donor._id;
         
+        // Build the fallback query with the same filters
+        const fallbackQuery: any = { donorId: donorObjectId.toString(), status: 'completed' };
+        if (caseId) {
+          fallbackQuery.caseId = String(caseId).trim();
+        }
+        
         donations = await findDocuments(DonationModel, 
-          { donorId: donorObjectId.toString() },
+          fallbackQuery,
           { 
             sort: { createdAt: -1 }, 
             limit: 20 

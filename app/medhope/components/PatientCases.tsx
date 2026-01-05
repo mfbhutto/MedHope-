@@ -1,10 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { Heart, MapPin, AlertCircle } from 'lucide-react';
 import DonationModal from './DonationModal';
+import { getStoredUser } from '@/lib/auth';
+import api from '@/lib/api';
 
 interface Case {
   _id: string;
@@ -32,9 +34,40 @@ interface PatientCasesProps {
 export default function PatientCases({ cases, loading, showDonationModal = false }: PatientCasesProps) {
   const [selectedCase, setSelectedCase] = useState<Case | null>(null);
   const [showModal, setShowModal] = useState(false);
+  const [donatedCaseIds, setDonatedCaseIds] = useState<Set<string>>(new Set());
   
   // Only use real cases from database - no dummy data fallback
   const displayCases = cases || [];
+
+  // Fetch donated cases for logged-in users
+  useEffect(() => {
+    const fetchDonatedCases = async () => {
+      const currentUser = getStoredUser();
+      if (!currentUser || !currentUser.email || currentUser.role !== 'donor') {
+        return;
+      }
+
+      try {
+        // Fetch all donations for this donor
+        const response = await api.get(`/donations?donorEmail=${encodeURIComponent(currentUser.email)}`);
+        const donations = response.data.donations || [];
+        
+        // Get case IDs where donor has completed donations
+        const donatedIds = new Set(
+          donations
+            .filter((donation: any) => donation.status === 'completed')
+            .map((donation: any) => String(donation.caseId))
+        );
+        
+        setDonatedCaseIds(donatedIds);
+      } catch (error) {
+        console.error('Error fetching donated cases:', error);
+        // Don't show error, just continue without donation status
+      }
+    };
+
+    fetchDonatedCases();
+  }, []);
 
   const handleDonateClick = (caseItem: Case) => {
     if (showDonationModal) {
@@ -215,23 +248,57 @@ export default function PatientCases({ cases, loading, showDonationModal = false
                   </div>
                 )}
 
-                {/* Donate Button - Push to bottom */}
+                {/* Status Badge */}
+                {caseItem.status === 'rejected' && (
+                  <div className="mb-4">
+                    <span className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-red-100 text-red-800 border border-red-200">
+                      Rejected
+                    </span>
+                  </div>
+                )}
+
+                {/* Donate Button or Status Message - Push to bottom */}
                 <div className="mt-auto pt-4">
-                  {showDonationModal ? (
-                    <button
-                      onClick={() => handleDonateClick(caseItem)}
-                      className="btn-primary w-full text-center block group-hover:shadow-glow transition-all"
-                    >
-                      Donate Now
-                    </button>
-                  ) : (
-                    <Link
-                      href={`/medhope/pages/needypersons/${caseItem._id}`}
-                      className="btn-primary w-full text-center block group-hover:shadow-glow transition-all"
-                    >
-                      Donate Now
-                    </Link>
-                  )}
+                  {(() => {
+                    const hasDonatedToCase = donatedCaseIds.has(String(caseItem._id));
+                    
+                    if (hasDonatedToCase) {
+                      // Show message for donated cases
+                      return (
+                        <div className="text-center py-4 px-4 bg-green-50 border-2 border-green-200 rounded-xl">
+                          <p className="text-sm text-green-800 font-semibold mb-1">You have already donated to this case</p>
+                          <p className="text-xs text-green-600">Thank you for your generosity!</p>
+                        </div>
+                      );
+                    }
+                    
+                    if (caseItem.status === 'rejected') {
+                      // Show message for rejected cases
+                      return (
+                        <div className="text-center py-4 px-4 bg-red-50 border-2 border-red-200 rounded-xl">
+                          <p className="text-sm text-red-800 font-semibold mb-1">This case has been rejected</p>
+                          <p className="text-xs text-red-600">Donations are not available for this case</p>
+                        </div>
+                      );
+                    }
+                    
+                    // Show button for cases that haven't been donated to and aren't rejected
+                    return showDonationModal ? (
+                      <button
+                        onClick={() => handleDonateClick(caseItem)}
+                        className="btn-primary w-full text-center block group-hover:shadow-glow transition-all"
+                      >
+                        Donate Now
+                      </button>
+                    ) : (
+                      <Link
+                        href={`/medhope/pages/needypersons/${caseItem._id}`}
+                        className="btn-primary w-full text-center block group-hover:shadow-glow transition-all"
+                      >
+                        Donate Now
+                      </Link>
+                    );
+                  })()}
                 </div>
               </motion.div>
             ))}
