@@ -23,6 +23,7 @@ interface Case {
   district?: string;
   area?: string;
   labTests?: string[];
+  totalDonations?: number;
 }
 
 interface PatientCasesProps {
@@ -67,7 +68,7 @@ export default function PatientCases({ cases, loading, showDonationModal = false
     };
 
     fetchDonatedCases();
-  }, []);
+  }, [cases]); // Re-fetch when cases change
 
   const handleDonateClick = (caseItem: Case) => {
     if (showDonationModal) {
@@ -261,13 +262,24 @@ export default function PatientCases({ cases, loading, showDonationModal = false
                 <div className="mt-auto pt-4">
                   {(() => {
                     const hasDonatedToCase = donatedCaseIds.has(String(caseItem._id));
+                    const isFullyFunded = caseItem.totalDonations && caseItem.totalDonations >= caseItem.estimatedTotalCost;
                     
                     if (hasDonatedToCase) {
-                      // Show message for donated cases
+                      // Show message for cases user has donated to
                       return (
                         <div className="text-center py-4 px-4 bg-green-50 border-2 border-green-200 rounded-xl">
-                          <p className="text-sm text-green-800 font-semibold mb-1">You have already donated to this case</p>
+                          <p className="text-sm text-green-800 font-semibold mb-1">This case has been donated</p>
                           <p className="text-xs text-green-600">Thank you for your generosity!</p>
+                        </div>
+                      );
+                    }
+                    
+                    if (isFullyFunded) {
+                      // Show message for fully funded cases
+                      return (
+                        <div className="text-center py-4 px-4 bg-blue-50 border-2 border-blue-200 rounded-xl">
+                          <p className="text-sm text-blue-800 font-semibold mb-1">This case has been fully funded</p>
+                          <p className="text-xs text-blue-600">Thank you to all donors!</p>
                         </div>
                       );
                     }
@@ -282,7 +294,7 @@ export default function PatientCases({ cases, loading, showDonationModal = false
                       );
                     }
                     
-                    // Show button for cases that haven't been donated to and aren't rejected
+                    // Show button for cases that haven't been donated to, aren't fully funded, and aren't rejected
                     return showDonationModal ? (
                       <button
                         onClick={() => handleDonateClick(caseItem)}

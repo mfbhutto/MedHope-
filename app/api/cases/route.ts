@@ -94,6 +94,7 @@ export async function GET(request: NextRequest) {
         district: person.district || '',
         area: person.area || '',
         labTests: person.selectedTests || [],
+        totalDonations: person.totalDonations || 0,
         // Additional fields that might be useful
         name: person.name,
         age: person.age,
