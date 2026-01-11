@@ -83,7 +83,7 @@ export async function POST(request: NextRequest) {
       caseId: caseObjectId.toString(),
       caseVolunteerId: caseVolunteerId?.toString(),
       caseVolunteerIdType: typeof caseVolunteerId,
-      volunteerId: volunteerObjectId.toString(),
+      volunteerId: volunteerObjectId?.toString(),
       volunteerIdType: typeof volunteerObjectId,
       hasVolunteerId: !!caseVolunteerId
     });
