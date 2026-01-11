@@ -33,6 +33,13 @@ export async function GET(request: NextRequest) {
 
     // Convert volunteer._id to ObjectId for proper comparison
     // Since volunteerId is stored as ObjectId in the schema, we need to query with ObjectId
+    if (!volunteer._id) {
+      return NextResponse.json(
+        { message: 'Invalid volunteer data' },
+        { status: 400 }
+      );
+    }
+    
     const volunteerObjectId = typeof volunteer._id === 'string' 
       ? new mongoose.Types.ObjectId(volunteer._id)
       : volunteer._id;

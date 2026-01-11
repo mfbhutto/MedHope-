@@ -72,6 +72,13 @@ export async function POST(request: NextRequest) {
 
     // Verify the case is assigned to this volunteer
     // Convert both to ObjectId for proper comparison (since volunteerId is stored as ObjectId)
+    if (!volunteer._id) {
+      return NextResponse.json(
+        { message: 'Invalid volunteer data' },
+        { status: 400 }
+      );
+    }
+    
     const volunteerObjectId = typeof volunteer._id === 'string'
       ? new mongoose.Types.ObjectId(volunteer._id)
       : volunteer._id;
@@ -83,7 +90,7 @@ export async function POST(request: NextRequest) {
       caseId: caseObjectId.toString(),
       caseVolunteerId: caseVolunteerId?.toString(),
       caseVolunteerIdType: typeof caseVolunteerId,
-      volunteerId: volunteerObjectId?.toString(),
+      volunteerId: volunteerObjectId.toString(),
       volunteerIdType: typeof volunteerObjectId,
       hasVolunteerId: !!caseVolunteerId
     });

@@ -3,7 +3,7 @@ export interface User {
   id?: string;
   name: string;
   email: string;
-  role: 'donor' | 'accepter' | 'admin' | 'superadmin';
+  role: 'donor' | 'accepter' | 'admin' | 'superadmin' | 'volunteer';
   isVerified?: boolean;
   isActive?: boolean;
   [key: string]: any; // Allow additional properties
