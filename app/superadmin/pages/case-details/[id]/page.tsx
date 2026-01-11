@@ -22,6 +22,10 @@ import {
   Stethoscope,
   AlertCircle,
   Heart,
+  UserCheck,
+  Users,
+  Search,
+  X,
 } from 'lucide-react';
 
 interface Case {
@@ -64,6 +68,9 @@ interface Case {
   priority: string;
   status: string;
   isZakatEligible: boolean;
+  volunteerId?: string;
+  volunteerApprovalStatus?: 'pending' | 'approved' | 'rejected';
+  volunteerRejectionReasons?: string[];
   totalDonations?: number;
   createdAt: string;
   updatedAt?: string;
@@ -78,6 +85,11 @@ export default function CaseDetailsPage() {
   const [caseData, setCaseData] = useState<Case | null>(null);
   const [loading, setLoading] = useState(true);
   const [processing, setProcessing] = useState(false);
+  const [showAssignModal, setShowAssignModal] = useState(false);
+  const [assigningVolunteers, setAssigningVolunteers] = useState<any[]>([]);
+  const [assigningVolunteersLoading, setAssigningVolunteersLoading] = useState(false);
+  const [assigningCase, setAssigningCase] = useState(false);
+  const [volunteerSearchQuery, setVolunteerSearchQuery] = useState('');
 
   useEffect(() => {
     const currentUser = getStoredUser();
@@ -148,6 +160,57 @@ export default function CaseDetailsPage() {
       toast.error(error.response?.data?.message || 'Failed to reject case');
     } finally {
       setProcessing(false);
+    }
+  };
+
+  const handleAssignVolunteerClick = async () => {
+    if (!user || !user.email) return;
+
+    setShowAssignModal(true);
+    setVolunteerSearchQuery('');
+
+    // Fetch active volunteers
+    setAssigningVolunteersLoading(true);
+    try {
+      const response = await api.get(`/admin/volunteers?adminEmail=${encodeURIComponent(user.email)}`);
+      const allVolunteers = response.data.volunteers || [];
+      // Filter only active volunteers
+      const activeVolunteers = allVolunteers.filter((v: any) => v.isActive === true);
+      setAssigningVolunteers(activeVolunteers);
+    } catch (error: any) {
+      toast.error(error.response?.data?.message || 'Failed to fetch volunteers');
+      setAssigningVolunteers([]);
+    } finally {
+      setAssigningVolunteersLoading(false);
+    }
+  };
+
+  const handleAssignCaseToVolunteer = async (volunteerId: string) => {
+    if (!user || !user.email || !caseId) {
+      return;
+    }
+
+    setAssigningCase(true);
+    try {
+      const response = await api.post(`/admin/cases/${caseId}/assign-volunteer`, {
+        adminEmail: user.email,
+        volunteerId: volunteerId,
+      });
+      toast.success('Case assigned to volunteer successfully');
+      setShowAssignModal(false);
+      
+      // Refresh case data
+      fetchCaseDetails();
+      
+      // Redirect to dashboard after a short delay
+      setTimeout(() => {
+        router.push('/superadmin/pages/dashboard');
+      }, 1000);
+    } catch (error: any) {
+      console.error('Error assigning case:', error);
+      toast.error(error.response?.data?.message || 'Failed to assign case to volunteer');
+    } finally {
+      setAssigningCase(false);
     }
   };
 
@@ -475,7 +538,100 @@ export default function CaseDetailsPage() {
           </div>
 
           {/* Action Buttons */}
-          {caseData.status === 'pending' && (
+          {caseData.status === 'pending' && !caseData.volunteerId && (
+            <div className="glass-card p-6">
+              <div className="flex flex-col sm:flex-row gap-4">
+                <button
+                  onClick={handleAssignVolunteerClick}
+                  disabled={processing || assigningCase}
+                  className="btn-primary flex-1 flex items-center justify-center gap-2 disabled:opacity-50"
+                >
+                  {assigningCase ? (
+                    <>
+                      <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                      Processing...
+                    </>
+                  ) : (
+                    <>
+                      <UserCheck className="w-5 h-5" />
+                      Assign Volunteer
+                    </>
+                  )}
+                </button>
+                <button
+                  onClick={handleReject}
+                  disabled={processing || assigningCase}
+                  className="btn-secondary flex-1 flex items-center justify-center gap-2 disabled:opacity-50"
+                >
+                  <XCircle className="w-5 h-5" />
+                  Reject Case
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Volunteer Rejection Info */}
+          {caseData.status === 'pending' && caseData.volunteerId && caseData.volunteerApprovalStatus === 'rejected' && (
+            <div className="glass-card p-6 mb-6">
+              <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+                <div className="flex items-start gap-3 mb-3">
+                  <XCircle className="w-6 h-6 text-red-600 flex-shrink-0 mt-0.5" />
+                  <div className="flex-1">
+                    <h3 className="font-semibold text-red-800 mb-1">Volunteer Rejected This Case</h3>
+                    <p className="text-sm text-red-700 mb-3">
+                      The assigned volunteer has rejected this case. Please review the rejection reasons below and take appropriate action.
+                    </p>
+                    {caseData.volunteerRejectionReasons && caseData.volunteerRejectionReasons.length > 0 && (
+                      <div>
+                        <p className="text-sm font-medium text-red-800 mb-2">Rejection Reasons:</p>
+                        <ul className="list-disc list-inside space-y-1">
+                          {caseData.volunteerRejectionReasons.map((reason, index) => (
+                            <li key={index} className="text-sm text-red-700">{reason}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Action Buttons for Verified by Volunteer Cases - Approved */}
+          {caseData.status === 'pending' && caseData.volunteerId && caseData.volunteerApprovalStatus === 'approved' && (
+            <div className="glass-card p-6">
+              <div className="flex flex-col sm:flex-row gap-4">
+                <button
+                  onClick={handleApprove}
+                  disabled={processing}
+                  className="btn-primary flex-1 flex items-center justify-center gap-2 disabled:opacity-50"
+                >
+                  {processing ? (
+                    <>
+                      <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                      Processing...
+                    </>
+                  ) : (
+                    <>
+                      <CheckCircle className="w-5 h-5" />
+                      Approve Case
+                    </>
+                  )}
+                </button>
+                <button
+                  onClick={handleReject}
+                  disabled={processing}
+                  className="btn-secondary flex-1 flex items-center justify-center gap-2 disabled:opacity-50"
+                >
+                  <XCircle className="w-5 h-5" />
+                  Reject Case
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Action Buttons for Volunteer-Rejected Cases - Admin can still approve or reject */}
+          {caseData.status === 'pending' && caseData.volunteerId && caseData.volunteerApprovalStatus === 'rejected' && (
             <div className="glass-card p-6">
               <div className="flex flex-col sm:flex-row gap-4">
                 <button
@@ -537,6 +693,142 @@ export default function CaseDetailsPage() {
           )}
         </div>
       </div>
+
+      {/* Assign Volunteer Modal */}
+      {showAssignModal && (
+        <div 
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+          onClick={() => {
+            setShowAssignModal(false);
+            setAssigningVolunteers([]);
+            setVolunteerSearchQuery('');
+          }}
+        >
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            className="glass-card max-w-2xl w-full max-h-[85vh] flex flex-col shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Header */}
+            <div className="flex justify-between items-start p-6 pb-4 border-b border-gray-soft bg-gradient-to-r from-primary/5 to-purple-500/5">
+              <div className="flex items-center gap-4">
+                <div className="w-14 h-14 bg-gradient-to-br from-purple-500/20 to-primary/20 rounded-2xl flex items-center justify-center">
+                  <UserCheck className="w-7 h-7 text-purple-600" />
+                </div>
+                <div>
+                  <h2 className="text-2xl font-bold text-gray-900 mb-1">Assign Volunteer</h2>
+                  <p className="text-gray-600 text-sm">Select a volunteer to assign this case for verification</p>
+                </div>
+              </div>
+              <button 
+                onClick={() => {
+                  setShowAssignModal(false);
+                  setAssigningVolunteers([]);
+                  setVolunteerSearchQuery('');
+                }}
+                className="w-10 h-10 rounded-xl bg-white hover:bg-gray-100 text-gray-600 hover:text-gray-900 flex items-center justify-center transition-all shadow-sm hover:shadow-md"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Search Bar */}
+            {assigningVolunteers.length > 0 && !assigningVolunteersLoading && (
+              <div className="p-6 pt-4 border-b border-gray-soft bg-white/50">
+                <div className="relative">
+                  <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                  <input
+                    type="text"
+                    placeholder="Search volunteers by name, email, or phone..."
+                    value={volunteerSearchQuery}
+                    onChange={(e) => setVolunteerSearchQuery(e.target.value)}
+                    className="w-full pl-12 pr-4 py-3 border border-gray-soft rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all bg-white"
+                  />
+                </div>
+              </div>
+            )}
+
+            {/* Volunteers List */}
+            <div className="flex-1 overflow-y-auto p-6">
+              {assigningVolunteersLoading ? (
+                <div className="text-center py-16">
+                  <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+                  <p className="text-gray-600 font-medium">Loading volunteers...</p>
+                </div>
+              ) : assigningVolunteers.length === 0 ? (
+                <div className="text-center py-16">
+                  <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <UserCheck className="w-10 h-10 text-gray-400" />
+                  </div>
+                  <p className="text-gray-700 text-lg font-semibold mb-2">No active volunteers available</p>
+                  <p className="text-gray-500 text-sm">Please activate volunteers from the Volunteers tab first</p>
+                </div>
+              ) : (() => {
+                // Filter volunteers based on search query
+                const filteredVolunteers = assigningVolunteers.filter((volunteer) => {
+                  const query = volunteerSearchQuery.toLowerCase();
+                  return (
+                    volunteer.name.toLowerCase().includes(query) ||
+                    volunteer.email.toLowerCase().includes(query) ||
+                    (volunteer.phone && volunteer.phone.includes(query))
+                  );
+                });
+
+                return filteredVolunteers.length === 0 ? (
+                  <div className="text-center py-12">
+                    <Search className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+                    <p className="text-gray-600 font-medium">No volunteers found</p>
+                    <p className="text-gray-500 text-sm mt-1">Try adjusting your search query</p>
+                  </div>
+                ) : (
+                  <div className="space-y-3">
+                    <p className="text-sm text-gray-600 mb-4">
+                      {filteredVolunteers.length} {filteredVolunteers.length === 1 ? 'volunteer' : 'volunteers'} found
+                    </p>
+                    {filteredVolunteers.map((volunteer) => (
+                      <motion.button
+                        key={volunteer._id}
+                        onClick={() => handleAssignCaseToVolunteer(volunteer._id)}
+                        disabled={assigningCase}
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="w-full p-4 bg-white border border-gray-200 rounded-xl hover:border-primary hover:bg-primary/5 transition-all text-left disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-4 flex-1">
+                            <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0">
+                              <Users className="w-6 h-6 text-purple-600" />
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <h4 className="font-semibold text-gray-900 mb-1 truncate">{volunteer.name}</h4>
+                              <div className="flex flex-col sm:flex-row sm:items-center gap-2 text-sm text-gray-600">
+                                <div className="flex items-center gap-1">
+                                  <Mail className="w-4 h-4" />
+                                  <span className="truncate">{volunteer.email}</span>
+                                </div>
+                                {volunteer.phone && (
+                                  <div className="flex items-center gap-1 sm:ml-4">
+                                    <Phone className="w-4 h-4" />
+                                    <span>{volunteer.phone}</span>
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                          {assigningCase && (
+                            <div className="w-5 h-5 border-2 border-primary border-t-transparent rounded-full animate-spin ml-4"></div>
+                          )}
+                        </div>
+                      </motion.button>
+                    ))}
+                  </div>
+                );
+              })()}
+            </div>
+          </motion.div>
+        </div>
+      )}
     </div>
   );
 }

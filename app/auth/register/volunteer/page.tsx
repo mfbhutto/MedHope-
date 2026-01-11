@@ -9,7 +9,7 @@ import api from '@/lib/api';
 import { setAuthData } from '@/lib/auth';
 import Navbar from '@/app/medhope/components/Navbar';
 
-interface DonorFormData {
+interface VolunteerFormData {
   name: string;
   email: string;
   address: string;
@@ -18,7 +18,7 @@ interface DonorFormData {
   confirmPassword: string;
 }
 
-export default function DonorRegisterPage() {
+export default function VolunteerRegisterPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const { 
@@ -26,11 +26,11 @@ export default function DonorRegisterPage() {
     handleSubmit, 
     formState: { errors },
     watch 
-  } = useForm<DonorFormData>();
+  } = useForm<VolunteerFormData>();
 
   const password = watch('password');
 
-  const onSubmit = async (data: DonorFormData) => {
+  const onSubmit = async (data: VolunteerFormData) => {
     if (data.password !== data.confirmPassword) {
       toast.error('Passwords do not match');
       return;
@@ -44,18 +44,18 @@ export default function DonorRegisterPage() {
         address: data.address,
         phone: data.phone,
         password: data.password,
-        role: 'donor',
+        role: 'volunteer',
       };
       
-      const response = await api.post('/auth/register/donor', payload);
+      const response = await api.post('/auth/register/volunteer', payload);
       
       // Store user data (no token for now)
       if (typeof window !== 'undefined') {
         localStorage.setItem('user', JSON.stringify(response.data.user));
       }
       
-      toast.success('Registration successful! Welcome, Donor!');
-      router.push('/medhope/pages/donorprofile');
+      toast.success('Registration successful! Welcome, Volunteer!');
+      router.push('/volunteer/dashboard');
     } catch (error: any) {
       toast.error(error.response?.data?.message || 'Registration failed');
     } finally {
@@ -72,10 +72,10 @@ export default function DonorRegisterPage() {
             {/* Header */}
             <div className="text-center mb-8">
               <h2 className="text-3xl font-bold text-gray-900 mb-2">
-                Donor Registration
+                Volunteer Registration
               </h2>
               <p className="text-gray-600">
-                Join us in making a difference. Register as a donor to help those in need.
+                Join us in making a difference. Register as a volunteer to help verify cases and make an impact.
               </p>
             </div>
 
@@ -250,12 +250,6 @@ export default function DonorRegisterPage() {
                 Already have an account?{' '}
                 <Link href="/auth/login" className="text-primary hover:underline font-semibold">
                   Login here
-                </Link>
-              </p>
-              <p className="text-gray-500 text-sm">
-                Need help?{' '}
-                <Link href="/auth/register/accepter" className="text-primary hover:underline">
-                  Register as a Needy Person instead
                 </Link>
               </p>
             </div>

@@ -48,6 +48,26 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Get the case first to check volunteer approval status
+    const caseData = await NeedyPersonModel.findById(caseId);
+    if (!caseData) {
+      return NextResponse.json(
+        { message: 'Case not found' },
+        { status: 404 }
+      );
+    }
+
+    // If approving, check if volunteer has approved first (if case is assigned to a volunteer)
+    if (action === 'approve' && caseData.volunteerId) {
+      const volunteerApprovalStatus = (caseData as any).volunteerApprovalStatus;
+      if (!volunteerApprovalStatus || volunteerApprovalStatus !== 'approved') {
+        return NextResponse.json(
+          { message: 'Case must be approved by volunteer first before admin approval' },
+          { status: 400 }
+        );
+      }
+    }
+
     // Update case status
     const status = action === 'approve' ? 'accepted' : 'rejected';
     const updatedCase = await updateDocumentById(

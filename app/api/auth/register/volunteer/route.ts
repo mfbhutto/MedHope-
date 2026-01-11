@@ -1,9 +1,9 @@
-// API Route: POST /api/auth/register/donor
-// Register a new donor
+// API Route: POST /api/auth/register/volunteer
+// Register a new volunteer
 
 import { NextRequest, NextResponse } from 'next/server';
-import { createDonor, donorExists } from '@/lib/controllers/donor';
 import { connectToDatabase } from '@/lib/db';
+import { createVolunteer, volunteerExists } from '@/lib/controllers/volunteer';
 
 export async function POST(request: NextRequest) {
   try {
@@ -71,8 +71,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Check if donor already exists
-    const exists = await donorExists(email);
+    // Check if volunteer already exists
+    const exists = await volunteerExists(email);
     if (exists) {
       return NextResponse.json(
         { message: 'Email already registered' },
@@ -80,28 +80,28 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Create donor
-    const donor = await createDonor({
+    // Create volunteer
+    const volunteer = await createVolunteer({
       name,
       email,
       address,
       phone,
       password,
-      role: role || 'donor',
+      role: role || 'volunteer',
     });
 
     // Remove password from response
-    const { password: _, ...donorWithoutPassword } = donor;
+    const { password: _, ...volunteerWithoutPassword } = volunteer;
 
     return NextResponse.json(
       {
-        message: 'Donor registered successfully',
-        user: donorWithoutPassword,
+        message: 'Volunteer registered successfully',
+        user: volunteerWithoutPassword,
       },
       { status: 201 }
     );
   } catch (error: any) {
-    console.error('Donor registration error:', error);
+    console.error('Volunteer registration error:', error);
     return NextResponse.json(
       {
         message: error.message || 'Registration failed',
@@ -110,7 +110,4 @@ export async function POST(request: NextRequest) {
     );
   }
 }
-
-
-
 

@@ -58,6 +58,11 @@ export interface NeedyPerson {
   caseNumber: string; // Auto-generated unique case number (e.g., "CASE-2024-001")
   totalDonations?: number;
   
+  // Volunteer assignment fields
+  volunteerId?: string; // ObjectId of assigned volunteer
+  volunteerApprovalStatus?: 'pending' | 'approved' | 'rejected'; // Volunteer's approval status
+  volunteerRejectionReasons?: string[]; // Reasons for rejection (if rejected)
+  
   // Timestamps
   createdAt?: Date;
   updatedAt?: Date;

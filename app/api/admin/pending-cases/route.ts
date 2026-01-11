@@ -32,14 +32,30 @@ export async function GET(request: NextRequest) {
     }
 
     // Get status filter
-    const status = searchParams.get('status') || 'pending'; // pending, accepted, rejected, or all
+    const status = searchParams.get('status') || 'pending'; // pending, accepted, rejected, verified-by-volunteer, or all
 
     // Build filters
     const filters: any = {
       isActive: true,
     };
 
-    if (status !== 'all') {
+    if (status === 'pending') {
+      // For 'pending' tab, show cases with status 'pending' that are either:
+      // 1. Not assigned to any volunteer yet (volunteerId is null), OR
+      // 2. Assigned to volunteer but volunteer has rejected (need admin review)
+      filters.status = 'pending';
+      filters.$or = [
+        { volunteerId: { $eq: null } },
+        { volunteerApprovalStatus: 'rejected' }
+      ];
+    } else if (status === 'verified-by-volunteer') {
+      // For 'verified-by-volunteer' tab, show cases where volunteerApprovalStatus is 'approved' or 'rejected'
+      filters.status = 'pending';
+      filters.$or = [
+        { volunteerApprovalStatus: 'approved' },
+        { volunteerApprovalStatus: 'rejected' },
+      ];
+    } else if (status !== 'all') {
       filters.status = status;
     }
 
@@ -49,7 +65,7 @@ export async function GET(request: NextRequest) {
     });
 
     // Transform needy persons to cases format
-    const cases = needyPersons.map((person) => ({
+    const cases = needyPersons.map((person: any) => ({
       _id: person._id,
       caseNumber: person.caseNumber,
       name: person.name,
@@ -66,6 +82,9 @@ export async function GET(request: NextRequest) {
       priority: person.priority,
       status: person.status,
       isZakatEligible: person.zakatEligible,
+      volunteerId: person.volunteerId?.toString(),
+      volunteerApprovalStatus: person.volunteerApprovalStatus,
+      volunteerRejectionReasons: person.volunteerRejectionReasons || [],
       createdAt: person.createdAt,
       updatedAt: person.updatedAt,
     }));

@@ -1,18 +1,25 @@
 // Cloudinary Configuration
-// Explicitly loads from .env file (not .env.local)
+// Works in both development (.env file) and production (Vercel environment variables)
 
 import { v2 as cloudinary } from 'cloudinary';
 import { config } from 'dotenv';
 import { resolve } from 'path';
+import { existsSync } from 'fs';
 
-// Explicitly load .env file and override any existing values
-// This ensures we read from .env as requested, even if .env.local exists
-config({ 
-  path: resolve(process.cwd(), '.env'),
-  override: true // Override any existing environment variables
-});
+// Only load .env file in development (when file exists)
+// In production (Vercel), environment variables are provided via process.env
+const envPath = resolve(process.cwd(), '.env');
+if (existsSync(envPath)) {
+  // Load .env file only if it exists (development)
+  config({ 
+    path: envPath,
+    override: false // Don't override existing env vars (production takes precedence)
+  });
+}
 
-// Get Cloudinary configuration from .env file
+// Get Cloudinary configuration from environment variables
+// In development: loaded from .env file
+// In production: provided by Vercel environment variables
 const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
 const apiKey = process.env.CLOUDINARY_API_KEY;
 const apiSecret = process.env.CLOUDINARY_API_SECRET;
@@ -49,7 +56,11 @@ export async function uploadToCloudinary(
   fileName: string
 ): Promise<{ secure_url: string; public_id: string }> {
   if (!cloudName || !apiKey || !apiSecret) {
-    throw new Error('Cloudinary credentials are not configured. Please check your .env file.');
+    const isProduction = process.env.VERCEL === '1' || process.env.NODE_ENV === 'production';
+    const errorMessage = isProduction
+      ? 'Cloudinary credentials are not configured. Please set CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, and CLOUDINARY_API_SECRET in your Vercel environment variables.'
+      : 'Cloudinary credentials are not configured. Please check your .env file.';
+    throw new Error(errorMessage);
   }
 
   return new Promise((resolve, reject) => {

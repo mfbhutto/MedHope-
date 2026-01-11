@@ -130,7 +130,13 @@ export default function Navbar() {
                 )}
                 {user.role !== 'admin' && user.role !== 'superadmin' && (
                   <Link
-                    href={user.role === 'donor' ? '/medhope/pages/donorprofile' : '/medhope/pages/needyprofile'}
+                    href={
+                      user.role === 'donor' 
+                        ? '/medhope/pages/donorprofile' 
+                        : user.role === 'volunteer'
+                        ? '/volunteer/dashboard'
+                        : '/medhope/pages/needyprofile'
+                    }
                     className="text-gray-700 hover:text-primary transition-colors font-medium relative group"
                   >
                     Profile

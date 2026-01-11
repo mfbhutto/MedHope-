@@ -195,6 +195,22 @@ const needyPersonSchema = new Schema<NeedyPerson>(
       default: 0,
       min: 0,
     },
+    // Volunteer assignment fields
+    volunteerId: {
+      type: Schema.Types.ObjectId,
+      ref: 'Volunteer',
+      default: null,
+    },
+    volunteerApprovalStatus: {
+      type: String,
+      enum: ['pending', 'approved', 'rejected'],
+      default: null,
+    },
+    volunteerRejectionReasons: {
+      type: [String],
+      default: [],
+      enum: ['Personal information issue', 'Financial information issue', 'Disease information issue'],
+    },
   },
   {
     timestamps: true, // Automatically adds createdAt and updatedAt

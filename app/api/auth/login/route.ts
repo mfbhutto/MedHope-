@@ -6,6 +6,7 @@ import { connectToDatabase } from '@/lib/db';
 import { authenticateDonor } from '@/lib/controllers/donor';
 import { authenticateNeedyPerson } from '@/lib/controllers/needyPerson';
 import { authenticateAdmin } from '@/lib/controllers/admin';
+import { authenticateVolunteer } from '@/lib/controllers/volunteer';
 
 export async function POST(request: NextRequest) {
   try {
@@ -45,6 +46,11 @@ export async function POST(request: NextRequest) {
     // If not a donor, try as needy person (accepter)
     if (!user) {
       user = await authenticateNeedyPerson(email, password);
+    }
+
+    // If not a needy person, try as volunteer
+    if (!user) {
+      user = await authenticateVolunteer(email, password);
     }
 
     // If still not found, invalid credentials

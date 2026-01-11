@@ -64,6 +64,8 @@ export default function LoginPage() {
         window.location.href = '/medhope/pages/donorprofile';
       } else if (role === 'accepter') {
         window.location.href = '/medhope/pages/needyprofile';
+      } else if (role === 'volunteer') {
+        window.location.href = '/volunteer/dashboard';
       } else {
         console.warn('Unknown role:', role, 'User object:', user);
         toast.error('Unknown user role. Please contact support.');

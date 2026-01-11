@@ -674,10 +674,10 @@ export default function NeedyPersonDetailPage() {
               </div>
 
               {/* Progress Bar */}
-              {needyPerson.totalDonations && needyPerson.totalDonations > 0 && (
+              {needyPerson.totalDonations && needyPerson.totalDonations > 0 ? (
                 <div className="mb-6">
                   <div className="flex justify-between text-sm text-gray-600 mb-2">
-                    <span>Raised: PKR {(needyPerson.totalDonations || 0).toLocaleString()}</span>
+                    <span>Raised: PKR {needyPerson.totalDonations.toLocaleString()}</span>
                     <span>{progressPercentage.toFixed(1)}%</span>
                   </div>
                   <div className="w-full bg-gray-200 rounded-full h-3">
@@ -690,7 +690,7 @@ export default function NeedyPersonDetailPage() {
                     Remaining: PKR {remainingAmount.toLocaleString()}
                   </p>
                 </div>
-              )}
+              ) : null}
 
               {/* Zakat Badge */}
               {needyPerson.zakatEligible && (

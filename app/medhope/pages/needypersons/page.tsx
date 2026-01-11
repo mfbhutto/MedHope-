@@ -309,6 +309,17 @@ export default function NeedyPersonsPage() {
                   <div className="mt-auto">
                     {(() => {
                       const hasDonatedToCase = donatedCaseIds.has(String(person._id));
+                      const isFullyFunded = person.totalDonations && person.totalDonations >= person.amountNeeded;
+                      
+                      if (isFullyFunded) {
+                        // Show message for fully funded cases
+                        return (
+                          <div className="text-center py-4 px-4 bg-green-50 border-2 border-green-200 rounded-xl">
+                            <p className="text-sm text-green-800 font-semibold mb-1">This case has been fully funded</p>
+                            <p className="text-xs text-green-600">Donations are no longer needed for this case</p>
+                          </div>
+                        );
+                      }
                       
                       if (hasDonatedToCase) {
                         // Show message for donated cases (similar to rejected)
@@ -330,7 +341,7 @@ export default function NeedyPersonsPage() {
                         );
                       }
                       
-                      // Show button for cases that haven't been donated to and aren't rejected
+                      // Show button for cases that haven't been donated to, aren't fully funded, and aren't rejected
                       return (
                         <Link
                           href={`/medhope/pages/needypersons/${person._id}`}
