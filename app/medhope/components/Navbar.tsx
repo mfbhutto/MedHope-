@@ -171,6 +171,12 @@ export default function Navbar() {
                 >
                   Sign Up
                 </Link>
+                <Link
+                  href="/auth/register/volunteer"
+                  className="btn-primary"
+                >
+                  Sign up as volunteer
+                </Link>
               </>
             )}
           </div>
@@ -283,6 +289,13 @@ export default function Navbar() {
                   onClick={() => setMenuOpen(false)}
                 >
                   Sign Up
+                </Link>
+                <Link 
+                  href="/auth/register/volunteer" 
+                  className="block btn-primary text-center"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  Sign up as volunteer
                 </Link>
               </>
             )}

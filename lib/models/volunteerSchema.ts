@@ -28,6 +28,28 @@ const volunteerSchema = new Schema<Volunteer>(
       required: true,
       trim: true,
     },
+    cnic: {
+      type: String,
+      required: true,
+      unique: true,
+      trim: true,
+      index: true,
+      validate: {
+        validator: function(v: string) {
+          // CNIC format: 12345-1234567-1 (5 digits, dash, 7 digits, dash, 1 digit)
+          return /^[0-9]{5}-[0-9]{7}-[0-9]{1}$/.test(v);
+        },
+        message: 'CNIC must be in format: 12345-1234567-1'
+      }
+    },
+    cnicFront: {
+      type: String,
+      trim: true,
+    },
+    cnicBack: {
+      type: String,
+      trim: true,
+    },
     password: {
       type: String,
       required: true,

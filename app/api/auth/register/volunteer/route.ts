@@ -4,20 +4,86 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { connectToDatabase } from '@/lib/db';
 import { createVolunteer, volunteerExists } from '@/lib/controllers/volunteer';
+import { uploadFileToCloudinary } from '@/lib/cloudinary';
+import VolunteerModel from '@/lib/models/volunteerSchema';
+import { findOneDocument } from '@/lib/db';
 
 export async function POST(request: NextRequest) {
   try {
     // Connect to database
     await connectToDatabase();
 
-    // Parse request body
-    const body = await request.json();
-    const { name, email, address, phone, password, role } = body;
-
-    // Validate required fields
-    if (!name || !email || !address || !phone || !password) {
+    // Parse form data (multipart/form-data)
+    const formData = await request.formData();
+    
+    // Extract text fields
+    const name = formData.get('name');
+    const email = formData.get('email');
+    const address = formData.get('address');
+    const phone = formData.get('phone');
+    const cnic = formData.get('cnic');
+    const password = formData.get('password');
+    const role = formData.get('role');
+    
+    // Extract files
+    const cnicFrontFile = formData.get('cnicFront');
+    const cnicBackFile = formData.get('cnicBack');
+    
+    // Type assertions and validation
+    if (!name || typeof name !== 'string') {
       return NextResponse.json(
-        { message: 'All fields are required' },
+        { message: 'Name is required' },
+        { status: 400 }
+      );
+    }
+    if (!email || typeof email !== 'string') {
+      return NextResponse.json(
+        { message: 'Email is required' },
+        { status: 400 }
+      );
+    }
+    if (!address || typeof address !== 'string') {
+      return NextResponse.json(
+        { message: 'Address is required' },
+        { status: 400 }
+      );
+    }
+    if (!phone || typeof phone !== 'string') {
+      return NextResponse.json(
+        { message: 'Phone is required' },
+        { status: 400 }
+      );
+    }
+    if (!cnic || typeof cnic !== 'string') {
+      return NextResponse.json(
+        { message: 'CNIC is required' },
+        { status: 400 }
+      );
+    }
+    if (!password || typeof password !== 'string') {
+      return NextResponse.json(
+        { message: 'Password is required' },
+        { status: 400 }
+      );
+    }
+    
+    const roleString: 'volunteer' = 'volunteer'; // Always 'volunteer' for volunteer registration
+    const cnicFrontFileTyped = cnicFrontFile instanceof File ? cnicFrontFile : null;
+    const cnicBackFileTyped = cnicBackFile instanceof File ? cnicBackFile : null;
+
+    // Validate CNIC format
+    const cnicRegex = /^[0-9]{5}-[0-9]{7}-[0-9]{1}$/;
+    if (!cnicRegex.test(cnic)) {
+      return NextResponse.json(
+        { message: 'Invalid CNIC format. Use format: 12345-1234567-1' },
+        { status: 400 }
+      );
+    }
+
+    // Validate CNIC images are provided
+    if (!cnicFrontFileTyped || !cnicBackFileTyped || cnicFrontFileTyped.size === 0 || cnicBackFileTyped.size === 0) {
+      return NextResponse.json(
+        { message: 'Both CNIC front and back images are required' },
         { status: 400 }
       );
     }
@@ -71,13 +137,54 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Check if volunteer already exists
-    const exists = await volunteerExists(email);
-    if (exists) {
+    // Check if volunteer already exists by email
+    const existsByEmail = await volunteerExists(email);
+    if (existsByEmail) {
       return NextResponse.json(
         { message: 'Email already registered' },
         { status: 409 }
       );
+    }
+
+    // Check if CNIC already exists
+    const existsByCnic = await findOneDocument(VolunteerModel, { cnic: cnic.trim() });
+    if (existsByCnic) {
+      return NextResponse.json(
+        { message: 'CNIC already registered' },
+        { status: 409 }
+      );
+    }
+
+    // Handle file uploads - upload to Cloudinary
+    let cnicFrontUrl: string | undefined;
+    let cnicBackUrl: string | undefined;
+
+    if (cnicFrontFileTyped && cnicFrontFileTyped.size > 0) {
+      try {
+        // Upload to Cloudinary
+        const uploadResult = await uploadFileToCloudinary(cnicFrontFileTyped, 'volunteer-cnic');
+        cnicFrontUrl = uploadResult.secure_url;
+      } catch (error) {
+        console.error('Error uploading CNIC front to Cloudinary:', error);
+        return NextResponse.json(
+          { message: 'Failed to save CNIC front image. Please check Cloudinary configuration in .env file.' },
+          { status: 500 }
+        );
+      }
+    }
+
+    if (cnicBackFileTyped && cnicBackFileTyped.size > 0) {
+      try {
+        // Upload to Cloudinary
+        const uploadResult = await uploadFileToCloudinary(cnicBackFileTyped, 'volunteer-cnic');
+        cnicBackUrl = uploadResult.secure_url;
+      } catch (error) {
+        console.error('Error uploading CNIC back to Cloudinary:', error);
+        return NextResponse.json(
+          { message: 'Failed to save CNIC back image. Please check Cloudinary configuration in .env file.' },
+          { status: 500 }
+        );
+      }
     }
 
     // Create volunteer
@@ -86,8 +193,11 @@ export async function POST(request: NextRequest) {
       email,
       address,
       phone,
+      cnic,
+      cnicFront: cnicFrontUrl,
+      cnicBack: cnicBackUrl,
       password,
-      role: role || 'volunteer',
+      role: roleString,
     });
 
     // Remove password from response
@@ -100,11 +210,12 @@ export async function POST(request: NextRequest) {
       },
       { status: 201 }
     );
-  } catch (error: any) {
+  } catch (error) {
     console.error('Volunteer registration error:', error);
+    const errorMessage = error instanceof Error ? error.message : 'Registration failed';
     return NextResponse.json(
       {
-        message: error.message || 'Registration failed',
+        message: errorMessage,
       },
       { status: 500 }
     );

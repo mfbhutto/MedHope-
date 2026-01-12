@@ -14,6 +14,7 @@ interface VolunteerFormData {
   email: string;
   address: string;
   phone: string;
+  cnic: string;
   password: string;
   confirmPassword: string;
 }
@@ -21,14 +22,76 @@ interface VolunteerFormData {
 export default function VolunteerRegisterPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [cnicFrontPreview, setCnicFrontPreview] = useState<string | null>(null);
+  const [cnicBackPreview, setCnicBackPreview] = useState<string | null>(null);
+  const [cnicFrontFile, setCnicFrontFile] = useState<File | null>(null);
+  const [cnicBackFile, setCnicBackFile] = useState<File | null>(null);
   const { 
     register, 
     handleSubmit, 
     formState: { errors },
-    watch 
+    watch,
+    setValue
   } = useForm<VolunteerFormData>();
 
   const password = watch('password');
+  const cnic = watch('cnic');
+
+  // Handle CNIC input formatting
+  const handleCnicChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let value = e.target.value.replace(/\D/g, ''); // Remove non-digits
+    if (value.length > 13) value = value.slice(0, 13);
+    
+    // Format: 12345-1234567-1
+    let formatted = '';
+    if (value.length > 0) {
+      formatted = value.slice(0, 5);
+      if (value.length > 5) {
+        formatted += '-' + value.slice(5, 12);
+        if (value.length > 12) {
+          formatted += '-' + value.slice(12, 13);
+        }
+      }
+    }
+    
+    // Update the form value
+    setValue('cnic', formatted, { shouldValidate: true });
+  };
+
+  // Handle image file selection
+  const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>, type: 'front' | 'back') => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      toast.error('Please select an image file');
+      return;
+    }
+
+    // Validate file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error('Image size must be less than 5MB');
+      return;
+    }
+
+    // Set file and preview
+    if (type === 'front') {
+      setCnicFrontFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setCnicFrontPreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    } else {
+      setCnicBackFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setCnicBackPreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   const onSubmit = async (data: VolunteerFormData) => {
     if (data.password !== data.confirmPassword) {
@@ -36,28 +99,47 @@ export default function VolunteerRegisterPage() {
       return;
     }
 
+    if (!cnicFrontFile || !cnicBackFile) {
+      toast.error('Please upload both CNIC front and back images');
+      return;
+    }
+
     setLoading(true);
+    
     try {
-      const payload = {
-        name: data.name,
-        email: data.email,
-        address: data.address,
-        phone: data.phone,
-        password: data.password,
-        role: 'volunteer',
-      };
+      // Create FormData for registration with files
+      const formData = new FormData();
+      formData.append('name', data.name);
+      formData.append('email', data.email);
+      formData.append('address', data.address);
+      formData.append('phone', data.phone);
+      formData.append('cnic', data.cnic);
+      formData.append('password', data.password);
+      formData.append('role', 'volunteer');
+      formData.append('cnicFront', cnicFrontFile);
+      formData.append('cnicBack', cnicBackFile);
       
-      const response = await api.post('/auth/register/volunteer', payload);
+      const response = await fetch('/api/auth/register/volunteer', {
+        method: 'POST',
+        body: formData,
+      });
+
+      const result = await response.json() as { message?: string; user?: unknown };
+
+      if (!response.ok) {
+        throw new Error(result.message || 'Registration failed');
+      }
       
-      // Store user data (no token for now)
-      if (typeof window !== 'undefined') {
-        localStorage.setItem('user', JSON.stringify(response.data.user));
+      // Store user data
+      if (typeof window !== 'undefined' && result.user) {
+        localStorage.setItem('user', JSON.stringify(result.user));
       }
       
       toast.success('Registration successful! Welcome, Volunteer!');
       router.push('/volunteer/dashboard');
-    } catch (error: any) {
-      toast.error(error.response?.data?.message || 'Registration failed');
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Registration failed';
+      toast.error(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -183,6 +265,85 @@ export default function VolunteerRegisterPage() {
                 {errors.phone && (
                   <p className="text-red-500 text-sm mt-1">{errors.phone.message}</p>
                 )}
+              </div>
+
+              {/* CNIC Field */}
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  CNIC Number <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  {...register('cnic', { 
+                    required: 'CNIC is required',
+                    pattern: {
+                      value: /^[0-9]{5}-[0-9]{7}-[0-9]{1}$/,
+                      message: 'CNIC format: 12345-1234567-1'
+                    }
+                  })}
+                  className="input-field"
+                  placeholder="12345-1234567-1"
+                  maxLength={15}
+                  onChange={handleCnicChange}
+                />
+                {errors.cnic && (
+                  <p className="text-red-500 text-sm mt-1">{errors.cnic.message}</p>
+                )}
+              </div>
+
+              {/* CNIC Images Upload */}
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  CNIC Images <span className="text-red-500">*</span>
+                </label>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {/* CNIC Front */}
+                  <div>
+                    <label className="block text-xs font-medium text-gray-600 mb-2">
+                      CNIC Front Side
+                    </label>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => handleImageSelect(e, 'front')}
+                      className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-white hover:file:bg-primary-dark file:cursor-pointer"
+                    />
+                    {cnicFrontPreview && (
+                      <div className="mt-2">
+                        <img
+                          src={cnicFrontPreview}
+                          alt="CNIC Front Preview"
+                          className="w-full h-48 object-contain border border-gray-300 rounded-lg"
+                        />
+                      </div>
+                    )}
+                  </div>
+
+                  {/* CNIC Back */}
+                  <div>
+                    <label className="block text-xs font-medium text-gray-600 mb-2">
+                      CNIC Back Side
+                    </label>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => handleImageSelect(e, 'back')}
+                      className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-white hover:file:bg-primary-dark file:cursor-pointer"
+                    />
+                    {cnicBackPreview && (
+                      <div className="mt-2">
+                        <img
+                          src={cnicBackPreview}
+                          alt="CNIC Back Preview"
+                          className="w-full h-48 object-contain border border-gray-300 rounded-lg"
+                        />
+                      </div>
+                    )}
+                  </div>
+                </div>
+                <p className="text-xs text-gray-500 mt-2">
+                  Please upload clear images of both sides of your CNIC. Maximum file size: 5MB
+                </p>
               </div>
 
               {/* Password Field */}
