@@ -83,9 +83,23 @@ export async function GET(request: NextRequest) {
         }
       }
 
+      // Handle _id - MongoDB ObjectId can be ObjectId instance or string
+      let caseIdString: string;
+      if (caseItem._id) {
+        if (typeof caseItem._id === 'string') {
+          caseIdString = caseItem._id;
+        } else if (typeof caseItem._id === 'object' && caseItem._id !== null && 'toString' in caseItem._id) {
+          caseIdString = (caseItem._id as { toString(): string }).toString();
+        } else {
+          caseIdString = String(caseItem._id);
+        }
+      } else {
+        caseIdString = '';
+      }
+      
       return {
-        _id: caseItem._id.toString(),
-        caseNumber: caseItem.caseNumber || `CASE-${caseItem._id.toString().slice(-6)}`,
+        _id: caseIdString,
+        caseNumber: (caseItem.caseNumber as string) || `CASE-${caseIdString.slice(-6)}`,
         // Personal Information
         name: (caseItem.name as string) || '',
         email: (caseItem.email as string) || '',
