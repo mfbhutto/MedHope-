@@ -15,28 +15,64 @@ import {
   MapPin, 
   DollarSign,
   User,
-  AlertCircle
+  AlertCircle,
+  ChevronDown,
+  ChevronUp,
+  Mail,
+  Phone,
+  IdCard,
+  Home,
+  Users,
+  Calendar,
+  Stethoscope,
+  Building2,
+  FileCheck,
+  Download
 } from 'lucide-react';
 
 interface Case {
   _id: string;
   caseNumber: string;
+  // Personal Information
   name: string;
   email: string;
   phone: string;
+  cnic?: string;
+  address?: string;
   district: string;
   area: string;
+  manualArea?: string;
+  // Financial Information
+  age?: number;
+  maritalStatus?: string;
+  numberOfChildren?: number;
+  firstChildAge?: number;
+  lastChildAge?: number;
+  salaryRange?: string;
+  houseOwnership?: string;
+  rentAmount?: number;
+  houseSize?: string;
+  utilityBill?: string;
+  zakatEligible?: boolean;
+  // Disease Information
   diseaseType: string;
   diseaseName: string;
+  chronicDisease?: string;
+  otherDisease?: string;
+  manualDisease?: string;
+  testNeeded?: boolean;
+  selectedTests?: string[];
   description: string;
   hospitalName: string;
   doctorName: string;
   amountNeeded: number;
+  document?: string;
   estimatedTotalCost: number;
   priority: string;
   status: string;
   volunteerApprovalStatus: 'pending' | 'approved' | 'rejected';
   createdAt: string;
+  updatedAt?: string;
 }
 
 export default function VolunteerDashboard() {
@@ -48,6 +84,7 @@ export default function VolunteerDashboard() {
   const [showRejectModal, setShowRejectModal] = useState(false);
   const [selectedCaseId, setSelectedCaseId] = useState<string | null>(null);
   const [rejectionReasons, setRejectionReasons] = useState<string[]>([]);
+  const [expandedCases, setExpandedCases] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     // Get user from localStorage
@@ -158,6 +195,18 @@ export default function VolunteerDashboard() {
         ? prev.filter(r => r !== reason)
         : [...prev, reason]
     );
+  };
+
+  const toggleCaseDetails = (caseId: string) => {
+    setExpandedCases(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(caseId)) {
+        newSet.delete(caseId);
+      } else {
+        newSet.add(caseId);
+      }
+      return newSet;
+    });
   };
 
   const getStatusBadge = (status: string) => {
@@ -352,6 +401,253 @@ export default function VolunteerDashboard() {
                         <div className="mt-4">
                           <p className="text-sm text-gray-600 mb-1">Description</p>
                           <p className="text-gray-700">{caseItem.description}</p>
+                        </div>
+                      )}
+
+                      {/* View Details Button */}
+                      <button
+                        onClick={() => toggleCaseDetails(caseItem._id)}
+                        className="mt-4 flex items-center gap-2 text-primary hover:text-primary-dark transition-colors text-sm font-medium"
+                      >
+                        {expandedCases.has(caseItem._id) ? (
+                          <>
+                            <ChevronUp className="w-4 h-4" />
+                            Hide Full Details
+                          </>
+                        ) : (
+                          <>
+                            <ChevronDown className="w-4 h-4" />
+                            View Full Details
+                          </>
+                        )}
+                      </button>
+
+                      {/* Expanded Case Details */}
+                      {expandedCases.has(caseItem._id) && (
+                        <div className="mt-6 pt-6 border-t border-gray-200 space-y-6">
+                          {/* Personal Information Section */}
+                          <div>
+                            <h4 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                              <User className="w-5 h-5 text-primary" />
+                              Personal Information
+                            </h4>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                              {caseItem.cnic && (
+                                <div className="flex items-start gap-2">
+                                  <IdCard className="w-5 h-5 text-gray-400 mt-0.5" />
+                                  <div>
+                                    <p className="text-sm text-gray-600">CNIC</p>
+                                    <p className="text-gray-900 font-medium">{caseItem.cnic}</p>
+                                  </div>
+                                </div>
+                              )}
+                              {caseItem.email && (
+                                <div className="flex items-start gap-2">
+                                  <Mail className="w-5 h-5 text-gray-400 mt-0.5" />
+                                  <div>
+                                    <p className="text-sm text-gray-600">Email</p>
+                                    <p className="text-gray-900 font-medium">{caseItem.email}</p>
+                                  </div>
+                                </div>
+                              )}
+                              {caseItem.phone && (
+                                <div className="flex items-start gap-2">
+                                  <Phone className="w-5 h-5 text-gray-400 mt-0.5" />
+                                  <div>
+                                    <p className="text-sm text-gray-600">Phone</p>
+                                    <p className="text-gray-900 font-medium">{caseItem.phone}</p>
+                                  </div>
+                                </div>
+                              )}
+                              {caseItem.age && (
+                                <div className="flex items-start gap-2">
+                                  <Calendar className="w-5 h-5 text-gray-400 mt-0.5" />
+                                  <div>
+                                    <p className="text-sm text-gray-600">Age</p>
+                                    <p className="text-gray-900 font-medium">{caseItem.age} years</p>
+                                  </div>
+                                </div>
+                              )}
+                              {caseItem.address && (
+                                <div className="flex items-start gap-2 md:col-span-2">
+                                  <MapPin className="w-5 h-5 text-gray-400 mt-0.5" />
+                                  <div>
+                                    <p className="text-sm text-gray-600">Full Address</p>
+                                    <p className="text-gray-900 font-medium">{caseItem.address}</p>
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+
+                          {/* Financial Information Section */}
+                          <div>
+                            <h4 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                              <DollarSign className="w-5 h-5 text-primary" />
+                              Financial Information
+                            </h4>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                              {caseItem.maritalStatus && (
+                                <div className="flex items-start gap-2">
+                                  <Users className="w-5 h-5 text-gray-400 mt-0.5" />
+                                  <div>
+                                    <p className="text-sm text-gray-600">Marital Status</p>
+                                    <p className="text-gray-900 font-medium capitalize">{caseItem.maritalStatus}</p>
+                                  </div>
+                                </div>
+                              )}
+                              {caseItem.numberOfChildren !== undefined && caseItem.numberOfChildren > 0 && (
+                                <div className="flex items-start gap-2">
+                                  <Users className="w-5 h-5 text-gray-400 mt-0.5" />
+                                  <div>
+                                    <p className="text-sm text-gray-600">Children</p>
+                                    <p className="text-gray-900 font-medium">
+                                      {caseItem.numberOfChildren} {caseItem.numberOfChildren === 1 ? 'child' : 'children'}
+                                      {caseItem.firstChildAge && caseItem.lastChildAge && (
+                                        <span className="text-gray-600 text-xs ml-2">
+                                          (Ages: {caseItem.firstChildAge} - {caseItem.lastChildAge})
+                                        </span>
+                                      )}
+                                    </p>
+                                  </div>
+                                </div>
+                              )}
+                              {caseItem.salaryRange && (
+                                <div className="flex items-start gap-2">
+                                  <DollarSign className="w-5 h-5 text-gray-400 mt-0.5" />
+                                  <div>
+                                    <p className="text-sm text-gray-600">Salary Range</p>
+                                    <p className="text-gray-900 font-medium">{caseItem.salaryRange}</p>
+                                  </div>
+                                </div>
+                              )}
+                              {caseItem.houseOwnership && (
+                                <div className="flex items-start gap-2">
+                                  <Home className="w-5 h-5 text-gray-400 mt-0.5" />
+                                  <div>
+                                    <p className="text-sm text-gray-600">House Ownership</p>
+                                    <p className="text-gray-900 font-medium capitalize">
+                                      {caseItem.houseOwnership}
+                                      {caseItem.houseOwnership === 'rent' && caseItem.rentAmount && (
+                                        <span className="text-gray-600 text-xs ml-2">
+                                          (PKR {caseItem.rentAmount.toLocaleString()}/month)
+                                        </span>
+                                      )}
+                                    </p>
+                                  </div>
+                                </div>
+                              )}
+                              {caseItem.houseSize && (
+                                <div className="flex items-start gap-2">
+                                  <Home className="w-5 h-5 text-gray-400 mt-0.5" />
+                                  <div>
+                                    <p className="text-sm text-gray-600">House Size</p>
+                                    <p className="text-gray-900 font-medium">{caseItem.houseSize}</p>
+                                  </div>
+                                </div>
+                              )}
+                              {caseItem.zakatEligible !== undefined && (
+                                <div className="flex items-start gap-2">
+                                  <FileCheck className="w-5 h-5 text-gray-400 mt-0.5" />
+                                  <div>
+                                    <p className="text-sm text-gray-600">Zakat Eligible</p>
+                                    <p className="text-gray-900 font-medium">
+                                      {caseItem.zakatEligible ? 'Yes' : 'No'}
+                                    </p>
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+
+                          {/* Medical Information Section */}
+                          <div>
+                            <h4 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                              <Stethoscope className="w-5 h-5 text-primary" />
+                              Medical Information
+                            </h4>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                              {caseItem.doctorName && (
+                                <div className="flex items-start gap-2">
+                                  <User className="w-5 h-5 text-gray-400 mt-0.5" />
+                                  <div>
+                                    <p className="text-sm text-gray-600">Doctor Name</p>
+                                    <p className="text-gray-900 font-medium">{caseItem.doctorName}</p>
+                                  </div>
+                                </div>
+                              )}
+                              {caseItem.hospitalName && (
+                                <div className="flex items-start gap-2">
+                                  <Building2 className="w-5 h-5 text-gray-400 mt-0.5" />
+                                  <div>
+                                    <p className="text-sm text-gray-600">Hospital</p>
+                                    <p className="text-gray-900 font-medium">{caseItem.hospitalName}</p>
+                                  </div>
+                                </div>
+                              )}
+                              {caseItem.testNeeded && caseItem.selectedTests && caseItem.selectedTests.length > 0 && (
+                                <div className="flex items-start gap-2 md:col-span-2">
+                                  <FileText className="w-5 h-5 text-gray-400 mt-0.5" />
+                                  <div>
+                                    <p className="text-sm text-gray-600">Required Tests</p>
+                                    <div className="flex flex-wrap gap-2 mt-1">
+                                      {caseItem.selectedTests.map((test: string, idx: number) => (
+                                        <span key={idx} className="px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs">
+                                          {test}
+                                        </span>
+                                      ))}
+                                    </div>
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+
+                          {/* Documents Section */}
+                          {(caseItem.utilityBill || caseItem.document) && (
+                            <div>
+                              <h4 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                                <FileText className="w-5 h-5 text-primary" />
+                                Documents
+                              </h4>
+                              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                {caseItem.utilityBill && (
+                                  <div className="flex items-center gap-2 p-3 bg-gray-50 rounded-lg">
+                                    <FileText className="w-5 h-5 text-gray-400" />
+                                    <div className="flex-1">
+                                      <p className="text-sm text-gray-600">Utility Bill</p>
+                                      <a
+                                        href={caseItem.utilityBill}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="text-primary hover:underline text-sm font-medium flex items-center gap-1"
+                                      >
+                                        View Document
+                                        <Download className="w-4 h-4" />
+                                      </a>
+                                    </div>
+                                  </div>
+                                )}
+                                {caseItem.document && (
+                                  <div className="flex items-center gap-2 p-3 bg-gray-50 rounded-lg">
+                                    <FileText className="w-5 h-5 text-gray-400" />
+                                    <div className="flex-1">
+                                      <p className="text-sm text-gray-600">Medical Document</p>
+                                      <a
+                                        href={caseItem.document}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="text-primary hover:underline text-sm font-medium flex items-center gap-1"
+                                      >
+                                        View Document
+                                        <Download className="w-4 h-4" />
+                                      </a>
+                                    </div>
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          )}
                         </div>
                       )}
                     </div>

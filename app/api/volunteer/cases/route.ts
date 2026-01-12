@@ -69,40 +69,63 @@ export async function GET(request: NextRequest) {
     console.log(`Found ${casesRaw.length} cases for volunteer ${volunteer._id}`);
 
     // Transform cases to response format
-    const formattedCases = casesRaw.map((caseItem: any) => {
+    const formattedCases = casesRaw.map((caseItem: Record<string, unknown>) => {
       // Get disease name
       let diseaseName = '';
-      if (caseItem.diseaseType === 'chronic') {
-        diseaseName = caseItem.chronicDisease || 'Chronic Disease';
+      const diseaseType = caseItem.diseaseType as string;
+      if (diseaseType === 'chronic') {
+        diseaseName = (caseItem.chronicDisease as string) || 'Chronic Disease';
       } else {
-        if (caseItem.otherDisease === 'Other') {
-          diseaseName = caseItem.manualDisease || 'Other Disease';
+        if ((caseItem.otherDisease as string) === 'Other') {
+          diseaseName = (caseItem.manualDisease as string) || 'Other Disease';
         } else {
-          diseaseName = caseItem.otherDisease || 'Other Disease';
+          diseaseName = (caseItem.otherDisease as string) || 'Other Disease';
         }
       }
 
       return {
         _id: caseItem._id.toString(),
         caseNumber: caseItem.caseNumber || `CASE-${caseItem._id.toString().slice(-6)}`,
-        name: caseItem.name,
-        email: caseItem.email,
-        phone: caseItem.phone,
-        district: caseItem.district,
-        area: caseItem.area,
-        diseaseType: caseItem.diseaseType,
+        // Personal Information
+        name: (caseItem.name as string) || '',
+        email: (caseItem.email as string) || '',
+        phone: (caseItem.phone as string) || '',
+        cnic: (caseItem.cnic as string) || '',
+        address: (caseItem.address as string) || '',
+        district: (caseItem.district as string) || '',
+        area: (caseItem.area as string) || '',
+        manualArea: (caseItem.manualArea as string) || '',
+        // Financial Information
+        age: (caseItem.age as number) || 0,
+        maritalStatus: (caseItem.maritalStatus as string) || 'single',
+        numberOfChildren: (caseItem.numberOfChildren as number) || 0,
+        firstChildAge: caseItem.firstChildAge as number | undefined,
+        lastChildAge: caseItem.lastChildAge as number | undefined,
+        salaryRange: (caseItem.salaryRange as string) || '',
+        houseOwnership: (caseItem.houseOwnership as string) || 'own',
+        rentAmount: caseItem.rentAmount as number | undefined,
+        houseSize: (caseItem.houseSize as string) || '',
+        utilityBill: (caseItem.utilityBill as string) || '',
+        zakatEligible: (caseItem.zakatEligible as boolean) || false,
+        // Disease Information
+        diseaseType: diseaseType,
         diseaseName: diseaseName,
-        description: caseItem.description || '',
-        hospitalName: caseItem.hospitalName || '',
-        doctorName: caseItem.doctorName || '',
-        amountNeeded: caseItem.amountNeeded || 0,
-        estimatedTotalCost: caseItem.amountNeeded || 0,
-        priority: caseItem.priority || 'Medium',
-        status: caseItem.status || 'pending',
-        volunteerApprovalStatus: caseItem.volunteerApprovalStatus ?? 'pending',
-        isZakatEligible: caseItem.zakatEligible || false,
-        createdAt: caseItem.createdAt,
-        updatedAt: caseItem.updatedAt,
+        chronicDisease: caseItem.chronicDisease as string | undefined,
+        otherDisease: caseItem.otherDisease as string | undefined,
+        manualDisease: caseItem.manualDisease as string | undefined,
+        testNeeded: (caseItem.testNeeded as boolean) || false,
+        selectedTests: (caseItem.selectedTests as string[]) || [],
+        description: (caseItem.description as string) || '',
+        hospitalName: (caseItem.hospitalName as string) || '',
+        doctorName: (caseItem.doctorName as string) || '',
+        amountNeeded: (caseItem.amountNeeded as number) || 0,
+        document: (caseItem.document as string) || '',
+        estimatedTotalCost: (caseItem.amountNeeded as number) || 0,
+        priority: (caseItem.priority as string) || 'Medium',
+        status: (caseItem.status as string) || 'pending',
+        volunteerApprovalStatus: (caseItem.volunteerApprovalStatus as 'pending' | 'approved' | 'rejected') ?? 'pending',
+        createdAt: caseItem.createdAt as string,
+        updatedAt: caseItem.updatedAt as string | undefined,
       };
     });
 
