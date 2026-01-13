@@ -731,7 +731,7 @@ export default function NewCaseForm({ onClose, onSuccess, userProfile }: NewCase
                   <div className="relative">
                     <input
                       type="file"
-                      accept=".pdf,.png,.jpg,.jpeg"
+                      accept=".png,.jpg,.jpeg"
                       className="hidden"
                       id="document-upload"
                       onChange={handleFileChange}
@@ -750,7 +750,7 @@ export default function NewCaseForm({ onClose, onSuccess, userProfile }: NewCase
                             {caseType === 'test' ? 'Upload test prescription/requisition' : 'Choose file or drag here'}
                           </p>
                         )}
-                        <p className="text-xs text-gray-400 mt-1">PDF, PNG, JPG formats only</p>
+                        <p className="text-xs text-gray-400 mt-1">PNG, JPG, JPEG formats only</p>
                       </div>
                     </label>
                   </div>

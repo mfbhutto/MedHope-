@@ -1052,7 +1052,7 @@ export default function AccepterRegisterPage() {
                     </label>
                     <input
                       type="file"
-                      accept=".pdf,.png,.jpg,.jpeg"
+                      accept=".png,.jpg,.jpeg"
                       className="input-field w-full text-sm sm:text-base"
                       onChange={(e) => {
                         const files = e.target.files;
@@ -1064,7 +1064,7 @@ export default function AccepterRegisterPage() {
                     {step2Form.formState.errors.utilityBill && (
                       <p className="text-red-500 text-xs mt-1">{step2Form.formState.errors.utilityBill.message}</p>
                     )}
-                    <p className="text-xs text-gray-500 mt-1">PDF, PNG, JPG formats only</p>
+                    <p className="text-xs text-gray-500 mt-1">PNG, JPG, JPEG formats only</p>
                   </div>
                   <div className="flex items-end">
                     <label className="flex items-center">
@@ -1650,7 +1650,7 @@ export default function AccepterRegisterPage() {
                       </label>
                       <input
                         type="file"
-                        accept=".pdf,.png,.jpg,.jpeg"
+                        accept=".png,.jpg,.jpeg"
                         className="input-field w-full text-sm sm:text-base"
                         onChange={(e) => {
                           const files = e.target.files;
@@ -1662,7 +1662,7 @@ export default function AccepterRegisterPage() {
                       {step3Form.formState.errors.document && (
                         <p className="text-red-500 text-xs mt-1">{step3Form.formState.errors.document.message}</p>
                       )}
-                      <p className="text-xs text-gray-500 mt-1">PDF, PNG, JPG formats only</p>
+                      <p className="text-xs text-gray-500 mt-1">PNG, JPG, JPEG formats only</p>
                     </div>
                   </div>
                 )}

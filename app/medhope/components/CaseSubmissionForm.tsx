@@ -566,10 +566,10 @@ export default function CaseSubmissionForm({ onClose, onSuccess }: CaseSubmissio
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Prescription (PDF/Image)</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Prescription (Image)</label>
                   <input
                     type="file"
-                    accept=".pdf,.jpg,.jpeg,.png"
+                    accept=".jpg,.jpeg,.png"
                     onChange={(e) => setPrescriptionFile(e.target.files?.[0] || null)}
                     className="input-field"
                   />
@@ -598,10 +598,10 @@ export default function CaseSubmissionForm({ onClose, onSuccess }: CaseSubmissio
               )}
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Electricity Bill (PDF/Image) *</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Electricity Bill (Image) *</label>
                 <input
                   type="file"
-                  accept=".pdf,.jpg,.jpeg,.png"
+                  accept=".jpg,.jpeg,.png"
                   onChange={(e) => setElectricityBillFile(e.target.files?.[0] || null)}
                   className="input-field"
                   required

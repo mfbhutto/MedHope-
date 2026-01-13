@@ -524,14 +524,26 @@ export default function CaseDetailsPage() {
               {caseData.document && (
                 <div>
                   <p className="text-sm text-gray-600 mb-2">Medical Document</p>
-                  <a
-                    href={caseData.document}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-primary hover:underline font-semibold"
-                  >
-                    View Medical Document
-                  </a>
+                  <div>
+                    <img
+                      src={caseData.document}
+                      alt="Medical Document"
+                      className="max-w-full max-h-96 rounded-lg border border-gray-200 shadow-md"
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.style.display = 'none';
+                      }}
+                    />
+                    <a
+                      href={caseData.document}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-primary hover:underline font-semibold inline-flex items-center gap-2 mt-2"
+                    >
+                      <FileText className="w-4 h-4" />
+                      View Full Size
+                    </a>
+                  </div>
                 </div>
               )}
             </div>

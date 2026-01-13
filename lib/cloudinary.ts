@@ -71,13 +71,10 @@ export async function uploadToCloudinary(
   if (!resourceType) {
     // Check file extension to determine resource type
     const fileExtension = fileName.toLowerCase().split('.').pop() || '';
-    const pdfExtensions: readonly string[] = ['pdf'];
     const imageExtensions: readonly string[] = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg', 'bmp', 'tiff', 'ico'];
     const videoExtensions: readonly string[] = ['mp4', 'mov', 'avi', 'webm', 'mkv', 'flv', 'wmv'];
     
-    if (pdfExtensions.includes(fileExtension)) {
-      detectedResourceType = 'raw'; // PDFs should be uploaded as raw files
-    } else if (imageExtensions.includes(fileExtension)) {
+    if (imageExtensions.includes(fileExtension)) {
       detectedResourceType = 'image';
     } else if (videoExtensions.includes(fileExtension)) {
       detectedResourceType = 'video';
@@ -138,22 +135,17 @@ export async function uploadFileToCloudinary(
   
   if (!resourceType) {
     // Check MIME type first (more reliable)
-    if (file.type === 'application/pdf') {
-      detectedResourceType = 'raw'; // PDFs should be uploaded as raw files
-    } else if (file.type.startsWith('image/')) {
+    if (file.type.startsWith('image/')) {
       detectedResourceType = 'image';
     } else if (file.type.startsWith('video/')) {
       detectedResourceType = 'video';
     } else {
       // Fallback to file extension
       const fileExtension = file.name.toLowerCase().split('.').pop() || '';
-      const pdfExtensions: readonly string[] = ['pdf'];
       const imageExtensions: readonly string[] = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg', 'bmp', 'tiff', 'ico'];
       const videoExtensions: readonly string[] = ['mp4', 'mov', 'avi', 'webm', 'mkv', 'flv', 'wmv'];
       
-      if (pdfExtensions.includes(fileExtension)) {
-        detectedResourceType = 'raw';
-      } else if (imageExtensions.includes(fileExtension)) {
+      if (imageExtensions.includes(fileExtension)) {
         detectedResourceType = 'image';
       } else if (videoExtensions.includes(fileExtension)) {
         detectedResourceType = 'video';
